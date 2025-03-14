@@ -1,0 +1,98 @@
+<app-navbar></app-navbar>
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center vh-100">
+    <!-- Colonne Image (affichée à partir de md) -->
+    <div class="col-md-6 d-none d-md-flex align-items-center h-100">
+      <img src="/assets/Elec-login.webp" alt="Illustration" class="w-90 h-40 object-fit-cover">
+    </div>
+
+    <!-- Colonne Formulaire -->
+    <div class="col-12 col-md-6 d-flex align-items-center h-100">
+      <div class="myform form w-100">
+        <div class="logo mb-3">
+          <div class="col-md-12 text-center">
+            <h1>Se connecter</h1>
+          </div>
+        </div>
+        <div *ngIf="errorMsg" class="w-full rounded-mb text-red-500 text-sm/6 font-medium mb-4">
+          {{ errorMsg }}
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmitlogin()">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Adresse email" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de Passe</label>
+            <input type="password" class="form-control" id="password" placeholder="Mot de Passe" formControlName="password">
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="remember" formControlName="remember">
+            <label class="form-check-label" for="remember">Rester connecté.e?</label>
+          </div>
+          <div class="form-group mt-4">
+            <p class="text-center fst-italic">
+              En vous inscrivant, vous acceptez nos <br>
+              <a href="#">Conditions d'Utilisation</a>
+            </p>
+          </div>
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-block text-uppercase btn-grad" [disabled]="form.invalid || requestOngoing">Se connecter</button>
+          </div>
+          <div class="col-md-12">
+            <div class="login-or">
+              <hr class="hr-or">
+              <span class="span-or">ou</span>
+            </div>
+          </div>
+          <div class="col-md-12 mb-3 text-center">
+            <a href="#" class="google btn"><i class="fa fa-google-plus"></i> Se connecter avec Google</a>
+          </div>
+          <div class="form-group text-center">
+            <p class="fst-italic">Vous n'avez pas de compte?
+              <a [routerLink]="['/register']" id="signup">Enregistrez-vous</a>
+            </p>
+          </div>
+        </form>
+
+        <!-- Image affichée uniquement sur mobile -->
+        <div class="col-md-12 text-center d-md-none">
+          <img src="/assets/Elec-login.webp" alt="logo" class="w-100">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

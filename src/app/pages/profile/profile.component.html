@@ -1,0 +1,122 @@
+<app-navbar></app-navbar>
+<!--
+<div *ngIf="!isLoading">
+  <app-loader></app-loader>
+</div>
+
+<section *ngIf="isLoading">-->
+<section >
+  <div id="compte">
+
+    <div class="titre">
+      <h1><i class="fa-solid fa-user-gear me-3"></i>Mon Profil</h1>
+    </div>
+
+    <div class="container">
+      <section class="text-center text-lg-start" >
+        <div class="container" *ngIf="currentUser$ | async as currentUser">
+          <div class="row">
+            <div class="container py-1 mt-5 ms-1">
+              <div class="row g-0 align-items-center">
+                <div class="mb-5 mb-lg-0">
+                  <div class="cascading-right ms-5 me-5"
+                       style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
+                    <div class="card-body p-2 shadow-5 text-center shadow p-3 mb-5 bg-body-tertiary rounded ">
+                      <div class="row mb-2">
+                        <div class="col-md-12 flex-row d-flex justify-content-between nomCmd">
+                          <div class="form-outline fs-3" >
+                            {{currentUser.nom}}
+                            {{currentUser.prenom}}
+                          </div>
+                          <div class="form-outline fs-3" >
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-center  mb-3 fs-4 info">
+                        Informations:
+                      </div>
+                      <div class="row mb-4">
+                        <div class="col-md-4 ">
+                          <h6 class="fst-italic
+                          ">Numéro de téléphone:</h6>
+                          <p> {{ currentUser.telephone}}</p>
+                        </div>
+                        <div class="col-md-4 ">
+                          <h6 class="fst-italic">Date de naissance:</h6>
+                          <p>{{ currentUser.dateNaissance }}</p>
+                        </div>
+                        <div class="col-md-4 ">
+                          <h6 class="fst-italic">Adresse Email:</h6>
+                          <p>{{ currentUser.email }}</p>
+                        </div>
+                      </div>
+
+
+                      <div class="row mb-1">
+                        <div class="col-md-4">
+                          <h6 class="fst-italic">Adresse Postale:</h6>
+                          <p> {{ currentUser.nomRue }}</p>
+                        </div>
+                        <div class="col-md-4">
+                          <h6 class="fst-italic">Code Postal:</h6>
+                          <p> {{ currentUser.codePostal }}</p>
+                        </div>
+                        <div class="col-md-4">
+                          <h6 class="fst-italic">Ville:</h6>
+                          <p> {{ currentUser.ville }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+      <section class="sectionTable">
+        <h5>Toutes mes bornes</h5>
+
+        <div *ngIf="currentBorneUser$ | async as bornes;">
+          <table class="table" >
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Puissance</th>
+                <th scope="col">Sur pied ?</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Instruction</th>
+                <th scope="col">Photos</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Actions</th>
+                <th scope="col">Réservations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let borne of bornes">
+                <th scope="row">{{ borne.id }}</th>
+                <td>{{ borne.nom }}</td>
+                <td>{{ borne.latitude }}</td>
+                <td>{{ borne.longitude }}</td>
+                <td>{{ borne.puissance }}kw</td>
+                <td >{{ borne.surPied }}</td>
+                <td>borne ville</td>
+                <td>{{ borne.instruction }}</td>
+                <td>photo borne</td>
+                <td>{{ borne.prix }}€/h</td>
+                <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
+                <td><a [routerLink]="['/reservation']">Voir</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="!(currentBorneUser$ | async)?.length">
+          <p>Vous de disposez pas de Bornes</p>
+        </div>
+      </section>

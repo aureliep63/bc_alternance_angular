@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['']">
+      <img src="assets/logo.PNG" alt="logo" class="w-50">
+    </a>
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse" id="navbarText">
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active fs-5" aria-current="page" [routerLink]="['']">
+            <i class="fa-solid fa-house"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" aria-current="page" [routerLink]="['']">Bornes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" aria-current="page" [routerLink]="['']">Réservation</a>
+        </li>
+      </ul>
+      <ul class="list-unstyled pe-5">
+        <li *ngIf="(isConnected | async)" class="nav-item dropdown transition-nav">
+          <a class="nav-link dropdown-toggle" (click)="isDropDownCollapse2 = !isDropDownCollapse2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mon Compte
+          </a>
+          <ul class="dropdown-menu" [ngbCollapse]="isDropDownCollapse2">
+            <li><a class="dropdown-item" [routerLink]="['/profile']">Mon profil</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/reservation']">Mon Réservations</a></li>
+            <li><a class="dropdown-item deco" (click)="onClickLogout()">Se Déconnecter</a></li>
+          </ul>
+        </li>
+        <li *ngIf="!(isConnected | async)" class="pe-5">
+          <a class="nav-link transition-nav" [routerLink]="['login']">Se connecter</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
