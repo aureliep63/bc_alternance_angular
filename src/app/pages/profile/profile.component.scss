@@ -18,4 +18,20 @@ th{
 }
 td{
   font-size: 12px;
+  img{
+    width: 3vw;
+    object-fit: contain;
+  }
 }
+
+#titreBorne{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  #ajoutBorne{
+    color: black;
+    text-decoration: none;
+  }
+
+}
+

@@ -19,7 +19,7 @@
   <div *ngIf="activeTab === 'locataire'">
     <p>Mes demandes de reservation</p>
 
-    <div *ngIf="currentReservationUser$ | async as reservations;">
+    <div *ngIf="locataireResa$ | async as reservations;">
       <table class="table" >
         <thead>
           <tr>
@@ -42,18 +42,20 @@
             <td>{{ resa.dateFin }}</td>
             <td>{{ resa.heureDebut }}</td>
             <td>{{ resa.heureFin }}</td>
-            <td>borne ville</td>
+            <ng-container *ngIf="resa.borne.lieux">
+              <td>{{ resa.borne.lieux?.ville || 'Non défini' }}</td>
+            </ng-container>
             <td>{{ resa.status }}</td>
-
-            <td>{{ resa.borne.prix }}€/h</td>
-
+            <ng-container *ngIf="currentBorneUser$ | async as borneMap">
+              <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
+            </ng-container>
             <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
             <td><a [routerLink]="['/borne']">Voir</a></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div *ngIf="!(currentReservationUser$ | async)?.length">
+    <div *ngIf="!(locataireResa$ | async)?.length">
       <p>Vous n'avez pas fait de demande</p>
     </div>
 
@@ -61,8 +63,8 @@
 
   <div *ngIf="activeTab === 'proprietaire'">
     <p>Mes demandes de location</p>
-    <div *ngIf="currentReservationBorneUser$ | async as reservations;">
-      <table class="table" >
+    <div *ngIf="proprioResa$ | async as reservations;">
+     <table class="table" >
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -85,13 +87,14 @@
               <td>{{ resa.dateFin }}</td>
               <td>{{ resa.heureDebut }}</td>
               <td>{{ resa.heureFin }}</td>
-              <td>borne ville</td>
-              <td >{{ resa.status }}</td>
-              <ng-container *ngIf="currentBorneUser$ | async as bornes;">
-                <ng-container *ngFor="let borne of bornes">
-                 <td>{{ borne.prix }}€/h</td>
-                </ng-container>
+              <ng-container *ngIf="resa.borne.lieux">
+                <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td> <!-- Affiche "Non défini" si lieu est inexistant -->
               </ng-container>
+                <td >{{ resa.status }}</td>
+              <ng-container *ngIf="currentBorneResa$ | async as borneMap">
+                <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
+              </ng-container>
+
               <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
               <td><a [routerLink]="['/borne']">Voir</a></td>
             </tr>
@@ -99,7 +102,7 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="!(currentReservationBorneUser$ | async)?.length">
+    <div *ngIf="!(proprioResa$ | async)?.length">
       <p>Vous n'avez pas aucune demande de réservation</p>
     </div>
   </div>

@@ -63,7 +63,11 @@ export class AuthService {
       .pipe(
         tap(userHttp => console.log("Réponse API user:", userHttp)),
         map(userHttp => {
-        return User.fromHttp(userHttp);
+          console.log('userHttp: ', userHttp);
+          console.log('userFromHttp: ', User.fromHttp(userHttp));
+
+          return User.fromHttp(userHttp);
+
         }),
         tap(user => {
           this.userService.currentUser = user;

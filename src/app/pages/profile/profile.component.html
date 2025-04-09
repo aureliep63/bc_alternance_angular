@@ -5,7 +5,7 @@
 </div>
 
 <section *ngIf="isLoading">-->
-<section >
+<section>
   <div id="compte">
 
     <div class="titre">
@@ -33,7 +33,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="text-center  mb-3 fs-4 info">
+                      <div class="text-center mb-3 fs-4 info">
                         Informations:
                       </div>
                       <div class="row mb-4">
@@ -44,7 +44,8 @@
                         </div>
                         <div class="col-md-4 ">
                           <h6 class="fst-italic">Date de naissance:</h6>
-                          <p>{{ currentUser.dateNaissance }}</p>
+                          <p>{{ currentUser.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
+
                         </div>
                         <div class="col-md-4 ">
                           <h6 class="fst-italic">Adresse Email:</h6>
@@ -75,11 +76,15 @@
           </div>
         </div>
       </section>
-    </div>
-      <section class="sectionTable">
-        <h5>Toutes mes bornes</h5>
 
-        <div *ngIf="currentBorneUser$ | async as bornes;">
+      <section class="sectionTable ">
+        <div id="titreBorne">
+          <h5>Toutes mes bornes</h5>
+          <button (click)="openModal()"><i class="fa-solid fa-plus"></i> </button>
+        </div>
+        <app-modal-borne #modalBorne (onBorneAdded)="onBorneAdded($event)"></app-modal-borne>
+
+        <div *ngIf="bornes$ | async as bornes">
           <table class="table" >
             <thead>
               <tr>
@@ -98,16 +103,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let borne of bornes">
-                <th scope="row">{{ borne.id }}</th>
+              <tr *ngFor="let borne of bornes; let i = index">
+                <th scope="row">{{i + 1}}</th>
+
                 <td>{{ borne.nom }}</td>
-                <td>{{ borne.latitude }}</td>
-                <td>{{ borne.longitude }}</td>
+                <td>{{ borne.latitude | number:'1.4-4' }}</td>
+                <td>{{ borne.longitude | number:'1.4-4' }}</td>
                 <td>{{ borne.puissance }}kw</td>
-                <td >{{ borne.surPied }}</td>
-                <td>borne ville</td>
+                <td>{{ borne.surPied ? 'Oui' : 'Non' }}</td>
+                <ng-container *ngIf="borne.lieux">
+                <td>{{ borne.lieux.ville}}</td>
+                </ng-container>
                 <td>{{ borne.instruction }}</td>
-                <td>photo borne</td>
+                <td>
+                  <img src="{{imageUrl}}{{borne.photo}}" alt="{{borne.nom}}" >
+                </td>
                 <td>{{ borne.prix }}€/h</td>
                 <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
                 <td><a [routerLink]="['/reservation']">Voir</a></td>
@@ -116,7 +126,10 @@
           </table>
         </div>
 
-        <div *ngIf="!(currentBorneUser$ | async)?.length">
+        <div *ngIf="!(bornes$ | async)?.length">
           <p>Vous de disposez pas de Bornes</p>
         </div>
       </section>
+    </div>
+  </div>
+</section>

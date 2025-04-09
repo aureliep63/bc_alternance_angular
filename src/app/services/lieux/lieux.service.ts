@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {Borne, BorneHttp} from "../../entities/borne.entity";
-import {lastValueFrom, map} from "rxjs";
+import {lastValueFrom, map, Observable} from "rxjs";
 import {Lieux, LieuxHttp} from "../../entities/lieux.entity";
 
 @Injectable({
@@ -16,21 +16,22 @@ export class LieuxService {
     this.url = environment.API_URL + environment.API_RESOURCES.LIEUX
   }
 
-  list(): Promise<Lieux[]>{
-    const obs = this.http
+  list(): Observable<Lieux[]> {
+    return this.http
       .get<LieuxHttp[]>(this.url)
-      .pipe(
-        map(lieuxHttp => lieuxHttp.map(l => Lieux.fromHttp(l)))
-      )
-    return lastValueFrom(obs)
+      .pipe(map(lieuxHttp => lieuxHttp.map(l => Lieux.fromHttp(l))));
   }
 
-  getById(id:number): Promise<Lieux> {
-    const obs = this.http
+
+  getById(id:number): Observable<Lieux> {
+    return this.http
       .get<LieuxHttp>(`${this.url}/${id}`)
       .pipe(
         map(lieuxHttp => Lieux.fromHttp(lieuxHttp))
       )
-    return lastValueFrom(obs)
+  }
+
+  create(lieu: Lieux): Observable<Lieux> {
+    return this.http.post<Lieux>(this.url, lieu);
   }
 }

@@ -2,13 +2,15 @@
 // si on récupère un object métier tres lourd alors il vaut mieux utiliser une classe au lieu d'une interface
 // pour http toujours une interface, si on map ca peut être intéréssant d'avoir une classe
 
-import {User, UserHttp} from "./user.entity";
+
 import {Media, MediaHttp} from "./media.entity";
 import {Reservation, ReservationHttp} from "./reservation.entity";
+import {Lieux, LieuxHttp} from "./lieux.entity";
 
 export interface BorneHttp{
   id: number
   nom: string
+  photo: string
   puissance: number
   estDisponible: boolean
   instruction: string
@@ -18,14 +20,15 @@ export interface BorneHttp{
   prix: number
   medias: MediaHttp[]
   reservations: ReservationHttp[]
-  user: UserHttp
-
-
+  utilisateurId: number
+  lieuId: number;
+  lieux: LieuxHttp;
 }
 
 export interface Borne{
   id: number
   nom: string
+  photo: string
   puissance: number
   estDisponible: boolean
   instruction: string
@@ -35,7 +38,9 @@ export interface Borne{
   prix: number
   medias: Media[]
   reservations: Reservation[]
-  user: User
+  utilisateurId: number
+  lieuId: number;
+  lieux: Lieux | null;
 }
 
 export namespace Borne {
@@ -43,6 +48,7 @@ export namespace Borne {
     return {
       id: http.id,
       nom: http.nom,
+      photo:http.photo,
       puissance: http.puissance,
       estDisponible: http.estDisponible,
       instruction: http.instruction,
@@ -52,7 +58,9 @@ export namespace Borne {
       prix: http.prix,
       medias:http.medias ? http.medias.map(media => Media.fromHttp(media)) : [],
       reservations:http.reservations ? http.reservations.map(reservation => Reservation.fromHttp(reservation)): [],
-      user: User.fromHttp(http.user),
+      utilisateurId: http.utilisateurId,
+      lieuId: http.lieuId,
+      lieux: Lieux.fromHttp(http.lieux),
     };
   }
 }

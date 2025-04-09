@@ -15,6 +15,7 @@ export const environment = {
     LIEUX:'/lieux',
     RESERVATIONS:'/reservations'
   },
+  IMAGE_URL:'http://localhost:8080/bornes/upload',
   LOCAL_STORAGE: {
     ACCESS_TOKEN: 'access_token', // disponible 20h
    // REFRESH_TOKEN: 'refresh_token' // disponible 10h

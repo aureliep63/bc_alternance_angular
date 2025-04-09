@@ -9,7 +9,7 @@ export interface LieuxHttp{
   adresse: string
   codePostal: string
   ville: string
-  bornes: BorneHttp[]
+ // bornes: BorneHttp[]
 }
 
 export interface Lieux{
@@ -17,7 +17,7 @@ export interface Lieux{
   adresse: string
   codePostal: string
   ville: string
-  bornes: Borne[]
+//  bornes: Borne[]
 }
 
 export namespace Lieux{
@@ -27,7 +27,7 @@ export namespace Lieux{
       adresse: http.adresse,
       codePostal: http.codePostal,
       ville: http.ville,
-      bornes:http.bornes ? http.bornes.map(borne => Borne.fromHttp(borne)) :[],
+     // bornes: [],
 
     }
   }

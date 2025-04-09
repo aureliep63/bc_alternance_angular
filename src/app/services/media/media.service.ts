@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {Lieux, LieuxHttp} from "../../entities/lieux.entity";
-import {lastValueFrom, map} from "rxjs";
+import {lastValueFrom, map, Observable} from "rxjs";
 import {Media, MediaHttp} from "../../entities/media.entity";
 
 @Injectable({
@@ -16,23 +16,30 @@ export class MediaService {
     this.url = environment.API_URL + environment.API_RESOURCES.MEDIAS
   }
 
-  list(): Promise<Media[]>{
-    const obs = this.http
+  list(): Observable<Media[]>{
+    return this.http
       .get<MediaHttp[]>(this.url)
       .pipe(
         map(mediasHttp => mediasHttp.map(m => Media.fromHttp(m)))
       )
-    return lastValueFrom(obs)
   }
 
-  getById(id:number): Promise<Media> {
-    const obs = this.http
+  getById(id:number): Observable<Media> {
+    return this.http
       .get<MediaHttp>(`${this.url}/${id}`)
       .pipe(
         map(mediaHttp => Media.fromHttp(mediaHttp))
       )
-    return lastValueFrom(obs)
   }
+  uploadFile(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post('http://localhost:8080/api/files/upload', formData, {
+      responseType: 'text'
+    });
+  }
+
 }
 
 

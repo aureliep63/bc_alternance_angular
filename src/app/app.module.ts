@@ -12,8 +12,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import {authInterceptor} from "./interceptors/auth/auth.interceptor";
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RoleUserComponent } from './pages/reservations/role-user/role-user.component';
+import { RoleUserComponent } from './components/role-user/role-user.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
+import { ModalBorneComponent } from './components/modal-borne/modal-borne.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ReservationsComponent } from './pages/reservations/reservations.compone
     ProfileComponent,
     RoleUserComponent,
     ReservationsComponent,
+    ModalBorneComponent
   ],
   imports: [
     BrowserModule,

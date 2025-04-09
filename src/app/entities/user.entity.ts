@@ -13,7 +13,7 @@ export interface UserHttp{
   motDePasse: string
   role: string[]
   telephone: string
-  dateNaissance: string
+  dateDeNaissance: string
   nomRue: string
   codePostal: string
   ville: string
@@ -30,7 +30,7 @@ export interface User{
   motDePasse: string
   role: string[]
   telephone: string
-  dateNaissance: Date
+  dateDeNaissance: Date
   nomRue: string
   codePostal: string
   ville: string
@@ -40,7 +40,8 @@ export interface User{
 
 export namespace User{
   export function fromHttp(http: UserHttp):User{
-    return<User>{
+    return{
+
       id: http.id,
       nom: http.nom,
       prenom: http.prenom,
@@ -48,7 +49,7 @@ export namespace User{
       motDePasse: http.motDePasse,
       role: http.role,
       telephone: http.telephone,
-      dateNaissance: new Date(http.dateNaissance),
+      dateDeNaissance: new Date(http.dateDeNaissance),
       nomRue: http.nomRue,
       codePostal: http.codePostal,
       ville: http.ville,

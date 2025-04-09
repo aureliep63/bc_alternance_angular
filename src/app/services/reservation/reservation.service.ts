@@ -17,22 +17,20 @@ export class ReservationService {
     this.url = environment.API_URL + environment.API_RESOURCES.RESERVATIONS
   }
 
-  list(): Promise<Reservation[]>{
-    const obs = this.http
+  list(): Observable<Reservation[]>{
+    return  this.http
       .get<ReservationHttp[]>(this.url)
       .pipe(
         map(reservationsHttp => reservationsHttp.map(r => Reservation.fromHttp(r)))
       )
-    return lastValueFrom(obs)
   }
 
-  getById(id:number): Promise<Reservation> {
-    const obs = this.http
+  getById(id:number): Observable<Reservation> {
+    return this.http
       .get<ReservationHttp>(`${this.url}/${id}`)
       .pipe(
         map(reservationHttp => Reservation.fromHttp(reservationHttp))
       )
-    return lastValueFrom(obs)
   }
 
   getByUserId(idUser: number): Observable<Reservation[]> {
