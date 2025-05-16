@@ -1,0 +1,24 @@
+.map-container {
+  position: absolute;
+  top: 525px;
+  left: 0;
+  right: 0;
+  bottom: -120px;
+
+}
+
+.map-frame {
+border: 2px solid black;
+height: 100%;
+}
+
+#map {
+height: 100%;
+}
+
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+z-index: 1000 !important;
+}
+
+

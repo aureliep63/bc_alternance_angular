@@ -1,0 +1,46 @@
+<div class="search-form px-4 py-2  rounded shadow mb-3"  >
+  <form (ngSubmit)="searchBornes()" #searchForm="ngForm">
+
+
+    <div class="container">
+      <p><i>Recherchez une borne autour de vous</i></p>
+      <div class="row justify-content-evenly">
+
+        <div class="col-5">
+          <div class="form-group mb-2">
+            <label>Ville</label>
+            <input type="text" class="form-control" [(ngModel)]="filters.ville" name="ville" placeholder="Ex: Lyon" />
+          </div>
+
+        </div>
+        <div class="col-5">
+          <div class="form-group mb-2">
+            <label>Date et heure de début</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut" />
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row justify-content-evenly">
+        <div class="col-5" style="text-align: end;">
+          <button type="submit" class="btn btn-primary btn-sm w-50">Rechercher</button>
+        </div>
+        <div class="col-5">
+          <div class="form-group mb-2">
+            <label>Date et heure de fin</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="filters.dateFin" name="dateFin" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
+<div class="map-container">
+  <div class="map-frame">
+    <div id="map"></div>
+  </div>
+</div>

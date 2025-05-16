@@ -1,0 +1,163 @@
+<div class="modal-backdrop " *ngIf="isOpen">
+  <div class="modal-content ">
+
+    <form (ngSubmit)="onSubmit()" class="card">
+      <div class="container">
+        <div class="modal-header m-4">
+          <h5 class="modal-title">Nouvelle Borne</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div *ngIf="step === 1">
+          <div class="modal-body">
+
+            <div class="row">
+              <div class="col-5">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" [(ngModel)]="borne.nom" name="nom" required />
+              </div>
+              <div class="col-5 flex-row align-items-center justify-content-evenly ">
+                <label for="surPied">Sur pied</label>
+                <input id="surPied" type="checkbox" [(ngModel)]="borne.surPied" name="surPied" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-5">
+                <label for="puissance">Puissance en Kwa</label>
+                <input id="puissance" type="number" [(ngModel)]="borne.puissance" name="puissance" required min="0"
+                       step="0.5" />
+              </div>
+              <div class="col-5">
+                <label for="prix">Prix en €/h</label>
+                <input type="number" id="prix" type="number" [(ngModel)]="borne.prix" name="prix" required min="0"
+                       step="0.5"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-5">
+                <label for="latitude">Latitude</label>
+                <input
+                  type="number"
+                  id="latitude"
+                  [(ngModel)]="borne.latitude"
+                  name="latitude"
+                  required
+                  step="0.0001"
+                />
+              </div>
+              <div class="col-5">
+                <label for="longitude">Longitude</label>
+                <input
+                  type="number"
+                  id="longitude"
+                  [(ngModel)]="borne.longitude"
+                  name="longitude"
+                  required
+                  step="0.0001"
+                />
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-10">
+                <label for="photo">Photo</label>
+                <div class="file-input">
+                  <label for="photo">Fichier (image)</label>
+                  <input type="file" id="photo" (change)="onFileChange($event)" accept="image/*">
+                </div>
+                <div class="row mt-2">
+                  <div class="col-10 text-center">
+                    <img
+                      *ngIf="photoPreviewUrl; else existingPhoto"
+                      [src]="photoPreviewUrl"
+                      alt="Aperçu de la photo"
+                      class="img-thumbnail"
+                      style="max-height: 200px;"
+                    />
+                    <ng-template #existingPhoto>
+                      <img
+                        *ngIf="borne.photo"
+                        [src]="imageUrl + borne.photo"
+                        alt="Photo existante"
+                        class="img-thumbnail"
+                        style="max-height: 200px;"
+                      />
+                    </ng-template>
+                  </div>
+                </div>
+
+
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-10">
+                <label for="instruction">Instruction</label>
+                <textarea  id="instruction" [(ngModel)]="borne.instruction" name="instruction" required></textarea>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="button" (click)="nextStep()" class="btn btn-outline-secondary  m-4"> <i class="fa-regular fa-circle-right"></i> Ajouter le lieux</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="step === 2">
+
+          <div>
+            <div class="row">
+              <div class="col-10">
+                <label for="lieuId">Lieu existant</label>
+                <select id="lieuId" [(ngModel)]="borne.lieuId" name="lieuId" required>
+                  <option *ngFor="let lieu of lieuxExistants" [value]="lieu.id">
+                    {{ lieu.ville }} ({{ lieu.codePostal }}),  {{ lieu.adresse }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-center mt-2">Ou</p>
+
+          <div>
+            <div class="row">
+              <div class="col-10">
+                <label for="adresse">Adresse</label>
+                <div *ngIf="borne.lieux">
+                  <input id="adresse" type="text" [(ngModel)]="borne.lieux.adresse" name="adresse" required />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <label for="ville">Ville</label>
+                <div *ngIf="borne.lieux">
+                  <input id="ville" type="text" [(ngModel)]="borne.lieux.ville" name="ville" required />
+                </div>
+              </div>
+              <div class="col-5">
+                <label for="codePostal">Code Postal</label>
+                <div *ngIf="borne.lieux">
+                <input id="codePostal" type="text" [(ngModel)]="borne.lieux.codePostal" name="codePostal" required />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button type="button" (click)="previousStep()" class="btn btn-outline-secondary m-4"><i class="fa-regular fa-circle-left"></i></button>
+            <button type="submit" class="btn btn-outline-secondary mb-4 mt-4 ms-5">Ajouter</button>
+          </div>
+
+        </div>
+
+
+      </div>
+    </form>
+
+  </div>
+</div>

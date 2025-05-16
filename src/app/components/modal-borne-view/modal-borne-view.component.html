@@ -1,0 +1,20 @@
+<div *ngIf="isOpen" class="modal-overlay">
+  <div class="modal-content">
+    <h3>Détails de la borne</h3>
+    <button (click)="close()" class="close-btn">✖</button>
+
+    <div *ngIf="borne">
+      <p><strong>Nom :</strong> {{ borne.nom }}</p>
+      <p><strong>Latitude :</strong> {{ borne.latitude }}</p>
+      <p><strong>Longitude :</strong> {{ borne.longitude }}</p>
+      <p><strong>Puissance :</strong> {{ borne.puissance }} kW</p>
+      <p><strong>Prix :</strong> {{ borne.prix }} €/h</p>
+      <p><strong>Instruction :</strong> {{ borne.instruction }}</p>
+      <p><strong>Sur pied :</strong> {{ borne.surPied ? 'Oui' : 'Non' }}</p>
+      <p *ngIf="borne.lieux">
+        <strong>Lieu :</strong> {{ borne.lieux.adresse }}, {{ borne.lieux.codePostal }} {{ borne.lieux.ville }}
+      </p>
+      <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" style="width: 100%; max-width: 300px; margin-top: 10px;">
+    </div>
+  </div>
+</div>

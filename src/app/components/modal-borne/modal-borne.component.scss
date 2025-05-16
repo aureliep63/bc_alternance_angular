@@ -1,0 +1,37 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-content {
+    background-image: url("/assets/carte.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;         /* L'image remplit la div, même si elle doit être rognée */
+    background-position: center;    /* Centre bien l'image */
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+
+    .row{
+      justify-content: center;
+      padding-bottom: 8px;
+
+      .col-5, .col-10{
+        display: flex;
+        flex-direction: column;
+
+
+      }
+    }
+
+  }
+
+
+}
+
