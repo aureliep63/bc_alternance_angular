@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {Borne, BorneHttp} from "../../entities/borne.entity";
 import {lastValueFrom, map, Observable} from "rxjs";
+import {BorneDto} from "../../entities/borneDto.entity";
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,17 @@ export class BorneService {
   //create(formData: FormData): Observable<Borne> {
     //return this.http.post<Borne>(`${this.url}`, formData);
   //}
+
+  addBorneWithFile(formData: FormData): Observable<BorneDto> {
+    return this.http.post<BorneDto>(this.url+"/user/bornes", formData);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
+  updateBorneWithFile(id: number, formData: FormData): Observable<BorneDto> {
+    return this.http.put<BorneDto>(`${this.url}/user/bornes/${id}`, formData);
+  }
 
 
 }

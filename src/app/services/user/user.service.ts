@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import {User} from "../../entities/user.entity";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment.development";
+import {BorneDto} from "../../entities/borneDto.entity";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private url:string;
 
+  constructor(private http:HttpClient) {
+    this.url = environment.API_URL + environment.API_RESOURCES.USERS
+  }
   // Observable = un flux que l'on peut écouter (readonly)
   // Pour se connecter '.subscribee()' et pour se déconnecter '/unsubscribe()'
   // Subject = flux ds lequel on peut écrire et qu'on peut écouter
@@ -28,5 +35,11 @@ export class UserService {
   get currentUser (): User | undefined {
     return this._currentUser$.getValue()
   }
+
+  updateUser( user: User): Observable<User> {
+    return this.http.put<User>(`${this.url}/${user.id}`, user);
+  }
+
+
 }
 

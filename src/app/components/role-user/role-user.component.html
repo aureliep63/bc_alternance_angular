@@ -43,7 +43,7 @@
             <td>{{ resa.heureDebut }}</td>
             <td>{{ resa.heureFin }}</td>
             <ng-container *ngIf="resa.borne.lieux">
-              <td>{{ resa.borne.lieux?.ville || 'Non défini' }}</td>
+              <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td>
             </ng-container>
             <td>{{ resa.status }}</td>
             <ng-container *ngIf="currentBorneUser$ | async as borneMap">
@@ -90,10 +90,18 @@
               <ng-container *ngIf="resa.borne.lieux">
                 <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td> <!-- Affiche "Non défini" si lieu est inexistant -->
               </ng-container>
-                <td >{{ resa.status }}</td>
               <ng-container *ngIf="currentBorneResa$ | async as borneMap">
                 <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
               </ng-container>
+
+              <td>
+                <ng-container *ngIf="resa.status === 'EN_ATTENTE'; else normalStatus">
+                  EN ATTENTE
+                </ng-container>
+                <ng-template #normalStatus>
+                  {{ resa.status }}
+                </ng-template>
+              </td>
 
               <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
               <td><a [routerLink]="['/borne']">Voir</a></td>

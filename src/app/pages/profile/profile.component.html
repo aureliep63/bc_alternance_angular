@@ -11,9 +11,8 @@
     <div class="titre">
       <h1><i class="fa-solid fa-user-gear me-3"></i>Mon Profil</h1>
     </div>
-
     <div class="container">
-      <section class="text-center text-lg-start" >
+      <section class="text-center text-lg-start">
         <div class="container" *ngIf="currentUser$ | async as currentUser">
           <div class="row">
             <div class="container py-1 mt-5 ms-1">
@@ -21,68 +20,125 @@
                 <div class="mb-5 mb-lg-0">
                   <div class="cascading-right ms-5 me-5"
                        style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
-                    <div class="card-body p-2 shadow-5 text-center shadow p-3 mb-5 bg-body-tertiary rounded ">
+                    <div class="card-body p-2 shadow-5 text-center shadow p-3 mb-5 bg-body-tertiary rounded">
+
+                      <!-- NOM / PRÉNOM + ICÔNE -->
                       <div class="row mb-2">
-                        <div class="col-md-12 flex-row d-flex justify-content-between nomCmd">
-                          <div class="form-outline fs-3" >
-                            {{currentUser.nom}}
-                            {{currentUser.prenom}}
+                        <div class="col-md-12 d-flex justify-content-between align-items-center nomCmd">
+                          <div class="form-outline fs-3 text-start w-100">
+                            <ng-container *ngIf="!editMode; else editName">
+                              {{ currentUser.nom }} {{ currentUser.prenom }}
+                            </ng-container>
+                            <ng-template #editName >
+                              <div class="d-flex">
+                              <input class="form-control " [(ngModel)]="userEditable.nom" placeholder="Nom">
+                              <input class="form-control" [(ngModel)]="userEditable.prenom" placeholder="Prénom">
+                              </div>
+                            </ng-template>
                           </div>
-                          <div class="form-outline fs-3" >
-                            <i class="fa-solid fa-pen-to-square"></i>
+
+                          <div class="form-outline fs-3 ms-3 ">
+                         <i class="fa-solid fa-pen-to-square text-dark"  style="cursor: pointer" *ngIf="!editMode" (click)="enableEdit(currentUser)"></i>
                           </div>
                         </div>
                       </div>
-                      <div class="text-center mb-3 fs-4 info">
-                        Informations:
-                      </div>
+
+                      <!-- INFOS -->
+                      <div class="text-center mb-3 fs-4 info">Informations:</div>
+
                       <div class="row mb-4">
-                        <div class="col-md-4 ">
-                          <h6 class="fst-italic
-                          ">Numéro de téléphone:</h6>
-                          <p> {{ currentUser.telephone}}</p>
+                        <!-- Téléphone -->
+                        <div class="col-md-4">
+                          <h6 class="fst-italic">Numéro de téléphone:</h6>
+                          <ng-container *ngIf="!editMode; else editTel">
+                            <p>{{ currentUser.telephone }}</p>
+                          </ng-container>
+                          <ng-template #editTel>
+                            <input class="form-control" [(ngModel)]="userEditable.telephone">
+                          </ng-template>
                         </div>
-                        <div class="col-md-4 ">
-                          <h6 class="fst-italic">Date de naissance:</h6>
-                          <p>{{ currentUser.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
 
+                        <!-- Date de naissance -->
+                        <div class="col-md-4">
+                          <h6 class="fst-italic">Date de naissance:</h6>
+                          <ng-container *ngIf="!editMode; else editNaiss">
+                            <p>{{ currentUser.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
+                          </ng-container>
+                          <ng-template #editNaiss>
+                            <input type="date" class="form-control" [(ngModel)]="dateDeNaissanceString">
+                          </ng-template>
                         </div>
-                        <div class="col-md-4 ">
+
+                        <!-- Email -->
+                        <div class="col-md-4">
                           <h6 class="fst-italic">Adresse Email:</h6>
-                          <p>{{ currentUser.email }}</p>
+                          <ng-container *ngIf="!editMode; else editMail">
+                            <p>{{ currentUser.email }}</p>
+                          </ng-container>
+                          <ng-template #editMail>
+                            <input class="form-control" [(ngModel)]="userEditable.email">
+                          </ng-template>
                         </div>
                       </div>
 
-
-                      <div class="row mb-1">
+                      <!-- Adresse -->
+                      <div class="row mb-4">
                         <div class="col-md-4">
                           <h6 class="fst-italic">Adresse Postale:</h6>
-                          <p> {{ currentUser.nomRue }}</p>
+                          <ng-container *ngIf="!editMode; else editRue">
+                            <p>{{ currentUser.nomRue }}</p>
+                          </ng-container>
+                          <ng-template #editRue>
+                            <input class="form-control" [(ngModel)]="userEditable.nomRue">
+                          </ng-template>
                         </div>
+
                         <div class="col-md-4">
                           <h6 class="fst-italic">Code Postal:</h6>
-                          <p> {{ currentUser.codePostal }}</p>
+                          <ng-container *ngIf="!editMode; else editCP">
+                            <p>{{ currentUser.codePostal }}</p>
+                          </ng-container>
+                          <ng-template #editCP>
+                            <input class="form-control" [(ngModel)]="userEditable.codePostal">
+                          </ng-template>
                         </div>
+
                         <div class="col-md-4">
                           <h6 class="fst-italic">Ville:</h6>
-                          <p> {{ currentUser.ville }}</p>
+                          <ng-container *ngIf="!editMode; else editVille">
+                            <p>{{ currentUser.ville }}</p>
+                          </ng-container>
+                          <ng-template #editVille>
+                            <input class="form-control" [(ngModel)]="userEditable.ville">
+                          </ng-template>
                         </div>
                       </div>
-                    </div>
-                  </div>
+
+                      <!-- Bouton d'enregistrement -->
+                      <div *ngIf="editMode" class="text-center mt-3">
+                        <button class="btn btn-outline-success me-2" (click)="saveEdit()">Modifier</button>
+                        <button class="btn btn-outline-dark" (click)="cancelEdit()"> <i class="fa-solid fa-xmark " ></i></button>
+
+
+                      </div>
+
+                    </div> <!-- card-body -->
+                  </div> <!-- cascading -->
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+    </div>
+
 
       <section class="sectionTable ">
         <div id="titreBorne">
           <h5>Toutes mes bornes</h5>
           <button (click)="openModal()"><i class="fa-solid fa-plus"></i> </button>
         </div>
-        <app-modal-borne #modalBorne (onBorneAdded)="onBorneAdded($event)"></app-modal-borne>
+        <app-modal-borne (onBorneAdded)="onBorneAdded($event)"></app-modal-borne>
 
         <div *ngIf="bornes$ | async as bornes">
           <table class="table" >
@@ -119,8 +175,18 @@
                   <img src="{{imageUrl}}{{borne.photo}}" alt="{{borne.nom}}" >
                 </td>
                 <td>{{ borne.prix }}€/h</td>
-                <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
-                <td><a [routerLink]="['/reservation']">Voir</a></td>
+                <td>
+                  <button (click)="modalBorne.openForEdit(toBorneDto(borne))">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+
+                  | <button (click)="openDeleteModal(borne.id)">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+                </td>
+                <td>
+                  <a (click)="viewDetails(toBorneDto(borne))" style="cursor: pointer;">Voir</a>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -131,5 +197,29 @@
         </div>
       </section>
     </div>
-  </div>
+
+
 </section>
+
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmer la suppression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer cette borne ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirmDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-borne-view #modalDetails></app-modal-borne-view>
+

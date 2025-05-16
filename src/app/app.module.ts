@@ -15,6 +15,9 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RoleUserComponent } from './components/role-user/role-user.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
 import { ModalBorneComponent } from './components/modal-borne/modal-borne.component';
+import { MapBorneComponent } from './components/map-borne/map-borne.component';
+import { CarrousselComponent } from './components/carroussel/carroussel.component';
+import { ModalBorneViewComponent } from './components/modal-borne-view/modal-borne-view.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { ModalBorneComponent } from './components/modal-borne/modal-borne.compon
     ProfileComponent,
     RoleUserComponent,
     ReservationsComponent,
-    ModalBorneComponent
+    ModalBorneComponent,
+    MapBorneComponent,
+    CarrousselComponent,
+    ModalBorneViewComponent
   ],
   imports: [
     BrowserModule,
