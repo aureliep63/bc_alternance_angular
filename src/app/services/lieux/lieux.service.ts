@@ -16,14 +16,21 @@ export class LieuxService {
     this.url = environment.API_URL + environment.API_RESOURCES.LIEUX
   }
 
-  list(): Observable<Lieux[]> {
+  list(): Observable<{
+    id: number | undefined;
+    adresse: string;
+    codePostal: string;
+    ville: string;
+    latitude: number | undefined;
+    longitude: number | undefined
+  }[]> {
     return this.http
       .get<LieuxHttp[]>(this.url)
       .pipe(map(lieuxHttp => lieuxHttp.map(l => Lieux.fromHttp(l))));
   }
 
 
-  getById(id:number): Observable<Lieux> {
+  getById(id:number): Observable<LieuxHttp> {
     return this.http
       .get<LieuxHttp>(`${this.url}/${id}`)
       .pipe(
@@ -31,7 +38,7 @@ export class LieuxService {
       )
   }
 
-  create(lieu: Lieux): Observable<Lieux> {
-    return this.http.post<Lieux>(this.url, lieu);
+  create(lieu: LieuxHttp): Observable<LieuxHttp> {
+    return this.http.post<LieuxHttp>(this.url, lieu);
   }
 }

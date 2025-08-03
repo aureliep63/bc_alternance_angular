@@ -4,7 +4,9 @@ import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {from, NEVER} from "rxjs";
 
-const EXCLUDED_URLS= ['login'];
+// Ajout de 'register' et potentiellement 'validate-email' (si c'est aussi un endpoint public sans auth)
+// Ou mieux, l'URL de base de votre API d'authentification
+const EXCLUDED_URLS = ['login', 'register', 'validate-email'];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -12,24 +14,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let toHandle = req;
 
-  //req.url correspond à l'url de l'API que l'on appelle
-  if( !EXCLUDED_URLS.some(url => req.url.includes(url))){
+  if (!EXCLUDED_URLS.some(url => req.url.includes(url))) {
+    const token = authService.tokenValue; // ✅ Toujours lire via getter
 
-    const token = authService.token;
-
-    //si on a un token
-    if(token){
-      toHandle = req.clone(
-        {
-          headers: req.headers.set('Authorization', `Bearer ${token}`)
-        }
-      )
-    }else{
-      // si pas de token
+    if (token) {
+      toHandle = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${token}`)
+      });
+    } else {
+      console.warn(`Tentative d'accès sans token → redirection /login`);
       authService.logout();
       router.navigate(['/login']);
-      return from(NEVER); // annule l'envoi de la requete
+      return from(NEVER);
     }
   }
   return next(toHandle);
 };
+

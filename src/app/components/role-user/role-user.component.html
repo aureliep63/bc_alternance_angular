@@ -25,12 +25,12 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Date de Début</th>
-            <th scope="col">Date de fin</th>
             <th scope="col">Heure de début</th>
+            <th scope="col">Date de fin</th>
             <th scope="col">Heure de fin</th>
             <th scope="col">Ville borne</th>
-            <th scope="col">Statut</th>
             <th scope="col">Prix</th>
+            <th scope="col">Status</th>
             <th scope="col">Actions</th>
             <th scope="col">Détail</th>
           </tr>
@@ -38,19 +38,25 @@
         <tbody>
           <tr *ngFor="let resa of reservations">
             <th scope="row">{{ resa.id }}</th>
-            <td>{{ resa.dateDebut }}</td>
-            <td>{{ resa.dateFin }}</td>
-            <td>{{ resa.heureDebut }}</td>
-            <td>{{ resa.heureFin }}</td>
+            <td>{{ resa.dateDebut | date: 'yyyy-MM-dd'  }}</td>
+            <td>{{ resa.dateDebut | date: 'HH:mm'  }}</td>
+            <td>{{ resa.dateFin | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ resa.dateFin | date: 'HH:mm' }}</td>
             <ng-container *ngIf="resa.borne.lieux">
               <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td>
             </ng-container>
-            <td>{{ resa.status }}</td>
+            <td>
+              <ng-container *ngIf="editStatusId !== resa.id">
+                {{ resa.status }}
+              </ng-container>
+            </td>
             <ng-container *ngIf="currentBorneUser$ | async as borneMap">
               <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
             </ng-container>
-            <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
-            <td><a [routerLink]="['/borne']">Voir</a></td>
+
+            <td> <button (click)="cancelReservation(resa)" class="btn btn-sm btn-warning">Annuler</button>| <a [routerLink]="['/borne']">Voir</a></td>
+            <td></td>
+
           </tr>
         </tbody>
       </table>
@@ -69,42 +75,52 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Date de Début</th>
-            <th scope="col">Date de fin</th>
             <th scope="col">Heure de début</th>
+            <th scope="col">Date de fin</th>
             <th scope="col">Heure de fin</th>
             <th scope="col">Ville borne</th>
-            <th scope="col">Statut</th>
             <th scope="col">Prix</th>
+            <th scope="col">Statut</th>
             <th scope="col">Actions</th>
             <th scope="col">Détail</th>
+
           </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let resa of reservations">
             <tr >
               <th scope="row">{{ resa.id }}</th>
-              <td>{{ resa.dateDebut }}</td>
-              <td>{{ resa.dateFin }}</td>
-              <td>{{ resa.heureDebut }}</td>
-              <td>{{ resa.heureFin }}</td>
+              <td>{{ resa.dateDebut | date: 'yyyy-MM-dd'}}</td>
+              <td>{{ resa.dateDebut | date: 'HH:mm' }}</td>
+              <td>{{ resa.dateFin | date: 'yyyy-MM-dd'}}</td>
+              <td>{{ resa.dateFin | date: 'HH:mm'  }}</td>
               <ng-container *ngIf="resa.borne.lieux">
-                <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td> <!-- Affiche "Non défini" si lieu est inexistant -->
+                <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td>
               </ng-container>
               <ng-container *ngIf="currentBorneResa$ | async as borneMap">
                 <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
               </ng-container>
 
               <td>
-                <ng-container *ngIf="resa.status === 'EN_ATTENTE'; else normalStatus">
-                  EN ATTENTE
-                </ng-container>
-                <ng-template #normalStatus>
+                <ng-container *ngIf="editStatusId !== resa.id">
                   {{ resa.status }}
-                </ng-template>
+                  <button (click)="editStatusId = resa.id"><i class="fa-solid fa-pen-to-square"></i></button>
+                </ng-container>
+
+                <ng-container *ngIf="editStatusId === resa.id">
+                  <select [(ngModel)]="resa.status">
+                    <option *ngFor="let status of statusOptions" [value]="status">
+                      {{ status }}
+                    </option>
+                  </select>
+                  <button (click)="saveStatus(resa)"><i class="fa-solid fa-check"></i></button>
+                  <button (click)="editStatusId = null"><i class="fa-solid fa-xmark"></i></button>
+                </ng-container>
               </td>
 
-              <td><i class="fa-solid fa-pen-to-square"></i> | <i class="fa-solid fa-trash-can"></i></td>
-              <td><a [routerLink]="['/borne']">Voir</a></td>
+              <td> <i class="fa-solid fa-trash-can"></i> | <a [routerLink]="['/borne']">Voir</a></td>
+              <td></td>
+              <td ></td>
             </tr>
           </ng-container>
         </tbody>

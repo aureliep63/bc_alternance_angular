@@ -1,8 +1,28 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BorneService} from "../../services/borne/borne.service";
-import L from 'leaflet';
 import 'leaflet-control-geocoder';
 import {environment} from "../../../environments/environment.development";
+
+import * as L from 'leaflet';
+import {ReservationService} from "../../services/reservation/reservation.service";
+import {setHours, setMinutes, toDate} from "date-fns";
+import {LieuxService} from "../../services/lieux/lieux.service";
+
+// Fix des icônes Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+const defaultIcon = new L.Icon.Default();
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+  iconUrl: 'assets/leaflet/marker-icon.png',
+  shadowUrl: 'assets/leaflet/marker-shadow.png'
+});
+const unavailableIcon = L.icon({
+  iconUrl: 'assets/leaflet/marker-unavailable.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41],
+  shadowUrl: 'assets/leaflet/marker-shadow.png'
+});
 
 @Component({
   selector: 'app-map-borne',
@@ -11,13 +31,31 @@ import {environment} from "../../../environments/environment.development";
 })
 export class MapBorneComponent implements  AfterViewInit {
   private map!: L.Map;
+  bornes: any[] = [];
 
+  filters = {
+    ville: '',
+    dateDebut: '',
+    heureDebut:'',
+    dateFin: '',
+    heureFin:''
+  };
 
-  constructor(private borneService: BorneService) {}
+  private markers: L.Marker[] = [];
+  constructor(private borneService: BorneService, private reservationService: ReservationService, private lieuxService: LieuxService) {}
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.loadBornes();
+
+    this.borneService.list().subscribe({
+      next: (bornes) => {
+        this.bornes = bornes;
+        this.updateMap(bornes);
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des bornes', err);
+      }
+    });
   }
 
   private initMap(): void {
@@ -33,78 +71,77 @@ export class MapBorneComponent implements  AfterViewInit {
     });
 
     tiles.addTo(this.map);
-
   }
 
-  private loadBornes(): void {
-    this.borneService.list().subscribe(bornes => {
-      // 1. Nettoyer les anciens marqueurs
-      this.markers.forEach(marker => this.map.removeLayer(marker));
-      this.markers = [];
+  private updateMap(bornes: any[]): void {
+    // Supprimer anciens markers
+    this.markers.forEach(marker => this.map.removeLayer(marker));
+    this.markers = [];
 
-      // 2. Filtrage local (tu peux aussi le faire côté backend si la base est grosse)
-      const filtered = bornes.filter(borne => {
-        const matchVille = this.filters.ville ?
-          borne.lieux?.ville?.toLowerCase().includes(this.filters.ville.toLowerCase()) : true;
+    bornes.forEach(borne => {
+      const lat = borne.lieux?.latitude;
+      const lon = borne.lieux?.longitude;
 
-        // Si tu veux ajouter un filtrage de dates : compare avec les dispos de la borne
-        return matchVille;
-      });
 
-      // 3. Afficher les bornes filtrées
-      filtered.forEach(borne => {
-        const marker = L.marker([borne.latitude, borne.longitude])
+      if (lat && lon) {
+        const marker = L.marker([lat, lon])
           .addTo(this.map)
           .bindPopup(`
-            <div class="container p-0">
-              <h6 class="text-center"><b>${borne.nom}</b></h6>
-
-              <div class="d-flex flex-row justify-content-center align-items-center" >
-                <img src="${environment.IMAGE_URL}${borne.photo}" class="object-fit-cover" style="width: 60px" alt="..." >
-                <div class="">
-                   <div>
-                     <ul style="list-style:none"><i>Adresse:</i>
-                        <li>${borne.lieux?.adresse}</li>
-                        <li>${borne.lieux?.ville}, ${borne.lieux?.codePostal} </li>
-                     </ul>
-                     <ul style="list-style:none">
-                        <li><i>Latitude:</i> ${borne.latitude}</li>
-                        <li><i>Longitude:</i> ${borne.longitude}</li>
-                     </ul>
-                   </div>
-                </div>
-               </div>
-                <p>${borne.instruction}</p>
-                <ul style="list-style:none" class="p-0 mb-1" ><i>Disponible aux dates choisies:</i>
-                        <li class="d-flex flex-row align-items-center justify-content-around " style="font-size:small">
-                            <label for="start-${borne.id}">Début:</label>
-                            <input type="datetime-local" id="start-${borne.id}" class="form-control mb-2" style="font-size:small; width: 55%;"/>
-                        </li>
-                        <li class="d-flex flex-row align-items-center justify-content-around ">
-                            <label for="end-${borne.id}">Fin:</label>
-                             <input type="datetime-local" id="end-${borne.id}" class="form-control mb-1" style="font-size:small; width: 55%;"/>
-                        </li>
-                     </ul>
-                <button type="submit" class="btn btn-outline-secondary btn-sm">Réserver</button>
+          <div class="container p-0">
+            <h6 class="text-center"><b>${borne.nom}</b></h6>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="${environment.IMAGE_URL}${borne.photo}" class="object-fit-cover" style="width: 60px" alt="...">
+              <div>
+                <ul style="list-style:none"><i>Adresse:</i>
+                  <li>${borne.lieux?.adresse}</li>
+                  <li>${borne.lieux?.ville}, ${borne.lieux?.codePostal}</li>
+                </ul>
+              </div>
             </div>
-`);
+            <p>${borne.instruction}</p>
+          </div>
+        `);
 
         this.markers.push(marker);
-      });
+      } else {
+        console.warn(`Borne ${borne.nom} n'a pas de coordonnées valides.`);
+      }
     });
   }
 
-  searchBornes(): void {
-    this.loadBornes();
+
+
+  searchBornes() {
+
+    let dateDebut = toDate(this.filters.dateDebut);
+    const [hours, minutes] = this.filters.heureDebut.split(":");
+    // dateDebut -> heuredebut -> minDebut
+    let heureDebut = setHours(dateDebut, Number(hours));
+    let minDebut = setMinutes(heureDebut, Number(minutes)) || null;
+
+    let dateFin = toDate(this.filters.dateFin);
+    const [hoursFin, minutesFin] = this.filters.heureFin.split(":");
+    let heureFin = setHours(dateFin, Number(hoursFin));
+    let minFin = setMinutes(heureFin, Number(minutesFin))  || null;
+
+
+    const filtresNettoyes = {
+      ville: this.filters.ville?.trim() || null,
+      dateDebut: minDebut || null,
+      dateFin: minFin || null,
+
+    };
+
+    this.borneService.searchBornes(filtresNettoyes).subscribe({
+      next: (bornes) => {
+        this.bornes = bornes;
+        this.updateMap(bornes);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la recherche des bornes', err);
+      }
+    });
+    console.log('Filtres envoyés:', filtresNettoyes);
   }
-
-  filters = {
-    ville: '',
-    dateDebut: '',
-    dateFin: ''
-  };
-
-  private markers: L.Marker[] = []; // Pour pouvoir les supprimer avant d’en recharger
-
 
 }

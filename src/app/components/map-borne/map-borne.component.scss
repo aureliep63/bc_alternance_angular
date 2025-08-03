@@ -1,10 +1,14 @@
+.container{
+  margin-right: 55px;
+  max-width: 550px;
+  padding-top: 35px;
+}
 .map-container {
   position: absolute;
-  top: 525px;
-  left: 0;
-  right: 0;
-  bottom: -120px;
-
+  top: 35px;
+  left: 74px;
+  right: 590px;
+  bottom: 0;
 }
 
 .map-frame {

@@ -19,5 +19,13 @@ export const environment = {
   LOCAL_STORAGE: {
     ACCESS_TOKEN: 'access_token', // disponible 20h
    // REFRESH_TOKEN: 'refresh_token' // disponible 10h
+  },
+  firebase: {
+    apiKey: "AIzaSyBN6dBBDkkWrVULJpIWqI_MS0I7S2e6Ykc",
+    authDomain: "bc-angular.firebaseapp.com",
+    projectId: "bc-angular",
+    storageBucket: "ton-projet.appspot.com",
+    messagingSenderId: "ID_MESSAGE",
+    appId: "ID_APP"
   }
 };

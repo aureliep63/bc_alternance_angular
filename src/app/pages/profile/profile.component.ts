@@ -47,14 +47,19 @@ export class ProfileComponent implements OnInit{
       estDisponible: borne.estDisponible,
       instruction: borne.instruction,
       surPied: borne.surPied,
-      latitude: borne.latitude,
-      longitude: borne.longitude,
       prix: borne.prix,
       utilisateurId: borne.utilisateurId,
       lieuId: borne.lieuId,
-      lieux: borne.lieux,
-      mediasId: [], // Remplir si tu les récupères
-      reservationsId: [] // Idem
+      mediasId: [],
+      reservationsId: [],
+      lieux: borne.lieux ? {
+        id: borne.lieux.id,
+        adresse: borne.lieux.adresse,
+        codePostal: borne.lieux.codePostal,
+        ville: borne.lieux.ville,
+        latitude: borne.lieux.latitude,
+        longitude: borne.lieux.longitude
+      } : null
     };
   }
 

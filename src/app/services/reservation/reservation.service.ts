@@ -40,4 +40,9 @@ export class ReservationService {
   getByBorneId(idBorne: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.url}/borne/${idBorne}/reservations`);
   }
+
+  updateStatus(id: number, status: string): Observable<Object> {
+    return this.http.patch(`${this.url}/${id}/status`, { status });
+  }
+
 }

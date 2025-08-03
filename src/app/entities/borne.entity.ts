@@ -15,17 +15,17 @@ export interface BorneHttp{
   estDisponible: boolean
   instruction: string
   surPied: boolean
-  latitude: number
-  longitude: number
   prix: number
   medias: MediaHttp[]
   reservations: ReservationHttp[]
   utilisateurId: number
   lieuId: number;
-  lieux: LieuxHttp;
+  lieux?: Lieux | null;
+
 }
 
 export interface Borne{
+
   id: number
   nom: string
   photo: string
@@ -33,14 +33,12 @@ export interface Borne{
   estDisponible: boolean
   instruction: string
   surPied: boolean
-  latitude: number
-  longitude: number
   prix: number
   medias: Media[]
   reservations: Reservation[]
   utilisateurId: number
   lieuId: number;
-  lieux: Lieux | null;
+  lieux?: Lieux | null;
 }
 
 export namespace Borne {
@@ -53,14 +51,19 @@ export namespace Borne {
       estDisponible: http.estDisponible,
       instruction: http.instruction,
       surPied: http.surPied,
-      latitude: http.latitude,
-      longitude: http.longitude,
       prix: http.prix,
       medias:http.medias ? http.medias.map(media => Media.fromHttp(media)) : [],
       reservations:http.reservations ? http.reservations.map(reservation => Reservation.fromHttp(reservation)): [],
       utilisateurId: http.utilisateurId,
       lieuId: http.lieuId,
-      lieux: Lieux.fromHttp(http.lieux),
+      lieux: http.lieux ? {                     // ✅ ajout
+        id: http.lieux.id!,
+        adresse: http.lieux.adresse,
+        codePostal: http.lieux.codePostal,
+        ville: http.lieux.ville,
+        latitude: http.lieux.latitude,
+        longitude: http.lieux.longitude
+      } : null
     };
   }
 }

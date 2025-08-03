@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {User} from "../../entities/user.entity";
+import {User, UserHttp} from "../../entities/user.entity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
@@ -40,6 +40,10 @@ export class UserService {
     return this.http.put<User>(`${this.url}/${user.id}`, user);
   }
 
+  register(userData: UserHttp): Observable<UserHttp> {
+    // We're sending UserHttp as the request body because it matches UtilisateurDto
+    return this.http.post<UserHttp>(`${this.url}/utilisateurs`, userData);
+  }
 
 }
 

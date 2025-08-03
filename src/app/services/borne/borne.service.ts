@@ -35,9 +35,6 @@ export class BorneService {
   create(borne: Borne): Observable<Borne> {
     return this.http.post<Borne>(this.url, borne);
   }
-  //create(formData: FormData): Observable<Borne> {
-    //return this.http.post<Borne>(`${this.url}`, formData);
-  //}
 
   addBorneWithFile(formData: FormData): Observable<BorneDto> {
     return this.http.post<BorneDto>(this.url+"/user/bornes", formData);
@@ -50,5 +47,7 @@ export class BorneService {
     return this.http.put<BorneDto>(`${this.url}/user/bornes/${id}`, formData);
   }
 
-
+  searchBornes(filters: any): Observable<Borne[]> {
+    return this.http.post<Borne[]>(`${this.url}/search`, filters);
+  }
 }

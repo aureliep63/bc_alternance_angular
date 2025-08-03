@@ -5,29 +5,43 @@
 import {Borne, BorneHttp} from "./borne.entity";
 
 export interface LieuxHttp{
-  id: number
+  id?: number
   adresse: string
   codePostal: string
   ville: string
- // bornes: BorneHttp[]
+  latitude?: number;
+  longitude?: number;
+  // bornes: BorneHttp[]
 }
 
 export interface Lieux{
-  id: number
-  adresse: string
-  codePostal: string
-  ville: string
+  id?: number | null; // L'ID est optionnel (le '?') et peut être un nombre ou null
+  adresse: string;
+  codePostal: string;
+  ville: string;
+  bornesId?: number[];
+  latitude?: number | null; // Optionnel et peut être un nombre ou null
+  longitude?: number | null; // Optionnel et peut être un nombre ou null
 //  bornes: Borne[]
 }
 
 export namespace Lieux{
-  export function fromHttp(http: LieuxHttp):Lieux{
+  export function fromHttp(http: LieuxHttp):{
+    id: number | undefined;
+    adresse: string;
+    codePostal: string;
+    ville: string;
+    latitude: number | undefined;
+    longitude: number | undefined
+  }{
     return{
       id: http.id,
       adresse: http.adresse,
       codePostal: http.codePostal,
       ville: http.ville,
-     // bornes: [],
+      latitude: http.latitude,
+      longitude: http.longitude
+      // bornes: [],
 
     }
   }

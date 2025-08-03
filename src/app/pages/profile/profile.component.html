@@ -146,8 +146,6 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
-                <th scope="col">Latitude</th>
-                <th scope="col">Longitude</th>
                 <th scope="col">Puissance</th>
                 <th scope="col">Sur pied ?</th>
                 <th scope="col">Ville</th>
@@ -163,8 +161,7 @@
                 <th scope="row">{{i + 1}}</th>
 
                 <td>{{ borne.nom }}</td>
-                <td>{{ borne.latitude | number:'1.4-4' }}</td>
-                <td>{{ borne.longitude | number:'1.4-4' }}</td>
+
                 <td>{{ borne.puissance }}kw</td>
                 <td>{{ borne.surPied ? 'Oui' : 'Non' }}</td>
                 <ng-container *ngIf="borne.lieux">

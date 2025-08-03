@@ -15,14 +15,12 @@ export interface BorneDtoHttp{
   estDisponible: boolean
   instruction: string
   surPied: boolean
-  latitude: number
-  longitude: number
   prix: number
   mediasId: number[]
   reservationsId: number[]
   utilisateurId: number
   lieuId: number;
-  lieux: LieuxHttp;
+  lieux?: Lieux | null;
 }
 
 export interface BorneDto{
@@ -33,14 +31,12 @@ export interface BorneDto{
   estDisponible: boolean
   instruction: string
   surPied: boolean
-  latitude: number
-  longitude: number
   prix: number
   mediasId: number[]
   reservationsId: number[]
   utilisateurId: number
   lieuId: number;
-  lieux: Lieux | null;
+  lieux?: Lieux | null; // ✅ ajout pour afficher ville dans le HTML
 }
 
 export namespace BorneDto {
@@ -53,14 +49,20 @@ export namespace BorneDto {
       estDisponible: http.estDisponible,
       instruction: http.instruction,
       surPied: http.surPied,
-      latitude: http.latitude,
-      longitude: http.longitude,
       prix: http.prix,
       mediasId:http.mediasId,
       reservationsId:http.reservationsId ,
       utilisateurId: http.utilisateurId,
       lieuId: http.lieuId,
-      lieux: Lieux.fromHttp(http.lieux),
+      lieux: http.lieux ? {                     // ✅ ajout
+        id: http.lieux.id!,
+        adresse: http.lieux.adresse,
+        codePostal: http.lieux.codePostal,
+        ville: http.lieux.ville,
+        latitude: http.lieux.latitude,
+        longitude: http.lieux.longitude
+      } : null
+
     };
   }
 }

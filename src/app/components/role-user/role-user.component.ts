@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BorneService} from "../../services/borne/borne.service";
 import {Borne} from "../../entities/borne.entity";
 import {ReservationService} from "../../services/reservation/reservation.service";
-import {Reservation} from "../../entities/reservation.entity";
+import {Reservation, ReservationHttp} from "../../entities/reservation.entity";
 import {Lieux} from "../../entities/lieux.entity";
 
 export interface ReservationWithBorne extends Reservation {
@@ -141,5 +141,40 @@ export class RoleUserComponent implements OnInit {
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
+  }
+
+
+  statusOptions: Array<ReservationHttp['status']> = ['ACCEPTER', 'EN_ATTENTE', 'REFUSER', 'ANNULER'];
+  editStatusId: number | null = null;
+
+  saveStatus(resa: ReservationWithBorne) {
+    this.reservationService.updateStatus(resa.id, resa.status).subscribe({
+      next: (response) => {
+        console.log('Statut mis à jour avec succès');
+        this.editStatusId = null;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour', err);
+      }
+    });
+  }
+
+  cancelReservation(resa: ReservationWithBorne) {
+    console.log('Tentative d\'annulation de la réservation ID:', resa.id);
+
+    this.reservationService.updateStatus(resa.id, 'ANNULER').subscribe({
+      next: (response) => {
+        console.log('Réservation annulée avec succès. Réponse du serveur:', response);
+        // Mettre à jour le statut localement pour que l'UI se rafraîchisse immédiatement
+        resa.status = 'ANNULER';
+        // Si vous utilisez une observable pour `proprioResa$`, vous pourriez vouloir
+        // recharger la liste complète pour s'assurer que toutes les données sont à jour.
+        // Par exemple: this.loadProprioReservations();
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'annulation de la réservation:', err);
+        // Gérer l'erreur, par exemple afficher un message à l'utilisateur
+      }
+    });
   }
 }
