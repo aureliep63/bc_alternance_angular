@@ -23,7 +23,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
       - name: Build Angular application
         run: npm run build -- --base-href /bc_alternance_angular/
 
