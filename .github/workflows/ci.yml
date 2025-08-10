@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular application
-        run: npm run build -- --base-href /https://github.com/aureliep63/bc_alternance_angular.git/
+        run: npm run build -- --base-href /bc_alternance_angular/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
