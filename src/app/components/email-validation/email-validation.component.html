@@ -1,0 +1,5 @@
+<div class="validation-container">
+  <h3>Validation de l'E-mail</h3>
+  <p [class.success]="isSuccess" [class.error]="!isSuccess">{{ validationMessage }}</p>
+  <button *ngIf="isSuccess" (click)="router.navigate(['/login'])">Se connecter</button>
+</div>

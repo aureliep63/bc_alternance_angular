@@ -1,0 +1,15 @@
+services:
+  node:
+    image: node:20.15
+    working_dir: /work
+    volumes:
+      - ./:/work
+      #ne pas mettre node_modules dans le container
+      - /work/node_modules
+    command:
+      - bash
+      - -c
+      - "npm install && npm run start"
+    ports:
+      - 4200:4200
+
