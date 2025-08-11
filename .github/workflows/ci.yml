@@ -25,7 +25,8 @@ jobs:
         run: npm ci
 
       - name: Build Angular application
-        run: npm run build
+        run: npm run build -- --configuration production
+
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
@@ -37,4 +38,4 @@ jobs:
           clean: true
           # Ajoutez ceci pour injecter la bonne base-href
           target-branch: gh-pages
-          base-href: /bc_alternance_angular/
+
