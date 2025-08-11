@@ -32,3 +32,9 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/bc-angular-alternance
+          git-config-name: GitHub Actions
+          git-config-email: github-actions[bot]@users.noreply.github.com
+          clean: true
+          # Ajoutez ceci pour injecter la bonne base-href
+          target-branch: gh-pages
+          base-href: /bc_alternance_angular/
