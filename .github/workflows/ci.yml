@@ -32,10 +32,10 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/bc-angular-alternance
+          folder: dist/bc-angular-alternance/browser
           git-config-name: GitHub Actions
           git-config-email: github-actions[bot]@users.noreply.github.com
           clean: true
-          # Ajoutez ceci pour injecter la bonne base-href
           target-branch: gh-pages
+
 
