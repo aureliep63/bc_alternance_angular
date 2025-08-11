@@ -44,8 +44,7 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
-            "base-href": "/bc_alternance_angular/"
+            ]
           },
           "configurations": {
             "production": {
@@ -61,7 +60,8 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/bc_alternance_angular/"
             },
             "development": {
               "optimization": false,
