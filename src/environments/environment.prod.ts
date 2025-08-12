@@ -8,7 +8,7 @@ export const environment = {
     LIEUX: '/lieux',
     RESERVATIONS: '/reservations'
   },
-  IMAGE_URL: 'https://bc-alternance.onrender.com/bornes/upload/',
+  IMAGE_URL: 'https://bc-alternance.onrender.com/bornes/upload',
   LOCAL_STORAGE: {
     ACCESS_TOKEN: 'access_token'
   },
