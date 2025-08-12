@@ -1,4 +1,4 @@
-export const environmentProd = {
+export const environment = {
   API_URL: 'https://bc-alternance.onrender.com', // ton URL Render
   API_RESOURCES: {
     AUTH: '/auth',
