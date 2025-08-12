@@ -1,4 +1,3 @@
-# Fichier : bcAngularAlternance/.github/workflows/ci.yml
 name: Deploy Frontend to GitHub Pages
 
 on:
