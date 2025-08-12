@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {BorneDto} from "../../entities/borneDto.entity";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-modal-borne-view',

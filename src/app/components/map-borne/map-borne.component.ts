@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BorneService} from "../../services/borne/borne.service";
 import 'leaflet-control-geocoder';
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 
 import * as L from 'leaflet';
 import {ReservationService} from "../../services/reservation/reservation.service";

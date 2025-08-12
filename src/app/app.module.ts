@@ -28,7 +28,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import {environment} from "../environments/environment.development";
+import {environment} from "../environments/environment";
 import {EmailValidationComponent} from "./components/email-validation/email-validation.component";
 
 

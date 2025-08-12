@@ -6,7 +6,7 @@ import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {Borne} from "../../entities/borne.entity";
 import {BorneService} from "../../services/borne/borne.service";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import {ModalBorneComponent} from "../../components/modal-borne/modal-borne.component";
 import * as bootstrap from 'bootstrap';
 import {BorneDto} from "../../entities/borneDto.entity";

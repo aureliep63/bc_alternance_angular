@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import {Lieux, LieuxHttp} from "../../entities/lieux.entity";
 import {lastValueFrom, map, Observable} from "rxjs";
 import {Media, MediaHttp} from "../../entities/media.entity";

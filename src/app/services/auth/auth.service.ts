@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import {from, lastValueFrom, map, Observable, switchMap, tap} from "rxjs";
 import {LocalStorageService} from "../local-storage/local-storage.service";
 import {User, UserHttp} from "../../entities/user.entity";

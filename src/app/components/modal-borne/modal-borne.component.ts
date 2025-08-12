@@ -7,7 +7,7 @@ import {Lieux, LieuxHttp} from '../../entities/lieux.entity';
 import {LieuxService} from "../../services/lieux/lieux.service";
 import {BehaviorSubject, filter, Observable, switchMap, take} from "rxjs";
 import {BorneDto} from "../../entities/borneDto.entity";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import {User} from "../../entities/user.entity";
 
 
