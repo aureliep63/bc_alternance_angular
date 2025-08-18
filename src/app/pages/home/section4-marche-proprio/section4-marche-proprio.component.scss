@@ -1,0 +1,67 @@
+#marcheProprio{
+  background-image: url("/assets/carouselleVoiture4.jpg");
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  padding: 30px 0;
+  margin: 0 200px;
+  display: flex;
+  justify-content: space-around;
+
+  .card{
+    width: 20vw;
+    text-align: center;
+    .card-body{
+      margin: 10px 0 0 0;
+      h4{
+        font-size: 24px;
+        margin-bottom: 0;
+      }
+      p{
+        font-size: 20px;
+        margin: 15px 0;
+      }
+      button{
+        border-color: white;
+        background-color: rgba(126, 163, 141, 0.64);
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 20px;
+        a{
+          color:white;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    align-items: center;
+    flex-direction: column;
+    margin:15px 0 10px 0;
+    padding: 20px 0;
+    gap: 15px;
+    .card{
+      width: 80%;
+      .card-body {
+        margin: 0;
+        h4{
+          font-size: 16px;
+        }
+        .xs{
+          display: flex;
+          justify-content:space-between;
+        }
+        p{
+          font-size: 14px;
+          margin: 5px 0;
+        }
+        button{
+          padding: 0 12px;
+          font-size: 14px;
+        }
+      }
+    }
+
+  }
+}

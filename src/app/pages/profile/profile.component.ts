@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 import {ModalBorneComponent} from "../../components/modal-borne/modal-borne.component";
 import * as bootstrap from 'bootstrap';
 import {BorneDto} from "../../entities/borneDto.entity";
-import {ModalBorneViewComponent} from "../../components/modal-borne-view/modal-borne-view.component";
+import {ModalBorneDetailComponent} from "../../components/modal-borne-detail/modal-borne-detail.component";
 
 @Component({
   selector: 'app-profile',
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit{
 
   // Référence à la modale
   @ViewChild(ModalBorneComponent) modalBorne: ModalBorneComponent; // pour pouvoir appeler open()
-  @ViewChild('modalDetails') modalDetails!: ModalBorneViewComponent;
+  @ViewChild('modalDetails') modalDetails!: ModalBorneDetailComponent;
   bornesSubject = new BehaviorSubject<Borne[]>([]);
 
 

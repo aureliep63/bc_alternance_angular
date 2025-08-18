@@ -1,5 +1,27 @@
 <app-navbar></app-navbar>
 <app-carroussel></app-carroussel>
-<section class="map" style="position:relative;">
-  <app-map-borne></app-map-borne>
+
+<section class="map"  style="position:relative;">
+  <h1> <i class="bi bi-geo"></i> Explorer la carte et trouvez la borne qu'il vous faut</h1>
+<app-section1Map></app-section1Map>
+</section>
+
+<section id="situation">
+  <h1><i class="bi bi-ev-station"></i> Où peuvent être situées les bornes de recharge ?</h1>
+<app-section2Situation></app-section2Situation>
+</section>
+
+<section id="marche" >
+  <h1><i class="bi bi-lightbulb"></i> Comment ça marche ?</h1>
+<app-section3Marche></app-section3Marche>
+</section>
+
+<section id="marcheProprio" >
+  <h2> Vous souhaitez louer votre borne ? </h2>
+  <app-section4-marche-proprio></app-section4-marche-proprio>
+</section>
+
+
+<section id="footer" >
+<app-footer></app-footer>
 </section>

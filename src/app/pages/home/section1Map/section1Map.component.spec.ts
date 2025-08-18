@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapBorneComponent } from './map-borne.component';
+import { Section1MapComponent } from './section1Map.component';
 
 describe('MapBorneComponent', () => {
-  let component: MapBorneComponent;
-  let fixture: ComponentFixture<MapBorneComponent>;
+  let component: Section1MapComponent;
+  let fixture: ComponentFixture<Section1MapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MapBorneComponent]
+      declarations: [Section1MapComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(MapBorneComponent);
+
+    fixture = TestBed.createComponent(Section1MapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

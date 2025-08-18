@@ -22,7 +22,6 @@ export class AuthService {
   token?: string;
 
   constructor(private router:Router,private auth: Auth, private http: HttpClient, private localStorage: LocalStorageService, private userService:UserService) {
-    // https://api.escuelajs.co/api/v1/auth
     this.url=environment.API_URL+environment.API_RESOURCES.USERS
   }
 

@@ -11,8 +11,8 @@
   .modal-content {
     background-image: url("/assets/carte.jpg");
     background-repeat: no-repeat;
-    background-size: cover;         /* L'image remplit la div, même si elle doit être rognée */
-    background-position: center;    /* Centre bien l'image */
+    background-size: cover;
+    background-position: center;
     padding: 2rem;
     border-radius: 8px;
     width: 90%;
@@ -34,4 +34,3 @@
 
 
 }
-

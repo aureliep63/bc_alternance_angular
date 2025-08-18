@@ -1,25 +1,49 @@
-header{
+img{
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  display: block;
+}
+.carousel-item {
+  position: relative;
+}
 
-  background-size: cover;
-  background-position: top;
-  height: 350px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.carousel-caption-custom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.7); /* Blanc semi-transparent */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+}
 
-  div{
-    background: white;
-    padding: 20px 40px;
-    border-radius: 10px;
-    max-width: 875px;
-    text-align: center;
+.carousel-caption-custom h1 {
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  color: #000; /* Texte noir pour contraste */
+}
 
-    h1{
-      font-size: 42px;color: #a2bbea;
-    }
-    p{
-      margin-top: 14px; font-size:21px; color: #555;
-    }
+.carousel-caption-custom p {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption-custom p {
+    font-size: 12px;
+    line-height: 12px;
   }
+  .carousel-caption-custom h1{
+    font-size: 16px;
+    line-height: 14px;
+  }
+  .carousel-caption-custom{
+    width: 100%;
+    padding: 15px;
 
+  }
 }

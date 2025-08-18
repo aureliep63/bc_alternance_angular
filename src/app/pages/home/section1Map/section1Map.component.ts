@@ -1,23 +1,28 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {BorneService} from "../../services/borne/borne.service";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {BorneService} from "../../../services/borne/borne.service";
 import 'leaflet-control-geocoder';
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../../environments/environment";
 
 import * as L from 'leaflet';
-import {ReservationService} from "../../services/reservation/reservation.service";
+import {ReservationService} from "../../../services/reservation/reservation.service";
 import {setHours, setMinutes, toDate} from "date-fns";
-import {LieuxService} from "../../services/lieux/lieux.service";
+import {LieuxService} from "../../../services/lieux/lieux.service";
+import {BorneDto} from "../../../entities/borneDto.entity";
+import {ModalBorneDetailComponent} from "../../../components/modal-borne-detail/modal-borne-detail.component";
+import {BorneDetailComponent} from "./borne-detail/borne-detail.component";
+import {Borne} from "../../../entities/borne.entity";
+import {ModalBorneComponent} from "../../../components/modal-borne/modal-borne.component";
 
 // Fix des icônes Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 const defaultIcon = new L.Icon.Default();
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
-  iconUrl: 'assets/leaflet/marker-icon.png',
+  iconRetinaUrl: 'assets/leaflet/MapMarker_Marker_Inside_Green.png',
+  iconUrl: 'assets/leaflet/MapMarker_Marker_Inside_Greenxs.png',
   shadowUrl: 'assets/leaflet/marker-shadow.png'
 });
 const unavailableIcon = L.icon({
-  iconUrl: 'assets/leaflet/marker-unavailable.png',
+  iconUrl: 'assets/leaflet/MapMarker_Marker_Inside_Pinkxs.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [0, -41],
@@ -25,13 +30,38 @@ const unavailableIcon = L.icon({
 });
 
 @Component({
-  selector: 'app-map-borne',
-  templateUrl: './map-borne.component.html',
-  styleUrl: './map-borne.component.scss'
+  selector: 'app-section1Map',
+  templateUrl: './section1Map.html',
+  styleUrl: './section1Map.component.scss'
 })
-export class MapBorneComponent implements  AfterViewInit {
+export class Section1MapComponent implements  AfterViewInit {
+  @ViewChild('modalBorneDetails') modalDetails!: BorneDetailComponent;
   private map!: L.Map;
   bornes: any[] = [];
+  toBorneDto(borne: Borne): BorneDto {
+    return {
+      id: borne.id,
+      nom: borne.nom,
+      photo: borne.photo,
+      puissance: borne.puissance,
+      estDisponible: borne.estDisponible,
+      instruction: borne.instruction,
+      surPied: borne.surPied,
+      prix: borne.prix,
+      utilisateurId: borne.utilisateurId,
+      lieuId: borne.lieuId,
+      mediasId: [],
+      reservationsId: [],
+      lieux: borne.lieux ? {
+        id: borne.lieux.id,
+        adresse: borne.lieux.adresse,
+        codePostal: borne.lieux.codePostal,
+        ville: borne.lieux.ville,
+        latitude: borne.lieux.latitude,
+        longitude: borne.lieux.longitude
+      } : null
+    };
+  }
 
   filters = {
     ville: '',
@@ -82,25 +112,15 @@ export class MapBorneComponent implements  AfterViewInit {
       const lat = borne.lieux?.latitude;
       const lon = borne.lieux?.longitude;
 
-
       if (lat && lon) {
-        const marker = L.marker([lat, lon])
-          .addTo(this.map)
-          .bindPopup(`
-          <div class="container p-0">
-            <h6 class="text-center"><b>${borne.nom}</b></h6>
-            <div class="d-flex flex-row justify-content-center align-items-center">
-              <img src="${environment.IMAGE_URL}${borne.photo}" class="object-fit-cover" style="width: 60px" alt="...">
-              <div>
-                <ul style="list-style:none"><i>Adresse:</i>
-                  <li>${borne.lieux?.adresse}</li>
-                  <li>${borne.lieux?.ville}, ${borne.lieux?.codePostal}</li>
-                </ul>
-              </div>
-            </div>
-            <p>${borne.instruction}</p>
-          </div>
-        `);
+        // Ajouter le marqueur à la carte
+        const marker = L.marker([lat, lon]).addTo(this.map);
+
+        // Écouter l'événement de clic directement sur le marqueur Leaflet
+        marker.on('click', () => {
+          // Appeler la méthode du composant pour ouvrir la modale
+          this.viewDetails(this.toBorneDto(borne));
+        });
 
         this.markers.push(marker);
       } else {
@@ -144,4 +164,12 @@ export class MapBorneComponent implements  AfterViewInit {
     console.log('Filtres envoyés:', filtresNettoyes);
   }
 
+  viewDetails(borne: BorneDto) {
+    // Vérifier si la modal est disponible avant de l'ouvrir
+    if (this.modalDetails) {
+      this.modalDetails.open(borne);
+    } else {
+      console.error('La modal BorneDetailComponent n\'est pas disponible.');
+    }
+  }
 }

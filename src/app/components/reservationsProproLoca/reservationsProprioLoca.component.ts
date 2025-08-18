@@ -16,9 +16,9 @@ export interface ReservationWithBorne extends Reservation {
   };
 }
 @Component({
-  selector: 'app-role-user',
-  templateUrl: './role-user.component.html',
-  styleUrl: './role-user.component.scss'
+  selector: 'app-reservationsProproLoca',
+  templateUrl: './reservationsProprioLoca.component.html',
+  styleUrl: './reservationsProprioLoca.component.scss'
 })
 
 export class RoleUserComponent implements OnInit {

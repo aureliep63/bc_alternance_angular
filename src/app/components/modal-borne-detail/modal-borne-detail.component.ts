@@ -3,11 +3,11 @@ import {BorneDto} from "../../entities/borneDto.entity";
 import {environment} from "../../../environments/environment";
 
 @Component({
-  selector: 'app-modal-borne-view',
-  templateUrl: './modal-borne-view.component.html',
-  styleUrl: './modal-borne-view.component.scss'
+  selector: 'app-modal-borne-detail',
+  templateUrl: './modal-borne-detail.component.html',
+  styleUrl: './modal-borne-detail.component.scss'
 })
-export class ModalBorneViewComponent {
+export class ModalBorneDetailComponent {
   @Input() borne?: BorneDto;
   imageUrl = environment.IMAGE_URL;
   isOpen = false;

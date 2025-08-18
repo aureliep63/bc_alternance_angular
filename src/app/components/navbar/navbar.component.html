@@ -1,41 +1,45 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['']" id="home">
-      <img src="assets/logo.png" alt="logo" >
+    <a class="navbar-brand" [routerLink]="['']" id="home" >
+      <img src="assets/logoo.png" alt="logo" > <p>Electricity<br> Business</p>
     </a>
     <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse" id="navbarText">
-
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse d-flex align-items-start" id="navbarText">
+      <!-- Bloc gauche -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
         <li class="nav-item p-2">
-          <a class="nav-link fs-5" aria-current="page" [routerLink]="['']">Trouver une borne de recharge</a>
+          <a class="nav-link fs-5" [routerLink]="['']">Rechercher une borne</a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link fs-5" aria-current="page" [routerLink]="['']">Nos offres</a>
+          <a class="nav-link fs-5" [routerLink]="['']">Nos offres</a>
         </li>
-      <li class="nav-item p-2">
-        <a class="nav-link fs-5" aria-current="page" [routerLink]="['']" style="color: #a2bbea;">Souscrire à ChargElec+</a>
-      </li>
+        <li class="nav-item p-2">
+          <a class="nav-link fs-5" [routerLink]="['']">A propos</a>
+        </li>
       </ul>
-      <ul class="list-unstyled pe-5 mb-2 mb-lg-0 navbar-nav">
-        <li *ngIf="(isConnected | async)" class="nav-item dropdown transition-nav">
-          <a class="nav-link dropdown-toggle fs-5" (click)="isDropDownCollapse2 = !isDropDownCollapse2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Mon Compte
+
+      <!-- Bloc droit -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li *ngIf="(isConnected | async)" class="nav-item dropdown fs-5">
+          <a class="nav-link dropdown-toggle" (click)="isDropDownCollapse2 = !isDropDownCollapse2">
+            <i class="fa-solid fa-user-gear" style="margin-right: 6px"></i> Mon Compte
           </a>
-          <ul class="dropdown-menu navbar-nav" [ngbCollapse]="isDropDownCollapse2">
-            <li><a class="dropdown-item nav-link" [routerLink]="['/profile']">Mon profil</a></li>
-            <li><a class="dropdown-item nav-link" [routerLink]="['/reservation']">Mon Réservations</a></li>
-            <li><a class="dropdown-item deco nav-link" (click)="onClickLogout()">Se Déconnecter</a></li>
+          <ul class="dropdown-menu" [ngbCollapse]="isDropDownCollapse2">
+            <li><a class="dropdown-item" [routerLink]="['/profile']">Mon profil</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/reservation']">Mes réservations</a></li>
+            <li><a class="dropdown-item" (click)="onClickLogout()">Se Déconnecter</a></li>
           </ul>
         </li>
-        <li *ngIf="!(isConnected | async)" class="pe-5">
-          <a class="nav-link transition-nav nav-link" [routerLink]="['login']">Se connecter</a>
+        <li *ngIf="!(isConnected | async)" class="fs-5">
+          <a class="nav-link" [routerLink]="['login']">
+            <i class="fa-regular fa-circle-user" style="margin-right: 6px"></i> Se connecter
+          </a>
         </li>
       </ul>
     </div>
+
   </div>
 </nav>

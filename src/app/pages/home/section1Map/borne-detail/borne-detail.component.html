@@ -1,0 +1,74 @@
+<div class="modal-overlay">
+  <div *ngIf="isOpen" class="modal-content">
+    <button (click)="close()" class="close-btn">✖</button>
+
+    <section>
+
+
+      <ul class="nav nav-tabs">
+
+        <li class="nav-item">
+          <a class="nav-link"
+             [class.active]="activeTab === 'infos'"
+             (click)="setActiveTab('infos')">
+            Détails
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             [class.active]="activeTab === 'avis'"
+             (click)="setActiveTab('avis')">
+            Avis
+          </a>
+        </li>
+
+      </ul>
+
+      <div *ngIf="activeTab === 'infos'">
+
+        <div *ngIf="borne" class="detailBorne">
+
+          <p *ngIf="borne.lieux"><small>Lieu :</small> <strong> <i>{{ borne.lieux.adresse }}, {{ borne.lieux.ville }}  {{ borne.lieux.codePostal }}</i> </strong></p>
+
+          <div class="infoPhoto">
+            <ul>
+              <li><small>Puissance : </small><strong> <i>{{ borne.puissance }} kW </i> </strong></li>
+              <li><small>Prix :</small><strong> <i> {{ borne.prix }} €/h </i> </strong></li>
+              <li><small>Sur pied :</small><strong> <i> {{ borne.surPied ? 'Oui' : 'Non' }} </i> </strong></li>
+              <li><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></li>
+            </ul>
+            <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" >
+          </div>
+
+          <div class="horaire">
+            <div class="debut">
+              <p><small>Du </small></p>
+              <input type="date" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut"/>
+              <p> <small>  à  </small></p>
+              <input type="time" class="form-control " [(ngModel)]="filters.heureDebut" name="heureDebut" step="900"/>
+            </div>
+
+            <div class="fin">
+              <p> <small>Au  </small></p>
+              <input type="date" class="form-control " [(ngModel)]="filters.dateFin" name="dateFin"/>
+              <p><small>à </small> </p>
+              <input type="time" class="form-control" [(ngModel)]="filters.heureFin" name="heureFin" step="900"/>
+            </div>
+          </div>
+
+        </div>
+        <button><a [routerLink]="['']">Réserver</a></button>
+
+
+
+      </div>
+
+      <div *ngIf="activeTab === 'avis'">
+
+
+      </div>
+    </section>
+
+
+  </div>
+</div>

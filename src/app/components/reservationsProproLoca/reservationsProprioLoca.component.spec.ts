@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoleUserComponent } from './role-user.component';
+import { RoleUserComponent } from './reservationsProprioLoca.component';
 
 describe('RoleUserComponent', () => {
   let component: RoleUserComponent;
@@ -11,7 +11,7 @@ describe('RoleUserComponent', () => {
       declarations: [RoleUserComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(RoleUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

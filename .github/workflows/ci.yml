@@ -1,40 +1,69 @@
+# Nom affiché pour le workflow dans l'interface GitHub.
 name: Deploy Frontend to GitHub Pages
 
+# Déclencheur du workflow : il s'exécute automatiquement
+# à chaque fois qu'une modification est poussée sur la branche 'main'.
 on:
   push:
     branches:
       - main
-permissions:
-  contents: write # This line grants write permission to the workflow
 
+# Définition des permissions nécessaires au workflow.
+# 'contents: write' est obligatoire pour que l'action puisse
+# pousser les fichiers de l'application sur la branche 'gh-pages'.
+permissions:
+  contents: write
+
+# Définition des tâches (jobs) à exécuter.
 jobs:
+  # Nom du job.
   build_and_deploy:
+    # Indique sur quel type de machine virtuelle le job s'exécutera.
+    # 'ubuntu-latest' est une machine Ubuntu hébergée par GitHub.
     runs-on: ubuntu-latest
+
+    # Liste des étapes du job.
     steps:
+      # Étape 1 : Récupération du code source.
       - name: Checkout code
+        # Utilise l'action officielle de GitHub pour cloner le dépôt.
         uses: actions/checkout@v3
 
+      # Étape 2 : Configuration de Node.js.
       - name: Setup Node.js
+        # Utilise l'action officielle pour installer Node.js.
         uses: actions/setup-node@v3
         with:
+          # Spécifie la version de Node.js à utiliser.
           node-version: '18'
+          # Active la mise en cache pour accélérer l'installation des dépendances.
           cache: 'npm'
 
+      # Étape 3 : Installation des dépendances.
       - name: Install dependencies
+        # Exécute la commande `npm ci` pour installer les dépendances du projet
+        # de manière propre et reproductible.
         run: npm ci
 
+      # Étape 4 : Compilation de l'application Angular.
       - name: Build Angular application
+        # Exécute le script de build d'Angular en mode production pour optimiser l'application.
         run: npm run build -- --configuration production
 
-
+      # Étape 5 : Déploiement sur GitHub Pages.
       - name: Deploy to GitHub Pages
+        # Utilise l'action de James Ives, très populaire, pour le déploiement.
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          # Branche à utiliser pour le déploiement. C'est la branche où les fichiers
+          # compilés seront poussés. GitHub Pages sert l'application depuis cette branche.
           branch: gh-pages
+          # Dossier contenant les fichiers compilés à déployer.
           folder: dist/bc-angular-alternance/browser
+          # Configuration du nom et de l'email pour le commit de déploiement.
           git-config-name: GitHub Actions
           git-config-email: github-actions[bot]@users.noreply.github.com
+          # Nettoie l'historique de la branche 'gh-pages' avant de pousser les nouveaux fichiers.
           clean: true
+          # Cible le déploiement sur la branche 'gh-pages'.
           target-branch: gh-pages
-
-

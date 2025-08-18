@@ -1,0 +1,98 @@
+.modal-overlay {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: absolute;
+  top: 58px;
+  right: 48px;
+  width: auto;
+  height: auto;
+  z-index: 999;
+  padding: 1rem;
+
+  .modal-content {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 28vw;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
+    height: 56vh;
+
+      .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #333;
+      }
+
+    section{
+      .nav-tabs{
+        justify-content: center;
+        margin-bottom: 40px;
+        font-size:20px;
+        font-weight: lighter;
+      }
+    }
+    .detailBorne{
+      text-align: left;
+      font-size: 18px;
+      strong{
+        font-weight: 500;
+      }
+
+      .infoPhoto{
+         display: flex;
+        justify-content: space-between;
+        ul{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding-left: 0;
+          margin-bottom: 0;
+          li{
+            list-style: none;
+          }
+        }
+
+        img{
+          width: 12vw;
+          height: 18vh;
+          object-fit: cover;
+          margin: 5px;
+        }
+      }
+      .horaire{git
+        margin: 18px 0 20px 0;
+        .debut, .fin{
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          p{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+      button{
+        border-color: white;
+        background-color: rgba(126, 163, 141, 0.64);
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 18px;
+        margin-left: 184px;
+        a{
+          color:white;
+          text-decoration: none;
+        }
+
+    }
+
+  }
+}

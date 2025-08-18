@@ -1,9 +1,16 @@
 
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
-
-  img{
-    max-width: 120px;
-
+  a{
+    display: flex;
+    align-items: center;
+    img{
+      max-width: 52px;
+    }
+    p{
+      font-style: italic;
+      font-size: 14px;
+      line-height: 14px;
+    }
   }
 }

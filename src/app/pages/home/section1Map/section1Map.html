@@ -1,14 +1,14 @@
-<div class="container"
->
+<div class="" id="section">
 
-  <div class="search-form px-4 py-4 rounded shadow mb-3">
+  <div class="filtres">
+  <div class="search-form rounded shadow">
     <form (ngSubmit)="searchBornes()" #searchForm="ngForm">
-      <div class="container">
-        <h3 style="text-align: center;" class="py-2"><i>Recherchez une borne autour de vous</i></h3>
 
-        <div class="row justify-content-evenly">
-          <div class="col-12">
-            <div class="form-group mb-2">
+        <h3><i>Recherchez une borne autour de vous</i></h3>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
               <label>Ville</label>
               <input
                 type="text"
@@ -21,10 +21,11 @@
           </div>
         </div>
 
-        <div class="row justify-content-evenly">
-          <div class="col-6 py-3">
-            <div class="form-group mb-2">
-              <label>Date de début</label>
+        <div class="row ">
+          <div class="col-6">
+            <div class="form-group">
+              <label class="lg">Date de début</label>
+              <label class="xs">Du</label>
               <input
                 type="date"
                 class="form-control"
@@ -33,32 +34,35 @@
               />
             </div>
           </div>
-          <div class="col-6 py-3">
-            <div class="form-group mb-2">
-              <label>Heure de début</label>
-          <input
+          <div class="col-6">
+            <div class="form-group">
+              <label class="lg">Heure de début</label>
+            <input
                 type="time"
-                class="form-control"
+                class="form-control "
                 [(ngModel)]="filters.heureDebut"
                 name="heureDebut" step="900"
               />
 
             </div>
-          </div>
-          <div class="col-6 py-3">
-            <div class="form-group mb-2">
-              <label>Date de fin</label>
+          </div>  </div>
+
+          <div class="row ">
+          <div class="col-6">
+            <div class="form-group ">
+              <label class="lg">Date de fin</label>
+              <label class="xs">Au</label>
               <input
                 type="date"
-                class="form-control"
+                class="form-control "
                 [(ngModel)]="filters.dateFin"
                 name="dateFin"
               />
             </div>
           </div>
-          <div class="col-6 py-3">
-            <div class="form-group mb-2">
-              <label>Heure de fin</label>
+          <div class="col-6">
+            <div class="form-group">
+              <label class="lg">Heure de fin</label>
             <input
                 type="time"
                 class="form-control"
@@ -67,17 +71,24 @@
               />
             </div>
           </div>
-          <div class="col-4 d-flex align-items-end py-3">
-            <button type="submit" class="btn btn-primary btn-sm w-100">Rechercher</button>
           </div>
-        </div>
-      </div>
+
+        <button type="submit" class="btn btn-outline-success shadow bg-body-tertiary rounded">Rechercher</button>
+
+
+
     </form>
   </div>
-  </div>
 
-  <div class="map-container">
+<div class="map-container">
     <div class="map-frame">
       <div id="map"></div>
     </div>
+
+</div>
+
   </div>
+</div>
+
+
+<app-borne-detail #modalBorneDetails></app-borne-detail>

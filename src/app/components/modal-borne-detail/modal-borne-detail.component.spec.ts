@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalBorneViewComponent } from './modal-borne-view.component';
+import { ModalBorneDetailComponent } from './modal-borne-detail.component';
 
 describe('ModalBorneViewComponent', () => {
-  let component: ModalBorneViewComponent;
-  let fixture: ComponentFixture<ModalBorneViewComponent>;
+  let component: ModalBorneDetailComponent;
+  let fixture: ComponentFixture<ModalBorneDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalBorneViewComponent]
+      declarations: [ModalBorneDetailComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(ModalBorneViewComponent);
+
+    fixture = TestBed.createComponent(ModalBorneDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

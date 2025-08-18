@@ -12,12 +12,12 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import {authInterceptor} from "./interceptors/auth/auth.interceptor";
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RoleUserComponent } from './components/role-user/role-user.component';
+import { RoleUserComponent } from './components/reservationsProproLoca/reservationsProprioLoca.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
 import { ModalBorneComponent } from './components/modal-borne/modal-borne.component';
-import { MapBorneComponent } from './components/map-borne/map-borne.component';
+import { Section1MapComponent } from './pages/home/section1Map/section1Map.component';
 import { CarrousselComponent } from './components/carroussel/carroussel.component';
-import { ModalBorneViewComponent } from './components/modal-borne-view/modal-borne-view.component';
+import { ModalBorneDetailComponent } from './components/modal-borne-detail/modal-borne-detail.component';
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -30,6 +30,11 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import {environment} from "../environments/environment";
 import {EmailValidationComponent} from "./components/email-validation/email-validation.component";
+import { Section3MarcheComponent } from './pages/home/section3Marche/section3Marche.component';
+import {Section2SituationComponent} from "./pages/home/section2Situation/section2Situation.component";
+import { Section4MarcheProprioComponent } from './pages/home/section4-marche-proprio/section4-marche-proprio.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/borne-detail.component';
 
 
 @NgModule({
@@ -43,10 +48,15 @@ import {EmailValidationComponent} from "./components/email-validation/email-vali
     RoleUserComponent,
     ReservationsComponent,
     ModalBorneComponent,
-    MapBorneComponent,
+    Section1MapComponent,
     CarrousselComponent,
-    ModalBorneViewComponent,
-    EmailValidationComponent
+    ModalBorneDetailComponent,
+    EmailValidationComponent,
+    Section2SituationComponent,
+    Section3MarcheComponent,
+    Section4MarcheProprioComponent,
+    FooterComponent,
+    BorneDetailComponent
   ],
   imports: [
     BrowserModule,
