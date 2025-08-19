@@ -3,8 +3,8 @@
   justify-content: flex-end;
   align-items: flex-start;
   position: absolute;
-  top: 58px;
-  right: 48px;
+  top: 44px;
+  right: 37px;
   width: auto;
   height: auto;
   z-index: 999;
@@ -14,45 +14,48 @@
     background: white;
     padding: 1rem;
     border-radius: 8px;
-    width: 28vw;
+    width: 25vw;
     position: relative;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     pointer-events: auto;
-    height: 56vh;
+    height: 58vh;
 
-      .close-btn {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        color: #333;
-      }
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #333;
+    }
 
     section{
       .nav-tabs{
         justify-content: center;
-        margin-bottom: 40px;
-        font-size:20px;
-        font-weight: lighter;
+        margin-bottom: 0;
+        font-size:14px;
+        font-weight: 300;
       }
-    }
+
     .detailBorne{
-      text-align: left;
+      text-align: center;
       font-size: 18px;
+      p{
+        margin: 10px 0;
+      }
       strong{
         font-weight: 500;
       }
 
       .infoPhoto{
          display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         ul{
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: space-evenly;
           padding-left: 0;
           margin-bottom: 0;
           li{
@@ -65,10 +68,19 @@
           height: 18vh;
           object-fit: cover;
           margin: 5px;
+          border: 1px rgba(126, 163, 141, 0.64) solid;
         }
       }
+      .pdetail{
+        text-align: justify;
+        margin: 14px 0;
+      }
+      .horaireBtn{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       .horaire{
-        margin: 18px 0 20px 0;
+        margin: 15px 0;
         .debut, .fin{
           margin-top: 10px;
           display: flex;
@@ -77,22 +89,228 @@
           p{
             margin-bottom: 0;
           }
+          input{
+            width: 135px;
+          };
         }
       }
-    }
+      }
       button{
         border-color: white;
         background-color: rgba(126, 163, 141, 0.64);
-        padding: 8px;
+        padding: 10px 12px;
         border-radius: 8px;
-        font-size: 18px;
-        margin-left: 184px;
+        font-size: 20px;
         a{
           color:white;
           text-decoration: none;
         }
-
+      }
     }
+      .lesAvis{
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
 
+        h2{
+          font-size:26px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+         .fa-solid{
+           margin: 0 4px;
+         }
+        }
+        .etoileXl::before {
+          content: "";
+          display: block;
+          width: 80%;
+          height: 1px;
+          background:rgba(126, 163, 141, 0.64);
+          margin: 10px auto ;
+        }
+          .etoileXl{
+            text-align: center;
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            gap: 10px;
+
+            li{
+              list-style: none;
+              margin: 5px 0;
+              .fa-solid{
+                margin: 0 5px;
+              }
+            }
+          }
+        .etoileXs{
+          display: none;
+        }
+        button{
+          border-color: white;
+          background-color: rgba(126, 163, 141, 0.64);
+          padding: 10px 12px;
+          border-radius: 8px;
+          font-size: 20px;
+          a{
+            color:white;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+  @media (max-width: 768px){
+
+    top: 20px;
+    right: -8px;
+
+    .modal-content {
+      width: 96vw;
+      height: 34vh;
+
+      section{
+        .nav-tabs{
+          justify-content: center;
+          margin-bottom: 0;
+          font-size: 14px;
+          font-weight: 300;
+        }
+
+        .detailBorne{
+          text-align: center;
+          font-size: 18px;
+          p{
+            margin: 10px 0;
+          }
+          strong{
+            font-weight: 500;
+          }
+
+          .infoPhoto{
+            display: flex;
+            justify-content: space-evenly;
+            ul{
+              display: flex;
+              flex-direction: column;
+              justify-content: space-evenly;
+              padding-left: 0;
+              margin-bottom: 0;
+              li{
+                list-style: none;
+              }
+            }
+
+            img{
+              width: 12vw;
+              height: 18vh;
+              object-fit: cover;
+              margin: 5px;
+              border: 1px rgba(126, 163, 141, 0.64) solid;
+            }
+          }
+          .pdetail{
+            text-align: justify;
+            margin: 14px 0;
+          }
+          .horaireBtn{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .horaire{
+              margin: 15px 0;
+              .debut, .fin{
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                p{
+                  margin-bottom: 0;
+                }
+                input{
+                  width: 135px;
+                };
+              }
+            }
+          }
+          button{
+            border-color: white;
+            background-color: rgba(126, 163, 141, 0.64);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 20px;
+            a{
+              color:white;
+              text-decoration: none;
+            }
+          }
+        }
+        .lesAvis{
+          padding: 0 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+          margin-bottom: 10px;
+
+          h2{
+            font-size:26px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .fa-solid{
+              margin: 0 4px;
+            }
+          }
+          .etoileXl::before {
+            content: "";
+            display: block;
+            width: 80%;
+            height: 1px;
+            background:rgba(126, 163, 141, 0.64);
+            margin: 10px auto ;
+          }
+          .etoileXl{
+            text-align: center;
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            gap: 10px;
+
+            li{
+              list-style: none;
+              margin: 5px 0;
+              .fa-solid{
+                margin: 0 5px;
+              }
+            }
+          }
+          .etoileXs{
+            display: none;
+          }
+          button{
+            border-color: white;
+            background-color: rgba(126, 163, 141, 0.64);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 20px;
+            a{
+              color:white;
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
   }
 }
