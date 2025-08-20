@@ -12,6 +12,7 @@
     .close-btn {
       top: 1rem;
       right: 1rem;
+      font-size: 18px;
     }
     button {
       a{
@@ -49,7 +50,7 @@
 
       .lesAvis{
         h2{
-          font-size:18px;
+          font-size:26px;
         }
         .fa-solid{
           margin: 0 4px;
@@ -75,11 +76,14 @@
   }
 
   @media (max-width: 768px){
-    top: 46px;
+    top: 42px;
     right: 0;
     .modal-content {
       width: 90vw;
-      height: 52vh;
+      height: 40vh;
+      .close-btn {
+        font-size: 12px;
+      }
       .nav-tabs{
         margin-bottom: 10px;
         .nav-link{
@@ -109,7 +113,7 @@
             }
             img{
               width: 33vw;
-              height: 14vh;
+              height: 12vh;
             }
           }
           .horaireBtn{
@@ -117,46 +121,46 @@
               width: 90px;
               font-size: 10px;
             }
-
           }
-
         }
-.lesAvis{
-  flex-direction: column;
-  h2{
-    font-size: 16px;
-    margin-bottom: 0;
-  }
-  .etoileXl{
-    display: none;
-  }
-  strong {
-    font-weight: lighter;
-  }
-  .avisBtn{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: row-reverse;
-ul{
-  margin-bottom: 0;
-
-  li{
-    margin: 5px 0;
-  }}
-    img{
-      width: 20vw;
-    }
-  }
-  button{
-    a{
-      font-size: 12px;
-    }
-  }
-
-}
-
-
+        .lesAvis{
+          flex-direction: column;
+          h2{
+            font-size: 16px;
+            margin-bottom: 0;
+            .fa-star{
+              font-size: 18px;
+            }
+          }
+          .etoileXl{
+            display: none;
+          }
+          strong {
+            font-weight: 500;
+          }
+          .avisBtn{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row-reverse;
+            ul{
+              margin-bottom: 0;
+              padding-left: 1rem;
+              li{
+                margin: 5px 0;
+              }
+            }
+            img{
+              width: 20vw;
+            }
+          }
+          button{
+            margin-top: 6px;
+            a{
+              font-size: 12px;
+            }
+          }
+        }
       }
     }
   }

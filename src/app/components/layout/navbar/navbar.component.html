@@ -1,15 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['']" id="home" >
-      <img src="../../../../assets/logoo.png" alt="logo" > <p>Electricity<br> Business</p>
+    <a class="navbar-brand" [routerLink]="['']" id="home">
+      <img src="assets/logoo.png" alt="logo"> <p>Electricity<br> Business</p>
     </a>
     <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse d-flex align-items-start" id="navbarText">
-      <!-- Bloc gauche -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse d-lg-flex justify-content-between w-100" id="navbarText">
+      <ul class="navbar-nav  mb-2 mb-lg-0">
         <li class="nav-item p-2">
           <a class="nav-link fs-5" [routerLink]="['']">Rechercher une borne</a>
         </li>
@@ -22,7 +21,7 @@
       </ul>
 
       <!-- Bloc droit -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav  mb-2 mb-lg-0" >
         <li *ngIf="(isConnected | async)" class="nav-item dropdown fs-5">
           <a class="nav-link dropdown-toggle" (click)="isDropDownCollapse2 = !isDropDownCollapse2">
             <i class="fa-solid fa-user-gear" style="margin-right: 6px"></i> Mon Compte

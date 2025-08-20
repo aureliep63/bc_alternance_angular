@@ -79,15 +79,16 @@ z-index: 1000 !important;
     display: block;
   }
     form {
-      padding: 10px 20px;
+      padding: 6px 20px;
       h3 {
         font-size: 16px;
-        margin: 5px 0;
+        margin: 0;
       }
       .row {
 
         .form-group {
           display: flex;
+          align-items: center;
           margin: 5px 0;
 
           label.lg{
@@ -108,6 +109,7 @@ z-index: 1000 !important;
           }
           input {
             font-size: 12px;
+            height: 4vh;
           }
         }
       }
