@@ -1,128 +1,58 @@
 .modal-overlay {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  position: absolute;
   top: 44px;
   right: 37px;
-  width: auto;
-  height: auto;
-  z-index: 999;
   padding: 1rem;
-
+  z-index: 999;
   .modal-content {
-    background: white;
     padding: 1rem;
-    border-radius: 8px;
     width: 25vw;
-    position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    pointer-events: auto;
+    box-shadow: 0 4px 6px 10px rgba(0, 0, 0, 0.1);
     height: 58vh;
 
     .close-btn {
-      position: absolute;
       top: 1rem;
       right: 1rem;
-      background: transparent;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #333;
     }
-
+    button {
+      a{
+        font-size: 18px;
+      }
+    }
+    .nav-tabs{
+      margin-bottom: 40px;
+    }
     section{
-      .nav-tabs{
-        justify-content: center;
-        margin-bottom: 0;
-        font-size:14px;
-        font-weight: 300;
+      li{
+        list-style: none;
       }
-
-    .detailBorne{
-      text-align: center;
-      font-size: 18px;
-      p{
-        margin: 10px 0;
-      }
-      strong{
-        font-weight: 500;
-      }
-
-      .infoPhoto{
-         display: flex;
-        justify-content: space-evenly;
-        ul{
-          display: flex;
-          flex-direction: column;
-          justify-content: space-evenly;
-          padding-left: 0;
-          margin-bottom: 0;
-          li{
-            list-style: none;
-          }
+      .detailBorne{
+        p{
+          margin: 10px 0;
         }
-
+        strong{
+          font-weight: 500;
+        }
         img{
           width: 12vw;
           height: 18vh;
-          object-fit: cover;
-          margin: 5px;
           border: 1px rgba(126, 163, 141, 0.64) solid;
         }
-      }
-      .pdetail{
-        text-align: justify;
-        margin: 14px 0;
-      }
-      .horaireBtn{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      .horaire{
-        margin: 15px 0;
-        .debut, .fin{
-          margin-top: 10px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
+        .horaireBtn{
           p{
             margin-bottom: 0;
           }
           input{
             width: 135px;
-          };
+          }
         }
       }
-      }
-      button{
-        border-color: white;
-        background-color: rgba(126, 163, 141, 0.64);
-        padding: 10px 12px;
-        border-radius: 8px;
-        font-size: 20px;
-        a{
-          color:white;
-          text-decoration: none;
-        }
-      }
-    }
-      .lesAvis{
-        padding: 0 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-        margin-bottom: 10px;
 
+      .lesAvis{
         h2{
-          font-size:26px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-         .fa-solid{
-           margin: 0 4px;
-         }
+          font-size:18px;
+        }
+        .fa-solid{
+          margin: 0 4px;
         }
         .etoileXl::before {
           content: "";
@@ -132,184 +62,101 @@
           background:rgba(126, 163, 141, 0.64);
           margin: 10px auto ;
         }
-          .etoileXl{
-            text-align: center;
-            font-size: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-            gap: 10px;
-
-            li{
-              list-style: none;
-              margin: 5px 0;
-              .fa-solid{
-                margin: 0 5px;
-              }
+        .etoileXl{
+          li{
+            margin: 5px 0;
+            .fa-solid{
+              margin: 0 5px;
             }
-          }
-        .etoileXs{
-          display: none;
-        }
-        button{
-          border-color: white;
-          background-color: rgba(126, 163, 141, 0.64);
-          padding: 10px 12px;
-          border-radius: 8px;
-          font-size: 20px;
-          a{
-            color:white;
-            text-decoration: none;
           }
         }
       }
     }
   }
 
-
-
-
   @media (max-width: 768px){
-
-    top: 20px;
-    right: -8px;
-
+    top: 46px;
+    right: 0;
     .modal-content {
-      width: 96vw;
-      height: 34vh;
-
-      section{
-        .nav-tabs{
-          justify-content: center;
-          margin-bottom: 0;
-          font-size: 14px;
-          font-weight: 300;
+      width: 90vw;
+      height: 52vh;
+      .nav-tabs{
+        margin-bottom: 10px;
+        .nav-link{
+          font-size: 12px;
         }
+      }
+      button {
+        a{
+          font-size: 12px;
+        }
+      }
+      section{
 
         .detailBorne{
-          text-align: center;
-          font-size: 18px;
-          p{
-            margin: 10px 0;
+          p, li{
+            margin: 0;
+            font-size: 12px;
           }
           strong{
-            font-weight: 500;
+            font-weight: normal;
+            font-size: 14px;
           }
 
           .infoPhoto{
-            display: flex;
-            justify-content: space-evenly;
             ul{
-              display: flex;
-              flex-direction: column;
-              justify-content: space-evenly;
-              padding-left: 0;
-              margin-bottom: 0;
-              li{
-                list-style: none;
-              }
+            justify-content: center;
             }
-
             img{
-              width: 12vw;
-              height: 18vh;
-              object-fit: cover;
-              margin: 5px;
-              border: 1px rgba(126, 163, 141, 0.64) solid;
+              width: 33vw;
+              height: 14vh;
             }
-          }
-          .pdetail{
-            text-align: justify;
-            margin: 14px 0;
           }
           .horaireBtn{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .horaire{
-              margin: 15px 0;
-              .debut, .fin{
-                margin-top: 10px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                p{
-                  margin-bottom: 0;
-                }
-                input{
-                  width: 135px;
-                };
-              }
+            input{
+              width: 90px;
+              font-size: 10px;
             }
-          }
-          button{
-            border-color: white;
-            background-color: rgba(126, 163, 141, 0.64);
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 20px;
-            a{
-              color:white;
-              text-decoration: none;
-            }
-          }
-        }
-        .lesAvis{
-          padding: 0 10px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 5px;
-          margin-bottom: 10px;
 
-          h2{
-            font-size:26px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            .fa-solid{
-              margin: 0 4px;
-            }
           }
-          .etoileXl::before {
-            content: "";
-            display: block;
-            width: 80%;
-            height: 1px;
-            background:rgba(126, 163, 141, 0.64);
-            margin: 10px auto ;
-          }
-          .etoileXl{
-            text-align: center;
-            font-size: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-            gap: 10px;
 
-            li{
-              list-style: none;
-              margin: 5px 0;
-              .fa-solid{
-                margin: 0 5px;
-              }
-            }
-          }
-          .etoileXs{
-            display: none;
-          }
-          button{
-            border-color: white;
-            background-color: rgba(126, 163, 141, 0.64);
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 20px;
-            a{
-              color:white;
-              text-decoration: none;
-            }
-          }
         }
+.lesAvis{
+  flex-direction: column;
+  h2{
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  .etoileXl{
+    display: none;
+  }
+  strong {
+    font-weight: lighter;
+  }
+  .avisBtn{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row-reverse;
+ul{
+  margin-bottom: 0;
+
+  li{
+    margin: 5px 0;
+  }}
+    img{
+      width: 20vw;
+    }
+  }
+  button{
+    a{
+      font-size: 12px;
+    }
+  }
+
+}
+
+
       }
     }
   }

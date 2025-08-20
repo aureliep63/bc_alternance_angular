@@ -1,10 +1,10 @@
-<div class="modal-overlay">
-  <div *ngIf="isOpen" class="modal-content">
-    <button (click)="close()" class="close-btn">✖</button>
+<div class="modal-overlay d-flex justify-content-start align-content-start position-absolute w-auto h-auto"  >
+  <div *ngIf="isOpen" class="modal-content bg-white position-relative pointer-event rounded-2">
+    <button (click)="close()" class="close-btn position-absolute btn btn-outline-success shadow bg-body-tertiary rounded px-2 py-1 fs-5">✖</button>
 
     <section>
 
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs justify-content-center fw-medium fs-5">
 
         <li class="nav-item">
           <a class="nav-link"
@@ -25,36 +25,36 @@
 
       <div *ngIf="activeTab === 'infos'">
 
-        <div *ngIf="borne" class="detailBorne">
+        <div *ngIf="borne" class="detailBorne text-center fs-5">
           <p *ngIf="borne.lieux"><small>Lieu : </small> <strong> <i>{{ borne.lieux.adresse }}, {{ borne.lieux.ville }}  {{ borne.lieux.codePostal }}</i> </strong></p>
-          <div class="infoPhoto">
-            <ul>
+          <div class="infoPhoto d-flex justify-content-evenly ">
+            <ul class="d-flex flex-column justify-content-md-evenly  ps-0 mb-0 ">
               <li><small>Puissance : </small><strong> <i>{{ borne.puissance }} kW </i> </strong></li>
               <li><small>Prix :</small><strong> <i> {{ borne.prix }} €/h </i> </strong></li>
               <li><small>Sur pied :</small><strong> <i> {{ borne.surPied ? 'Oui' : 'Non' }} </i> </strong></li>
             </ul>
-            <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" >
+            <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" class="object-fit-cover m-1" >
           </div>
-          <p class="pdetail"><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></p>
+          <p class="pdetail text-start my-md-3 my-sm-0"><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></p>
 
-          <div class="horaireBtn">
+          <div class="horaireBtn d-flex justify-content-between align-items-center">
 
-          <div class="horaire">
-            <div class="debut">
-              <p><small>Du </small></p>
-              <input type="date" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut"/>
-              <p> <small>  à  </small></p>
-              <input type="time" class="form-control " [(ngModel)]="filters.heureDebut" name="heureDebut" step="900"/>
+            <div class="horaire my-md-3 my-sm-0">
+              <div class="d-flex align-items-center gap-2 mt-2">
+                <p><small>Du </small></p>
+                <input type="date" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut"/>
+                <p> <small>  à  </small></p>
+                <input type="time" class="form-control " [(ngModel)]="filters.heureDebut" name="heureDebut" step="900"/>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 mt-2">
+                <p> <small>Au  </small></p>
+                <input type="date" class="form-control " [(ngModel)]="filters.dateFin" name="dateFin"/>
+                <p><small>à </small> </p>
+                <input type="time" class="form-control" [(ngModel)]="filters.heureFin" name="heureFin" step="900"/>
+              </div>
             </div>
-
-            <div class="fin">
-              <p> <small>Au  </small></p>
-              <input type="date" class="form-control " [(ngModel)]="filters.dateFin" name="dateFin"/>
-              <p><small>à </small> </p>
-              <input type="time" class="form-control" [(ngModel)]="filters.heureFin" name="heureFin" step="900"/>
-            </div>
-          </div>
-          <button><a [routerLink]="['']">Réserver</a></button>
+            <button class="btn btn-outline-success shadow bg-body-tertiary rounded"><a [routerLink]="['']" class="   link-success link-offset-2 link-underline link-underline-opacity-0 p-0">Réserver</a></button>
           </div>
         </div>
 
@@ -62,9 +62,12 @@
 
       <div *ngIf="activeTab === 'avis'">
 
-        <div class="lesAvis">
-           <h2>32 avis <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i></h2>
-            <ul class="etoileXl">
+        <div class="lesAvis d-flex flex-md-column align-items-center mb-2 gap-1 px-2 ">
+           <h2 class=" d-flex align-items-center gap-2 ">
+             32 avis
+             <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i></h2>
+
+            <ul class="etoileXl  d-md-flex  text-center flex-column justify-content-start gap-2 fs-4">
               <li><small>Facilité d'accès :</small> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i> </li>
               <li><small>Instruction valide : </small> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i> </li>
               <li><small> Sécurité du lieu : </small> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i> </li>
@@ -73,16 +76,19 @@
               <li><small>Communication : </small> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i> </li>
 
             </ul>
-          <ul class="etoileXs">
-            <li><small>Facilité d'accès :</small> <strong> <i> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
-            <li><small>Instruction valide </small> <strong> <i>5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
-            <li><small> Sécurité du lieu :</small><strong> <i> 5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
-            <li><small>Fiabilité du matériel :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
-            <li><small>Rapport qualité/prix :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
-            <li><small>Communication :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+          <div class="avisBtn" *ngIf="borne">
+            <ul class="etoileXs d-md-none d-sm-flex text-center">
+              <li><small>Facilité d'accès :</small> <strong> <i>4/5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></i> </strong></li>
+              <li><small>Instruction valide </small> <strong> <i>5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li><small> Sécurité du lieu :</small><strong> <i> 5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li><small>Fiabilité du matériel :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li><small>Rapport qualité/prix :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li><small>Communication :</small><strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+            </ul>
+            <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" class="object-fit-cover d-md-none" >
 
-          </ul>
-          <button><a [routerLink]="['']">Réserver</a></button>
+          </div>
+           <button class="btn btn-outline-success shadow bg-body-tertiary rounded"><a [routerLink]="['']" class=" link-success link-offset-2 link-underline link-underline-opacity-0 p-0">Réserver</a></button>
 
         </div>
       </div>

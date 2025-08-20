@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
-import {UserService} from "../../services/user/user.service";
-import {AuthService} from "../../services/auth/auth.service";
+import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {User} from "../../entities/user.entity";
+import {User} from "../../../entities/user.entity";
 import {map, Observable} from "rxjs";
 
 @Component({

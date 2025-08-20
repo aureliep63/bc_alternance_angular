@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { LoginComponent } from './pages/login/login.component';
 import {NgbCollapseModule, NgbModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -16,7 +16,7 @@ import { RoleUserComponent } from './components/reservationsProproLoca/reservati
 import { ReservationsComponent } from './pages/reservations/reservations.component';
 import { ModalBorneComponent } from './components/modal-borne/modal-borne.component';
 import { Section1MapComponent } from './pages/home/section1Map/section1Map.component';
-import { CarrousselComponent } from './components/carroussel/carroussel.component';
+import { CarrousselComponent } from './components/layout/carroussel/carroussel.component';
 import { ModalBorneDetailComponent } from './components/modal-borne-detail/modal-borne-detail.component';
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -33,7 +33,7 @@ import {EmailValidationComponent} from "./components/email-validation/email-vali
 import { Section3MarcheComponent } from './pages/home/section3Marche/section3Marche.component';
 import {Section2SituationComponent} from "./pages/home/section2Situation/section2Situation.component";
 import { Section4MarcheProprioComponent } from './pages/home/section4-marche-proprio/section4-marche-proprio.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
 import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/borne-detail.component';
 
 
