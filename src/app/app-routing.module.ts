@@ -9,7 +9,7 @@ import {ReservationsComponent} from "./pages/reservations/reservations.component
 import {EmailValidationComponent} from "./components/email-validation/email-validation.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, // page d'accueil par défaut
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'validate-email', component: EmailValidationComponent },

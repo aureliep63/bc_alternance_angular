@@ -33,28 +33,39 @@
               <li><small>Prix :</small><strong> <i> {{ borne.prix }} €/h </i> </strong></li>
               <li><small>Sur pied :</small><strong> <i> {{ borne.surPied ? 'Oui' : 'Non' }} </i> </strong></li>
             </ul>
-            <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" class="object-fit-cover m-1" >
-          </div>
-          <p class="pdetail text-start my-md-3 my-sm-0"><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></p>
+
+            <div>
+              <img *ngIf="borne.photo" src="{{imageUrl}}{{borne.photo}}" alt="Photo borne" class="object-fit-cover m-1" >
+            </div>
+
+            </div>
+          <p class="pdetail text-start my-md-3"><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></p>
 
           <div class="horaireBtn d-flex justify-content-between align-items-center">
 
             <div class="horaire my-md-3 my-sm-0">
               <div class="d-flex align-items-center gap-2 mt-2">
                 <p><small>Du </small></p>
-                <input type="date" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut"/>
+                <input type="date" class="form-control" [(ngModel)]="filters.dateDebut" name="dateDebut" (ngModelChange)="checkAvailability()" [min]="today" [max]="filters.dateFin"/>
                 <p> <small>  à  </small></p>
-                <input type="time" class="form-control " [(ngModel)]="filters.heureDebut" name="heureDebut" step="900"/>
+                <input type="time" class="form-control " [(ngModel)]="filters.heureDebut" name="heureDebut" step="900" (ngModelChange)="checkAvailability()"/>
               </div>
 
               <div class="d-flex align-items-center gap-2 mt-2">
                 <p> <small>Au  </small></p>
-                <input type="date" class="form-control " [(ngModel)]="filters.dateFin" name="dateFin"/>
+                <input type="date" class="form-control " [(ngModel)]="filters.dateFin" name="dateFin" (ngModelChange)="checkAvailability()" [min]="filters.dateDebut"/>
                 <p><small>à </small> </p>
-                <input type="time" class="form-control" [(ngModel)]="filters.heureFin" name="heureFin" step="900"/>
+                <input type="time" class="form-control" [(ngModel)]="filters.heureFin" name="heureFin" step="900" (ngModelChange)="checkAvailability()"/>
               </div>
             </div>
-            <button class="btn btn-outline-success shadow bg-body-tertiary rounded"><a [routerLink]="['']" class="   link-success link-offset-2 link-underline link-underline-opacity-0 p-0">Réserver</a></button>
+            <button class="btn btn-outline-success shadow bg-body-tertiary rounded" [disabled]="!isAvailable"  (click)="proceedToReservation()"><a [routerLink]="['']" class="   link-success link-offset-2 link-underline link-underline-opacity-0 p-0">Réserver</a></button>
+          </div>
+          <div *ngIf="showDateError" class="alert alert-warning ">
+            Veuillez renseigner les dates et heures de début et de fin.
+          </div>
+
+          <div *ngIf="!isAvailable && !showDateError" class="alert alert-danger ">
+            La borne n'est pas disponible aux dates et heures souhaitées.
           </div>
         </div>
 
@@ -88,13 +99,20 @@
             <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" class="object-fit-cover d-md-none" >
 
           </div>
-           <button class="btn btn-outline-success shadow bg-body-tertiary rounded"><a [routerLink]="['']" class=" link-success link-offset-2 link-underline link-underline-opacity-0 p-0">Réserver</a></button>
+           <button class="btn btn-outline-success shadow bg-body-tertiary rounded" [disabled]="!isAvailable"  (click)="proceedToReservation()"
+                   ><a [routerLink]="['']" class=" link-success link-offset-2 link-underline link-underline-opacity-0 p-0" >Réserver</a></button>
+        </div>
+        <div *ngIf="showDateError" class="alert alert-warning ">
+          Veuillez renseigner toutes les dates et heures pour la réservation.
+        </div>
 
+        <div *ngIf="!isAvailable && !showDateError" class="alert alert-danger ">
+          La borne n'est pas disponible aux dates et heures souhaitées.
         </div>
       </div>
-
     </section>
-
-
   </div>
 </div>
+
+
+<app-reservation-recap #recapModal></app-reservation-recap>

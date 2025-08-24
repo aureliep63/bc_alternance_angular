@@ -1,5 +1,5 @@
 .modal-overlay {
-  top: 44px;
+  top: 62px;
   right: 37px;
   padding: 1rem;
   z-index: 999;
@@ -7,7 +7,7 @@
     padding: 1rem;
     width: 25vw;
     box-shadow: 0 4px 6px 10px rgba(0, 0, 0, 0.1);
-    height: 58vh;
+    height: 62vh;
 
     .close-btn {
       top: 1rem;
@@ -74,13 +74,22 @@
       }
     }
   }
-
+  .login-modal-panel {
+    border: 1px solid black;
+    border-radius: 15px; /* Pour des coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.19);
+    margin-top: 20px;
+    h1{
+      font-size: 32px;
+    }
+  }
   @media (max-width: 768px){
     top: 42px;
     right: 0;
     .modal-content {
       width: 90vw;
-      height: 40vh;
+      height: 100%;
       .close-btn {
         font-size: 12px;
       }
@@ -108,6 +117,7 @@
           }
 
           .infoPhoto{
+            margin: 5px 0;
             ul{
             justify-content: center;
             }
@@ -116,12 +126,19 @@
               height: 12vh;
             }
           }
+          .pdetail{
+            margin: 5px 0;
+          }
           .horaireBtn{
             input{
               width: 90px;
               font-size: 10px;
             }
           }
+        }
+        .alert{
+          font-size: 12px;
+          padding: 2px 4px;
         }
         .lesAvis{
           flex-direction: column;

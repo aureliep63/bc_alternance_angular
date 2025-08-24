@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Optional} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,22 @@ export class LoginComponent implements OnInit{
   form:FormGroup
   errorMsg?:string
   requestOngoing = false // requete en cours (si on clique plusieurs fois sur le btn submit
+  isModal: boolean = false;
 
   // injection de dépendance, soit le singleton existe donc on récup l'instance, soit existe pas donc on génère une instance (donc une factory)
-  constructor(private authService:AuthService, private router:Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    // Rend MatDialogRef optionnel pour éviter l'erreur de dépendance
+    @Optional() private dialogRef: MatDialogRef<LoginComponent>
+  ) {
+    // Si dialogRef est défini, cela signifie que le composant est dans une modale
+    this.isModal = !!this.dialogRef;
+    this.form = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      remember: new FormControl(false)
+    });
   }
 
   ngOnInit() {
@@ -33,7 +47,12 @@ export class LoginComponent implements OnInit{
     try{
       console.log('on rentre ds le try')
       await this.authService.login(email, password, remember)
-      this.router.navigateByUrl('/profile')
+      // Si c'est une modale, fermez-la après la connexion réussie
+      if (this.dialogRef) {
+        this.dialogRef.close();
+      }
+      // Et naviguez vers la page de profil
+      this.router.navigateByUrl('/profile');
     }catch (e:any){
       // if else en one Line
       if(e.status === 401) this.errorMsg = 'Email ou mot de passe incorrect'
@@ -55,7 +74,5 @@ export class LoginComponent implements OnInit{
   loginWithGoogle() {
     this.authService.loginWithGoogle();
   }
-
-
 }
 

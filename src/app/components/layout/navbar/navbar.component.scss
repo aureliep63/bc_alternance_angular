@@ -18,3 +18,13 @@
     top: 0;
   }
 }
+.login-modal-panel {
+  border: 1px solid black;
+  border-radius: 15px; /* Pour des coins arrondis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+  0 6px 20px rgba(0, 0, 0, 0.19);
+  margin-top: 20px;
+  h1{
+    font-size: 32px;
+  }
+}

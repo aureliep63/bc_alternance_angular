@@ -20,7 +20,21 @@
             </div>
           </div>
         </div>
-
+      <div>
+        <div class="d-flex gap-1">
+          <label for="customRange4" class="form-label pe-md-2">Dans un rayon de </label>
+          <span class="fs-6 ">{{ filters.range }} km</span>
+        </div>
+        <input
+          type="range"
+          class="form-range form-range-track-bg"
+          min="1"
+          max="200"
+          step="10"
+          [(ngModel)]="filters.range" name="range"
+          id="customRange4"
+        />
+      </div>
         <div class="row ">
           <div class="col-6">
             <div class="form-group">
@@ -30,7 +44,8 @@
                 type="date"
                 class="form-control"
                 [(ngModel)]="filters.dateDebut"
-                name="dateDebut"
+                name="dateDebut" [min]="today"
+                [max]="filters.dateFin"
               />
             </div>
           </div>
@@ -56,7 +71,7 @@
                 type="date"
                 class="form-control "
                 [(ngModel)]="filters.dateFin"
-                name="dateFin"
+                name="dateFin" [min]="filters.dateDebut"
               />
             </div>
           </div>
@@ -72,8 +87,10 @@
             </div>
           </div>
           </div>
-
-        <button type="submit" class="btn btn-outline-success shadow bg-body-tertiary rounded">Rechercher</button>
+      <div class="filter-controls">
+        <button type="button"  (click)="searchBornes()" class="btn btn-outline-success shadow bg-body-tertiary rounded recherche ">Rechercher</button>
+        <button type="button" (click)="resetFilters()" class="btn btn-outline-secondary shadow bg-body-tertiary rounded btn-sm ms-2 reset">X</button>
+      </div>
 
 
 

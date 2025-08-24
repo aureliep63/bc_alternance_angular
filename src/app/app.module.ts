@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,7 +35,11 @@ import {Section2SituationComponent} from "./pages/home/section2Situation/section
 import { Section4MarcheProprioComponent } from './pages/home/section4-marche-proprio/section4-marche-proprio.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/borne-detail.component';
-
+import { ReservationRecapComponent } from './components/reservation-recap/reservation-recap.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import {MatDialogModule} from "@angular/material/dialog";
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -56,7 +60,8 @@ import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/born
     Section3MarcheComponent,
     Section4MarcheProprioComponent,
     FooterComponent,
-    BorneDetailComponent
+    BorneDetailComponent,
+    ReservationRecapComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +76,7 @@ import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/born
     NgxMaterialTimepickerModule.setOpts('fr-FR'),
     BrowserAnimationsModule,
     MatTabsModule,
+    MatDialogModule,
     MatButtonModule,
     MatStepperModule,
     MatFormFieldModule,
@@ -79,9 +85,8 @@ import { BorneDetailComponent } from './pages/home/section1Map/borne-detail/born
     provideAuth(() => getAuth()),
 
 
-
   ],
-  providers: [provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync()],
+  providers: [provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync(),  { provide: LOCALE_ID, useValue: 'fr' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

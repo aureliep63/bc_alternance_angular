@@ -11,18 +11,16 @@ export interface LieuxHttp{
   ville: string
   latitude?: number;
   longitude?: number;
-  // bornes: BorneHttp[]
 }
 
 export interface Lieux{
-  id?: number | null; // L'ID est optionnel (le '?') et peut être un nombre ou null
+  id?: number | null;
   adresse: string;
   codePostal: string;
   ville: string;
   bornesId?: number[];
-  latitude?: number | null; // Optionnel et peut être un nombre ou null
-  longitude?: number | null; // Optionnel et peut être un nombre ou null
-//  bornes: Borne[]
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export namespace Lieux{
@@ -41,8 +39,6 @@ export namespace Lieux{
       ville: http.ville,
       latitude: http.latitude,
       longitude: http.longitude
-      // bornes: [],
-
     }
   }
 }

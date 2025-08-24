@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Media, MediaHttp} from "../../entities/media.entity";
-import {lastValueFrom, map, Observable} from "rxjs";
+import {lastValueFrom, map, Observable, tap} from "rxjs";
 import {Reservation, ReservationHttp} from "../../entities/reservation.entity";
 import {Borne} from "../../entities/borne.entity";
 
@@ -45,4 +45,16 @@ export class ReservationService {
     return this.http.patch(`${this.url}/${id}/status`, { status });
   }
 
+
+  checkAvailability(borneId: number, dateDebut: string, dateFin: string): Observable<boolean> {
+    const body = { borneId, dateDebut, dateFin };
+    return this.http.post<boolean>(`${this.url}/check-availability`, body);
+  }
+
+  saveReservation(reservationData: any): Observable<void> {
+    // Le type de retour est <void> car le backend ne renvoie rien
+    return this.http.post<void>(this.url, reservationData).pipe(
+      tap(() => console.log("Création de la réservation réussie"))
+    );
+  }
 }

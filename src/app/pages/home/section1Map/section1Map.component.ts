@@ -12,6 +12,8 @@ import {ModalBorneDetailComponent} from "../../../components/modal-borne-detail/
 import {BorneDetailComponent} from "./borne-detail/borne-detail.component";
 import {Borne} from "../../../entities/borne.entity";
 import {ModalBorneComponent} from "../../../components/modal-borne/modal-borne.component";
+import {formatDate} from "@angular/common";
+import {GeocodingService} from "../../../services/geocoding/geocoding.service";
 
 // Fix des icônes Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -38,6 +40,9 @@ export class Section1MapComponent implements  AfterViewInit {
   @ViewChild('modalBorneDetails') modalDetails!: BorneDetailComponent;
   private map!: L.Map;
   bornes: any[] = [];
+  rangeValue: number = 100;
+  private currentSearchCircle: L.Circle | null = null; // Nouvelle variable pour le cercle
+
   toBorneDto(borne: Borne): BorneDto {
     return {
       id: borne.id,
@@ -68,15 +73,18 @@ export class Section1MapComponent implements  AfterViewInit {
     dateDebut: '',
     heureDebut:'',
     dateFin: '',
-    heureFin:''
+    heureFin:'',
+    range: 100
   };
 
   private markers: L.Marker[] = [];
-  constructor(private borneService: BorneService, private reservationService: ReservationService, private lieuxService: LieuxService) {}
+  today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
+  constructor(private geocodingService: GeocodingService ,private borneService: BorneService, private reservationService: ReservationService, private lieuxService: LieuxService) {}
 
   ngAfterViewInit(): void {
     this.initMap();
-
+    this.loadAllBornes();
     this.borneService.list().subscribe({
       next: (bornes) => {
         this.bornes = bornes;
@@ -119,7 +127,7 @@ export class Section1MapComponent implements  AfterViewInit {
         // Écouter l'événement de clic directement sur le marqueur Leaflet
         marker.on('click', () => {
           // Appeler la méthode du composant pour ouvrir la modale
-          this.viewDetails(this.toBorneDto(borne));
+          this.viewDetails(this.toBorneDto(borne), this.filters);
         });
 
         this.markers.push(marker);
@@ -130,46 +138,136 @@ export class Section1MapComponent implements  AfterViewInit {
   }
 
 
-
   searchBornes() {
+    // Correctly format the date and time strings for the backend
+    const dateDebutFormatted = this.filters.dateDebut && this.filters.heureDebut
+      ? `${this.filters.dateDebut}T${this.filters.heureDebut}:00`
+      : null;
 
-    let dateDebut = toDate(this.filters.dateDebut);
-    const [hours, minutes] = this.filters.heureDebut.split(":");
-    // dateDebut -> heuredebut -> minDebut
-    let heureDebut = setHours(dateDebut, Number(hours));
-    let minDebut = setMinutes(heureDebut, Number(minutes)) || null;
+    const dateFinFormatted = this.filters.dateFin && this.filters.heureFin
+      ? `${this.filters.dateFin}T${this.filters.heureFin}:00`
+      : null;
 
-    let dateFin = toDate(this.filters.dateFin);
-    const [hoursFin, minutesFin] = this.filters.heureFin.split(":");
-    let heureFin = setHours(dateFin, Number(hoursFin));
-    let minFin = setMinutes(heureFin, Number(minutesFin))  || null;
+    // Use a single variable to hold the final list of bornes
+    let bornesToDisplay: any[] = [];
+
+    // Case 1: Filter by City and Radius
+    if (this.filters.ville?.trim()) {
+      // Step A: Call your backend's geocoding proxy first
+      this.geocodingService.getCoordinatesFromBackend(this.filters.ville).subscribe(
+        (data: any) => {
+          if (data && data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lon = parseFloat(data[0].lon);
+
+            // Update map display immediately for visual feedback
+            if (this.currentSearchCircle) {
+              this.map.removeLayer(this.currentSearchCircle);
+            }
+            this.currentSearchCircle = L.circle([lat, lon], {
+              radius: this.filters.range * 1000,
+              color: '#3498db',
+              fillColor: '#3498db',
+              fillOpacity: 0.1,
+              weight: 1
+            }).addTo(this.map);
+            this.map.fitBounds(this.currentSearchCircle.getBounds());
+
+            // Step B: Call your main search API with all filters
+            const filtersComplets = {
+              ville: this.filters.ville,
+              latitude: lat,
+              longitude: lon,
+              rayon: this.filters.range,
+              dateDebut: dateDebutFormatted,
+              dateFin: dateFinFormatted,
+            };
+            this.borneService.searchBornes(filtersComplets).subscribe({
+              next: (bornes) => {
+                this.bornes = bornes;
+                this.updateMap(bornes);
+              },
+              error: (err) => {
+                console.error('Error during combined search', err);
+              }
+            });
+          }
+        },
+        (err: any) => {
+          console.error('Error retrieving coordinates from backend proxy', err);
+        }
+      );
+    } else { // Case 2: Filter by Dates/Times only
+      const filtersComplets = {
+        ville: null, // Ensure ville is null to signal a date-only search
+        rayon: null,
+        dateDebut: dateDebutFormatted,
+        dateFin: dateFinFormatted,
+      };
+      this.borneService.searchBornes(filtersComplets).subscribe({
+        next: (bornes) => {
+          this.bornes = bornes;
+          this.updateMap(bornes);
+        },
+        error: (err) => {
+          console.error('Error during date-only search', err);
+        }
+      });
+    }
+  }
 
 
-    const filtresNettoyes = {
-      ville: this.filters.ville?.trim() || null,
-      dateDebut: minDebut || null,
-      dateFin: minFin || null,
+  viewDetails(borne: BorneDto, filters: any) {
+    if (this.modalDetails) {
+      this.modalDetails.open(borne, filters);
+    } else {
+      console.error('La modal BorneDetailComponent n\'est pas disponible.');
+    }
+  }
 
-    };
+  onRangeChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.rangeValue = +input.value;
+  }
 
-    this.borneService.searchBornes(filtresNettoyes).subscribe({
+
+  private loadAllBornes(): void {
+    this.borneService.list().subscribe({
       next: (bornes) => {
         this.bornes = bornes;
         this.updateMap(bornes);
       },
       error: (err) => {
-        console.error('Erreur lors de la recherche des bornes', err);
+        console.error('Erreur lors du chargement des bornes', err);
       }
     });
-    console.log('Filtres envoyés:', filtresNettoyes);
   }
+  resetFilters(): void {
+    // Réinitialisation de l'objet de filtres
+    this.filters = {
+      ville: '',
+      dateDebut: '',
+      heureDebut: '',
+      dateFin: '',
+      heureFin: '',
+      range: 100 // Valeur par défaut
+    };
 
-  viewDetails(borne: BorneDto) {
-    // Vérifier si la modal est disponible avant de l'ouvrir
-    if (this.modalDetails) {
-      this.modalDetails.open(borne);
-    } else {
-      console.error('La modal BorneDetailComponent n\'est pas disponible.');
+    // Supprimer le cercle de recherche s'il existe
+    if (this.currentSearchCircle) {
+      this.map.removeLayer(this.currentSearchCircle);
+      this.currentSearchCircle = null;
     }
+
+    // Effacer les marqueurs de la carte
+    this.markers.forEach(marker => this.map.removeLayer(marker));
+    this.markers = [];
+    this.bornes = [];
+
+    // Ramener la carte à sa vue par défaut (centrage et zoom initial)
+    this.map.setView([45.7305952, 4.836028], 5);
+
+    // Recharger toutes les bornes pour que la carte ne soit pas vide
+    this.loadAllBornes();
   }
 }

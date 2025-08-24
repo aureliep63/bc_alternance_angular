@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Borne, BorneHttp} from "../../entities/borne.entity";
 import {lastValueFrom, map, Observable} from "rxjs";
@@ -47,7 +47,9 @@ export class BorneService {
     return this.http.put<BorneDto>(`${this.url}/user/bornes/${id}`, formData);
   }
 
-  searchBornes(filters: any): Observable<Borne[]> {
-    return this.http.post<Borne[]>(`${this.url}/search`, filters);
+  searchBornes(filters: any): Observable<BorneDto[]> {
+    return this.http.post<BorneDto[]>(`${this.url}/search`, filters);
   }
+
+
 }

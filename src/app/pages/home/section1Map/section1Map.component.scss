@@ -20,6 +20,7 @@
         margin: 16px 0;
         text-align: start;
 
+
         label.lg{
           font-size: 18px;
         }
@@ -34,10 +35,19 @@
         width: 10vw;
       }
     }
-    button{
+    button.recherche{
       width: 40%;
       margin: 15px 0;
     }
+    button.recherche.btn-outline-success:hover,
+    button.recherche.btn-outline-success:focus,
+    button.recherche.btn-outline-success:active {
+      color: #365c36 !important;
+      background-color: #34533530 !important;
+      font-weight: bolder;
+
+    }
+
   }
 
 .map-container {
@@ -69,7 +79,7 @@ z-index: 1000 !important;
   margin-right:0;
     .map-container {
       position: absolute;
-      top: 243px;
+      top: 295px;
       left: 5px;
       right: 5px;
       bottom: -190px;
@@ -114,10 +124,11 @@ z-index: 1000 !important;
         }
       }
 
-      button {
+      button.recherche, button.reset {
         font-size: 12px;
         margin: 0;
         padding: 2px 2px;
+
       }
     }
 

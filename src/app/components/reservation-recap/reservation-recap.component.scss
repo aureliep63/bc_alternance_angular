@@ -1,0 +1,100 @@
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  max-width: 800px;body {
+  --mat-stepper-header-edit-state-icon-background-color:  #365c36;
+}
+  width: 90%; /* S'adapte sur mobile */
+  animation: fadeInScale 0.3s ease-out;
+}
+
+.modal-content h4 {
+  margin-top: 0;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
+}
+/*  animation apparition */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+button:not(.close-btn){
+  background-color: white;
+  color: #365c36;
+  border: 1px solid #365c36;
+  font-size: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#my-btn, #my-btn2,#my-btn3 {
+  color: black;
+  border: 1px solid black;
+  font-size: 12px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  padding: 0px 4px;
+  margin-right: 15px;
+}
+
+strong{
+  font-weight: 500;
+}
+
+label{
+  font-weight: 200;
+}
+@media (max-width: 768px) {
+  .photoInfo{
+    img{
+      display: none;
+    }
+    mat-stepper{
+      width: 100%;
+    }
+    matSepLabel, p{
+      font-size: 12px;
+    }
+    mat-step-header{
+      flex-direction: column;
+    }
+    h3{
+      font-size: 18px;
+    }
+  }
+}

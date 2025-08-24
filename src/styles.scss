@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+$form-range-track-bg: rgba(125, 154, 89, 0.13);
+$form-range-thumb-bg: #365c36;
+$form-range-thumb-active-bg: darken(#8bc34a, 10%);
+$form-range-thumb-focus-box-shadow: 0 0 0 .25rem rgba(#8bc34a, .4);
+
+// Couleur principale quand la checkbox est cochée
+$form-check-input-checked-bg-color: #52754c;  // vert
+$form-check-input-checked-border-color: #77a679;
+$form-check-input-focus-border:       #4caf50;
+
+$input-color: #222;             // texte
+$input-bg: #fff;                // fond
+$input-focus-border-color: black;
+$input-focus-box-shadow: 0 0 0 .25rem rgba(#4caf50, .25);
+
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
@@ -14,3 +29,7 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  --mat-stepper-header-edit-state-icon-background-color:  #365c36;
+  --mat-stepper-header-selected-state-icon-background-color: #365c36;
+}

@@ -1,6 +1,6 @@
-<app-navbar></app-navbar>
-<div class="container mt-5">
-  <div class="row justify-content-center align-items-center vh-100">
+<app-navbar *ngIf="!isModal"></app-navbar>
+<div class="container mt-md-4 ">
+  <div class="row justify-content-center align-items-center">
     <!-- Colonne Image (affichée à partir de md) -->
     <div class="col-md-6 d-none d-md-flex align-items-center h-100">
       <img src="assets/Elec-login.webp" alt="Illustration" class="w-90 h-40 object-fit-cover">
@@ -11,24 +11,24 @@
       <div class="myform form w-100">
         <div class="logo mb-3">
           <div class="col-md-12 text-center">
-            <h1>Se connecter</h1>
+            <h1 class="fs-2">Se connecter</h1>
           </div>
         </div>
         <div *ngIf="errorMsg" class="w-full rounded-mb text-red-500 text-sm/6 font-medium mb-4">
           {{ errorMsg }}
         </div>
-        <form [formGroup]="form" (ngSubmit)="onSubmitlogin()">
-          <div class="form-group">
+        <form [formGroup]="form" (ngSubmit)="onSubmitlogin()" class="fs-6">
+          <div class="form-group ">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Adresse email" formControlName="email">
+            <input type="email" class="form-control " id="email" placeholder="Adresse email" formControlName="email">
           </div>
           <div class="form-group">
             <label for="password">Mot de Passe</label>
             <input type="password" class="form-control" id="password" placeholder="Mot de Passe" formControlName="password">
           </div>
-          <div class="form-check">
+          <div class="form-check d-flex flex-row align-items-center">
             <input class="form-check-input" type="checkbox" id="remember" formControlName="remember">
-            <label class="form-check-label" for="remember">Rester connecté.e?</label>
+            <label class="form-check-label " for="remember">Rester connecté.e?</label>
           </div>
           <div class="form-group mt-4">
             <p class="text-center fst-italic">
@@ -51,7 +51,7 @@
           </div>
           <div class="form-group text-center">
             <p class="fst-italic">Vous n'avez pas de compte?
-              <a [routerLink]="['/register']" id="signup">Enregistrez-vous</a>
+              <a [routerLink]="['/register']" id="signup" class="fs-6">Enregistrez-vous</a>
             </p>
           </div>
         </form>
@@ -66,7 +66,7 @@
 </div>
 
 
-
+<app-footer *ngIf="!isModal"></app-footer>
 
 
 

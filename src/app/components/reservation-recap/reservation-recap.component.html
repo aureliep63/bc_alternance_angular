@@ -1,0 +1,91 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-content">
+
+    <div class="photoInfo row" *ngIf="borne && filters">
+      <div class="col-md-3 col-sm-0 p-0">
+        <img src="{{imageUrl}}{{borne.photo}}" alt="photo borne" class="object-fit-cover w-100 h-100">
+      </div >
+      <div class="infos col-md-9 col-sm-12 d-flex flex-column py-md-0 px-md-0" *ngIf="currentUser$ | async as currentUser">
+
+        <button type="button" (click)="close()" class="btn-close me-md-4 py-1 align-self-end" aria-label="Close"></button>
+        <mat-stepper linear #stepper style="width: 95%;">
+          <!-- Step 1 : récap, pas de stepControl -->
+          <mat-step [completed]="true">
+            <ng-template matStepLabel>Récapitulatif</ng-template>
+          <h3 class=" my-md-3 fs-md-4 fst-italic text-uppercase text-success-emphasis text-center">Récapitulatif</h3>
+          <div class="my-md-3 fs-md-6">
+            <div class="d-flex flex-row  align-items-center justify-content-between gap-md-5">
+              <div>
+                <p><small>Adresse :</small><strong> {{ borne.lieux?.adresse }}, <br>{{ borne.lieux?.ville }} {{ borne.lieux?.codePostal }}</strong> </p>
+              </div>
+              <div>
+                <p><small>Du :</small><strong> {{ filters.dateDebut }}</strong><small> à </small><strong>{{ filters.heureDebut }}</strong></p>
+                <p><small>Au :</small><strong> {{ filters.dateFin }}</strong><small> à </small><strong>{{ filters.heureFin }}</strong></p>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center justify-content-between">
+              <div>
+                <p><small>Nombre d'heure total : </small><strong> {{ calculerHeuresEtMinutes().heures }} h
+                  {{ calculerHeuresEtMinutes().minutes }} min </strong></p>
+                <p><small>Prix :</small><strong> {{ borne.prix }} €/h</strong></p>
+              </div>
+              <div>
+                <p ><small>Prix total :</small><strong>  {{ calculerPrixTotal() | currency:'EUR':'symbol':'1.2-2':'fr' }}</strong> </p>
+              </div>
+            </div>
+          </div>
+            <div class=" d-flex align-items-center justify-content-center">
+              <button type="button" (click)="close()" id="my-btn">
+                <i class="fa-solid fa-xmark"></i> Annuler
+              </button>
+              <button matStepperNext matButton>Passer au paiement <i class="fa-solid fa-angle-right" style="color: #365c36;"></i></button>
+            </div>
+          </mat-step>
+
+          <!-- Step 2 : Paiement -->
+          <mat-step [completed]="true">
+            <ng-template matStepLabel>Paiement</ng-template>
+            <div class="d-flex flex-column align-items-center">
+                <h3 class="fs-4 my-md-3 fst-italic text-uppercase text-success-emphasis">Paiement</h3>
+
+                <div class="d-flex flex-column align-self-start my-md-3 gap-3 " style="font-size: 22px;">
+                   <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                     <label class="form-check-label" for="inlineRadio1"><i class="bi bi-paypal me-1 text-success-emphasis" ></i> Paypal: <small> <strong>{{ currentUser.email }}</strong></small> </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2"><i class="bi bi-credit-card me-1 text-success-emphasis" ></i> Carte Bancaire : xx034</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                    <label class="form-check-label" for="inlineRadio3"><i class="bi bi-google me-1 text-success-emphasis" ></i> Google Pay</label>
+                  </div>
+                </div>
+                <div>
+                  <button mat-button matStepperPrevious id="my-btn2">
+                    <i class="fa-solid fa-angle-left"></i> Retour
+                  </button>
+                  <button mat-button matStepperNext (click)="saveReservation()">Valider <i class="fa-solid fa-check" style="color: #365c36;"></i></button>
+                </div>
+            </div>
+          </mat-step>
+
+          <mat-step [completed]="true">
+            <ng-template matStepLabel>Validation</ng-template>
+            <div class="d-flex flex-column align-items-center">
+              <h3 class="fs-4 fst-italic text-uppercase text-success-emphasis">Validation <i class="fa-solid fa-check-double" style="color: #365c36;"></i></h3>
+              <p class="fs-5 my-3">Votre réservation a été validé ! </p>
+              <p class="fs-6 my-3 text-center">  Vous allez recevoir un email de confirmation dès que le propriétaire aura approuvé votre réservation !</p>
+
+              <div>
+                <button mat-button matStepperNext (click)="goToProfile()">Voir la réservation</button>
+              </div>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </div>
+    </div>
+  </div>
+</div>

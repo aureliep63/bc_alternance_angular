@@ -24,6 +24,12 @@ h1,h2,h3{
   border-radius: 1.1rem;
   outline: 0;
   max-width: 500px;
+  .form-group input{
+    height: 6vh;
+  }
+  .form-label-check, button{
+    font-size: 20px;
+  }
 }
 
 
@@ -85,6 +91,21 @@ form .error {
 }
 
 p{
-  font-size:small;
+  font-size:14px;
 }
 
+@media (max-width: 768px){
+  .myform{
+    margin-top: 6px;
+  }
+  p{
+    font-size:10px;
+  }
+  label, form-check-label, span{
+    font-size: 12px;
+  }
+  button{
+    padding: 8px 0px;
+    font-size: 14px;
+  }
+}

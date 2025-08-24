@@ -33,7 +33,7 @@
           </ul>
         </li>
         <li *ngIf="!(isConnected | async)" class="fs-5">
-          <a class="nav-link" [routerLink]="['login']">
+          <a class="nav-link" (click)="openLogin()">
             <i class="fa-regular fa-circle-user" style="margin-right: 6px"></i> Se connecter
           </a>
         </li>
