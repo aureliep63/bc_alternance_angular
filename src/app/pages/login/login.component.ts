@@ -2,7 +2,9 @@ import {Component, OnInit, Optional} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {RegisterComponent} from "../register/register.component";
 
 @Component({
   selector: 'app-login',
@@ -16,13 +18,17 @@ export class LoginComponent implements OnInit{
   errorMsg?:string
   requestOngoing = false // requete en cours (si on clique plusieurs fois sur le btn submit
   isModal: boolean = false;
+  isMobile = false;
+  isOpen = false;
 
   // injection de dépendance, soit le singleton existe donc on récup l'instance, soit existe pas donc on génère une instance (donc une factory)
   constructor(
     private authService: AuthService,
     private router: Router,
     // Rend MatDialogRef optionnel pour éviter l'erreur de dépendance
-    @Optional() private dialogRef: MatDialogRef<LoginComponent>
+    @Optional() private dialogRef: MatDialogRef<LoginComponent>,
+    private dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver
   ) {
     // Si dialogRef est défini, cela signifie que le composant est dans une modale
     this.isModal = !!this.dialogRef;
@@ -35,6 +41,12 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() {
     this.initForm()
+    this.breakpointObserver.observe([
+      Breakpoints.Handset,
+      Breakpoints.Tablet
+    ]).subscribe(result => {
+      this.isMobile = result.matches;
+    });
   }
 
   async onSubmitlogin():Promise<void>{
@@ -73,6 +85,25 @@ export class LoginComponent implements OnInit{
 
   loginWithGoogle() {
     this.authService.loginWithGoogle();
+  }
+
+  openRegister() {
+    console.log('Is mobile? ', this.isMobile);
+    if (this.isMobile) {
+      // Navigue vers la page de connexion pour les mobiles
+      this.router.navigate(['/register']);
+    } else {
+      // Ouvre une modale pour les versions desktop
+      this.dialog.open(RegisterComponent, {
+        width: '1200px',
+        height:'650px',
+        panelClass: 'register-modal-panel'
+      });
+    }
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 }
 

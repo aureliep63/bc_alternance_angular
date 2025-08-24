@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {from, lastValueFrom, map, Observable, switchMap, tap} from "rxjs";
 import {LocalStorageService} from "../local-storage/local-storage.service";
@@ -28,11 +28,39 @@ export class AuthService {
   register(user: UserHttp): Observable<any> {
     return this.http.post(`${this.url}/register`, user); // Assurez-vous que votre endpoint est /register
   }
-  // Vous aurez besoin d'un endpoint pour la validation de l'e-mail
-  validateEmail(token: string): Observable<any> {
-    return this.http.get(`${this.url}/validate-email?token=${token}`);
+  /**
+   * Valide l'adresse e-mail de l'utilisateur en envoyant le code de validation au back-end.
+   * @param email L'adresse e-mail de l'utilisateur.
+   * @param code Le code de validation à 6 chiffres.
+   * @returns Un Observable qui émet la réponse de l'API.
+   */
+  validateEmail(email: string, code: string): Observable<any> {
+    const params = new HttpParams()
+      .set('email', email)
+      .set('code', code);
+
+    // Envoie la requête POST à l'API de validation
+    return this.http.post(`${this.url}/validate-email`, null, { params });
   }
 
+  /**
+   * Demande au back-end de générer et renvoyer un nouveau code de validation.
+   * @param email L'adresse e-mail de l'utilisateur.
+   * @returns Un Observable qui émet la réponse de l'API.
+   */
+  resendValidationCode(email: string): Observable<any> {
+    const params = new HttpParams().set('email', email);
+    return this.http.post(`${this.url}/resend-code`, null, { params });
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const params = new HttpParams().set('email', email);
+    // Supposons que ton back-end a un endpoint pour vérifier l'email.
+    // Il renvoie { exists: true } si l'email existe, { exists: false } sinon.
+    return this.http.get<any>(`${this.url}/check-email`, { params }).pipe(
+      map(response => response.exists)
+    );
+  }
 
   loginWithGoogle() {
     const provider = new GoogleAuthProvider();

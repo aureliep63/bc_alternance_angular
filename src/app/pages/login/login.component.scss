@@ -89,11 +89,26 @@ h1,h2,h3{
 form .error {
   color: #ff0000;
 }
-
+#signup{
+  cursor: pointer;
+}
 p{
   font-size:14px;
 }
+.register-modal-panel {
+  border: 1px solid black;
+  border-radius: 15px; /* Pour des coins arrondis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+  0 6px 20px rgba(0, 0, 0, 0.19);
+  margin-top: 20px;
+  h1{
+    font-size: 32px;
+  }
 
+  .btn-close:hover{
+    color: white !important ;
+  }
+}
 @media (max-width: 768px){
   .myform{
     margin-top: 6px;

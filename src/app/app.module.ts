@@ -29,7 +29,6 @@ import {MatInputModule} from "@angular/material/input";
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import {environment} from "../environments/environment";
-import {EmailValidationComponent} from "./components/email-validation/email-validation.component";
 import { Section3MarcheComponent } from './pages/home/section3Marche/section3Marche.component';
 import {Section2SituationComponent} from "./pages/home/section2Situation/section2Situation.component";
 import { Section4MarcheProprioComponent } from './pages/home/section4-marche-proprio/section4-marche-proprio.component';
@@ -39,6 +38,16 @@ import { ReservationRecapComponent } from './components/reservation-recap/reserv
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import {MatDialogModule} from "@angular/material/dialog";
+import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatDivider} from "@angular/material/divider";
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -55,7 +64,6 @@ registerLocaleData(localeFr);
     Section1MapComponent,
     CarrousselComponent,
     ModalBorneDetailComponent,
-    EmailValidationComponent,
     Section2SituationComponent,
     Section3MarcheComponent,
     Section4MarcheProprioComponent,
@@ -83,10 +91,20 @@ registerLocaleData(localeFr);
     MatInputModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
+    MatRadioGroup,
+    MatRadioButton,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDivider,
 
 
   ],
-  providers: [provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync(),  { provide: LOCALE_ID, useValue: 'fr' }],
+  providers: [provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync(),  { provide: LOCALE_ID, useValue: 'fr' }, {
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

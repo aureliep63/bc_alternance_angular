@@ -9,12 +9,14 @@
     <!-- Colonne Formulaire -->
     <div class="col-12 col-md-6 d-flex align-items-center h-100">
       <div class="myform form w-100">
-        <div class="logo mb-3">
+        <div class="logo mb-3 d-flex align-items-center">
           <div class="col-md-12 text-center">
             <h1 class="fs-2">Se connecter</h1>
           </div>
+          <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow bg-body-tertiary rounded px-2 py-1">✖</button>
+
         </div>
-        <div *ngIf="errorMsg" class="w-full rounded-mb text-red-500 text-sm/6 font-medium mb-4">
+        <div *ngIf="errorMsg" class="w-full rounded-mb text-red-500 text-sm-6 font-medium mb-4">
           {{ errorMsg }}
         </div>
         <form [formGroup]="form" (ngSubmit)="onSubmitlogin()" class="fs-6">
@@ -51,7 +53,7 @@
           </div>
           <div class="form-group text-center">
             <p class="fst-italic">Vous n'avez pas de compte?
-              <a [routerLink]="['/register']" id="signup" class="fs-6">Enregistrez-vous</a>
+              <a (click)="openRegister()" id="signup" class="fs-6">Enregistrez-vous</a>
             </p>
           </div>
         </form>

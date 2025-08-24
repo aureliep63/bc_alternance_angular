@@ -6,7 +6,7 @@ import {from, NEVER} from "rxjs";
 
 // Ajout de 'register' et potentiellement 'validate-email' (si c'est aussi un endpoint public sans auth)
 // Ou mieux, l'URL de base de votre API d'authentification
-const EXCLUDED_URLS = ['login', 'register', 'validate-email'];
+const EXCLUDED_URLS = ['login', 'register', 'validate-email','resend-code', 'check-email'];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -15,7 +15,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let toHandle = req;
 
   if (!EXCLUDED_URLS.some(url => req.url.includes(url))) {
-    const token = authService.tokenValue; // ✅ Toujours lire via getter
+    const token = authService.tokenValue;
 
     if (token) {
       toHandle = req.clone({
