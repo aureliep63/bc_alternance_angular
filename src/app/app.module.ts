@@ -1,6 +1,5 @@
 import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
@@ -12,12 +11,11 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import {authInterceptor} from "./interceptors/auth/auth.interceptor";
 import { ProfileComponent } from './pages/profile/profile.component';
-import { RoleUserComponent } from './components/reservationsProproLoca/reservationsProprioLoca.component';
-import { ReservationsComponent } from './pages/reservations/reservations.component';
-import { ModalBorneComponent } from './components/modal-borne/modal-borne.component';
+import { RoleUserComponent } from './pages/profile/reservationsProproLoca/reservationsProprioLoca.component';
+import { ModalBorneComponent } from './pages/profile/bornes/modal-borne/modal-borne.component';
 import { Section1MapComponent } from './pages/home/section1Map/section1Map.component';
 import { CarrousselComponent } from './components/layout/carroussel/carroussel.component';
-import { ModalBorneDetailComponent } from './components/modal-borne-detail/modal-borne-detail.component';
+import { ModalBorneDetailComponent } from './pages/profile/bornes/modal-borne-detail/modal-borne-detail.component';
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -48,6 +46,9 @@ import {
 } from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatDivider} from "@angular/material/divider";
+import {MatIcon} from "@angular/material/icon";
+import { InfosComponent } from './pages/profile/infos/infos.component';
+import { BornesComponent } from './pages/profile/bornes/bornes.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -59,7 +60,6 @@ registerLocaleData(localeFr);
     HomeComponent,
     ProfileComponent,
     RoleUserComponent,
-    ReservationsComponent,
     ModalBorneComponent,
     Section1MapComponent,
     CarrousselComponent,
@@ -70,38 +70,41 @@ registerLocaleData(localeFr);
     FooterComponent,
     BorneDetailComponent,
     ReservationRecapComponent,
+    InfosComponent,
+    BornesComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    NgbCollapseModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    NgbTimepickerModule,
-    NgxMaterialTimepickerModule,
-    NgxMaterialTimepickerModule.setOpts('fr-FR'),
-    BrowserAnimationsModule,
-    MatTabsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    MatRadioGroup,
-    MatRadioButton,
-    MatDatepickerToggle,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatDivider,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        NgbCollapseModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        NgbTimepickerModule,
+        NgxMaterialTimepickerModule,
+        NgxMaterialTimepickerModule.setOpts('fr-FR'),
+        BrowserAnimationsModule,
+        MatTabsModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatInputModule,
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideAuth(() => getAuth()),
+        MatRadioGroup,
+        MatRadioButton,
+        MatDatepickerToggle,
+        MatDatepicker,
+        MatDatepickerInput,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatDivider,
+        MatIcon,
 
 
-  ],
+    ],
   providers: [provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync(),  { provide: LOCALE_ID, useValue: 'fr' }, {
     provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
   }],

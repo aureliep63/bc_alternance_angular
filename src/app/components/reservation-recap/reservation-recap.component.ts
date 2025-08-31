@@ -8,6 +8,8 @@ import {UserService} from "../../services/user/user.service";
 import {MatStepper} from "@angular/material/stepper";
 import {ReservationService} from "../../services/reservation/reservation.service";
 import {Router} from "@angular/router";
+import {ModalBorneDetailComponent} from "../../pages/profile/bornes/modal-borne-detail/modal-borne-detail.component";
+import {Borne} from "../../entities/borne.entity";
 
 @Component({
   selector: 'app-reservation-recap',
@@ -22,7 +24,6 @@ export class ReservationRecapComponent {
   imageUrl = environment.IMAGE_URL;
   currentUser$:Observable< User | undefined>
   @ViewChild('stepper') stepper!: MatStepper;
-
   constructor(private router: Router, private userService: UserService, private _formBuilder: FormBuilder, private reservationService: ReservationService) {}
 
   ngOnInit(): void {
@@ -38,6 +39,7 @@ export class ReservationRecapComponent {
   close() {
     this.isOpen = false;
   }
+
 
   calculerHeuresEtMinutes(): { heures: number, minutes: number } {
     const debutString = `${this.filters.dateDebut}T${this.filters.heureDebut}:00`;

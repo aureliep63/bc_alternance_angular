@@ -8,10 +8,10 @@ import {ReservationService} from "../../../services/reservation/reservation.serv
 import {setHours, setMinutes, toDate} from "date-fns";
 import {LieuxService} from "../../../services/lieux/lieux.service";
 import {BorneDto} from "../../../entities/borneDto.entity";
-import {ModalBorneDetailComponent} from "../../../components/modal-borne-detail/modal-borne-detail.component";
+import {ModalBorneDetailComponent} from "../../profile/bornes/modal-borne-detail/modal-borne-detail.component";
 import {BorneDetailComponent} from "./borne-detail/borne-detail.component";
 import {Borne} from "../../../entities/borne.entity";
-import {ModalBorneComponent} from "../../../components/modal-borne/modal-borne.component";
+import {ModalBorneComponent} from "../../profile/bornes/modal-borne/modal-borne.component";
 import {formatDate} from "@angular/common";
 import {GeocodingService} from "../../../services/geocoding/geocoding.service";
 
@@ -20,7 +20,7 @@ delete (L.Icon.Default.prototype as any)._getIconUrl;
 const defaultIcon = new L.Icon.Default();
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'assets/leaflet/MapMarker_Marker_Inside_Green.png',
-  iconUrl: 'assets/leaflet/MapMarker_Marker_Inside_Greenxs.png',
+  iconUrl: 'assets/leaflet/MapMarker_Marker_Inside_Green.png',
   shadowUrl: 'assets/leaflet/marker-shadow.png'
 });
 const unavailableIcon = L.icon({
@@ -99,15 +99,11 @@ export class Section1MapComponent implements  AfterViewInit {
   private initMap(): void {
     this.map = L.map('map', {
       center: [45.7305952, 4.836028],
-      zoom: 5
-    });
-
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      zoom: 5});
+    const tiles = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-
+      minZoom: 3});
     tiles.addTo(this.map);
   }
 
@@ -139,7 +135,7 @@ export class Section1MapComponent implements  AfterViewInit {
 
 
   searchBornes() {
-    // Correctly format the date and time strings for the backend
+    //1. Formatage des dates et heures
     const dateDebutFormatted = this.filters.dateDebut && this.filters.heureDebut
       ? `${this.filters.dateDebut}T${this.filters.heureDebut}:00`
       : null;
@@ -148,22 +144,23 @@ export class Section1MapComponent implements  AfterViewInit {
       ? `${this.filters.dateFin}T${this.filters.heureFin}:00`
       : null;
 
-    // Use a single variable to hold the final list of bornes
     let bornesToDisplay: any[] = [];
 
-    // Case 1: Filter by City and Radius
+   // 2. Cas n°1 : Recherche par ville + rayon
     if (this.filters.ville?.trim()) {
-      // Step A: Call your backend's geocoding proxy first
+      // A. Appel au service de géocodage
       this.geocodingService.getCoordinatesFromBackend(this.filters.ville).subscribe(
         (data: any) => {
           if (data && data.length > 0) {
             const lat = parseFloat(data[0].lat);
             const lon = parseFloat(data[0].lon);
 
-            // Update map display immediately for visual feedback
+            // Modification du cercle
             if (this.currentSearchCircle) {
               this.map.removeLayer(this.currentSearchCircle);
             }
+
+            // B. Affichage d’un cercle sur la carte
             this.currentSearchCircle = L.circle([lat, lon], {
               radius: this.filters.range * 1000,
               color: '#3498db',
@@ -173,7 +170,7 @@ export class Section1MapComponent implements  AfterViewInit {
             }).addTo(this.map);
             this.map.fitBounds(this.currentSearchCircle.getBounds());
 
-            // Step B: Call your main search API with all filters
+            //C. Appel au backend pour récupérer les bornes
             const filtersComplets = {
               ville: this.filters.ville,
               latitude: lat,
@@ -197,9 +194,10 @@ export class Section1MapComponent implements  AfterViewInit {
           console.error('Error retrieving coordinates from backend proxy', err);
         }
       );
-    } else { // Case 2: Filter by Dates/Times only
+    } else {
+      //3. Cas n°2 : Recherche uniquement par dates
       const filtersComplets = {
-        ville: null, // Ensure ville is null to signal a date-only search
+        ville: null,
         rayon: null,
         dateDebut: dateDebutFormatted,
         dateFin: dateFinFormatted,
@@ -235,13 +233,15 @@ export class Section1MapComponent implements  AfterViewInit {
     this.borneService.list().subscribe({
       next: (bornes) => {
         this.bornes = bornes;
-        this.updateMap(bornes);
-      },
+        this.updateMap(bornes);},
       error: (err) => {
-        console.error('Erreur lors du chargement des bornes', err);
+        console.error('' +
+          'Erreur lors du chargement des bornes', err);
       }
     });
   }
+
+
   resetFilters(): void {
     // Réinitialisation de l'objet de filtres
     this.filters = {

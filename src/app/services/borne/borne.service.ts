@@ -8,6 +8,7 @@ import {BorneDto} from "../../entities/borneDto.entity";
 @Injectable({
   providedIn: 'root'
 })
+
 export class BorneService {
 
   private url:string;
@@ -18,9 +19,10 @@ export class BorneService {
 
   list(): Observable<Borne[]>{
     return this.http
-      .get<BorneHttp[]>(this.url)
-      .pipe(
-        map(bornesHttp => bornesHttp.map(b => Borne.fromHttp(b)))
+      .get<BorneHttp[]>(this.url) //envoi une requête HTTP GET à l’URL
+      .pipe( //transforme le résultat avant de le renvoyer
+        map(bornesHttp =>
+          bornesHttp.map(b => Borne.fromHttp(b)))
       )
   }
 

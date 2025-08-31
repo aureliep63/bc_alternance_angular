@@ -1,108 +1,107 @@
 <div class="" id="section">
 
   <div class="filtres">
-  <div class="search-form rounded shadow">
-    <form (ngSubmit)="searchBornes()" #searchForm="ngForm">
+    <div class="search-form rounded shadow">
+      <form (ngSubmit)="searchBornes()" #searchForm="ngForm">
 
-        <h3><i>Recherchez une borne autour de vous</i></h3>
+          <h3><i>Recherchez une borne autour de vous</i></h3>
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Ville</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="filters.ville"
-                name="ville"
-                placeholder="Ex: Lyon"
-              />
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Ville</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="filters.ville"
+                  name="ville"
+                  placeholder="Ex: Lyon"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      <div>
-        <div class="d-flex gap-1">
-          <label for="customRange4" class="form-label pe-md-2">Dans un rayon de </label>
-          <span class="fs-6 ">{{ filters.range }} km</span>
-        </div>
-        <input
-          type="range"
-          class="form-range form-range-track-bg"
-          min="1"
-          max="200"
-          step="10"
-          [(ngModel)]="filters.range" name="range"
-          id="customRange4"
-        />
-      </div>
-        <div class="row ">
-          <div class="col-6">
-            <div class="form-group">
-              <label class="lg">Date de début</label>
-              <label class="xs">Du</label>
-              <input
-                type="date"
-                class="form-control"
-                [(ngModel)]="filters.dateDebut"
-                name="dateDebut" [min]="today"
-                [max]="filters.dateFin"
-              />
-            </div>
+        <div>
+          <div class="d-flex gap-1">
+            <label for="customRange4" class="form-label pe-md-2">Dans un rayon de </label>
+            <span class="fs-6 ">{{ filters.range }} km</span>
           </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label class="lg">Heure de début</label>
-            <input
-                type="time"
-                class="form-control "
-                [(ngModel)]="filters.heureDebut"
-                name="heureDebut" step="900"
-              />
-
-            </div>
-          </div>  </div>
-
+          <input
+            type="range"
+            class="form-range form-range-track-bg"
+            min="1"
+            max="200"
+            step="10"
+            [(ngModel)]="filters.range" name="range"
+            id="customRange4"
+          />
+        </div>
           <div class="row ">
-          <div class="col-6">
-            <div class="form-group ">
-              <label class="lg">Date de fin</label>
-              <label class="xs">Au</label>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="lg">Date de début</label>
+                <label class="xs">Du</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="filters.dateDebut"
+                  name="dateDebut" [min]="today"
+                  [max]="filters.dateFin"
+                />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="lg">Heure de début</label>
               <input
-                type="date"
-                class="form-control "
-                [(ngModel)]="filters.dateFin"
-                name="dateFin" [min]="filters.dateDebut"
-              />
+                  type="time"
+                  class="form-control "
+                  [(ngModel)]="filters.heureDebut"
+                  name="heureDebut" step="900"
+                />
+
+              </div>
+            </div>  </div>
+
+            <div class="row ">
+            <div class="col-6">
+              <div class="form-group ">
+                <label class="lg">Date de fin</label>
+                <label class="xs">Au</label>
+                <input
+                  type="date"
+                  class="form-control "
+                  [(ngModel)]="filters.dateFin"
+                  name="dateFin" [min]="filters.dateDebut"
+                />
+              </div>
             </div>
-          </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label class="lg">Heure de fin</label>
-            <input
-                type="time"
-                class="form-control"
-                [(ngModel)]="filters.heureFin"
-                name="heureFin" step="900"
-              />
+            <div class="col-6">
+              <div class="form-group">
+                <label class="lg">Heure de fin</label>
+              <input
+                  type="time"
+                  class="form-control"
+                  [(ngModel)]="filters.heureFin"
+                  name="heureFin" step="900"
+                />
+              </div>
             </div>
-          </div>
-          </div>
-      <div class="filter-controls">
-        <button type="button"  (click)="searchBornes()" class="btn btn-outline-success shadow bg-body-tertiary rounded recherche ">Rechercher</button>
-        <button type="button" (click)="resetFilters()" class="btn btn-outline-secondary shadow bg-body-tertiary rounded btn-sm ms-2 reset">X</button>
-      </div>
+            </div>
+        <div class="filter-controls">
+          <button type="button"  (click)="searchBornes()" class="btn btn-outline-success shadow bg-body-tertiary rounded recherche ">Rechercher</button>
+          <button type="button" (click)="resetFilters()" class="btn btn-outline-secondary shadow bg-body-tertiary rounded btn-sm ms-2 reset">X</button>
+        </div>
 
 
 
-    </form>
-  </div>
-
-<div class="map-container">
-    <div class="map-frame">
-      <div id="map"></div>
+      </form>
     </div>
 
-</div>
+    <div class="map-container">
+      <div class="map-frame">
+        <div id="map"></div>
+      </div>
+    </div>
 
   </div>
 </div>

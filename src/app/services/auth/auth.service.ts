@@ -62,6 +62,11 @@ export class AuthService {
     );
   }
 
+  deleteUnverifiedUser(email: string): Observable<any> {
+    return this.http.delete(`${this.url}/unverified/${encodeURIComponent(email)}`);
+  }
+
+
   loginWithGoogle() {
     const provider = new GoogleAuthProvider();
 

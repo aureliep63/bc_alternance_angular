@@ -1,0 +1,86 @@
+<div class="container mt-md-5">
+
+
+
+  <button (click)="openModal()" class="btn btn-outline-dark">
+    <i class="bi bi-plus-circle-fill"></i><i>Ajouter une borne</i></button>
+
+  <app-modal-borne (onBorneAdded)="onBorneAdded($event)"></app-modal-borne>
+
+  <div *ngIf="bornes$ | async as bornes">
+    <table class="table mt-md-3" >
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Puissance</th>
+        <th scope="col">Sur pied ?</th>
+        <th scope="col">Adresse</th>
+        <th scope="col">Instruction</th>
+        <th scope="col">Photo</th>
+        <th scope="col">Prix</th>
+        <th scope="col">Actions</th>
+        <th scope="col">Détails</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let borne of bornes; let i = index">
+        <th scope="row">{{i + 1}}</th>
+
+
+        <td>{{ borne.puissance }}kw</td>
+        <td>{{ borne.surPied ? 'Oui' : 'Non' }}</td>
+        <ng-container *ngIf="borne.lieux">
+          <td>{{ borne.lieux.ville}}</td>
+        </ng-container>
+        <td>
+          {{ borne.instruction.length > 20
+          ? (borne.instruction | slice:0:20) + '...'
+          : borne.instruction }}
+        </td>
+        <td>
+          <img src="{{imageUrl}}{{borne.photo}}" alt="{{borne.nom}}" >
+        </td>
+        <td>{{ borne.prix }}€/h</td>
+        <td>
+          <button (click)="modalBorne.openForEdit(toBorneDto(borne))" class="btn btn-outline-warning">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+
+          | <button (click)="openDeleteModal(borne.id)" class="btn btn-outline-danger">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+        </td>
+        <td>
+          <button (click)="viewDetails(toBorneDto(borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye"></i>Voir</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!(bornes$ | async)?.length">
+    <p>Vous de disposez pas de Bornes</p>
+  </div>
+</div>
+
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmer la suppression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer cette borne ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirmDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-borne-detail #modalDetails></app-modal-borne-detail>

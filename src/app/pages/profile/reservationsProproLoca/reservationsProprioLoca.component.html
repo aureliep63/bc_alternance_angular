@@ -1,5 +1,5 @@
-<section>
-  <ul class="nav nav-tabs">
+<section class="container mt-md-5">
+  <ul class="nav nav-tabs text-center">
     <li class="nav-item">
       <a class="nav-link"
          [class.active]="activeTab === 'locataire'"
@@ -17,45 +17,45 @@
   </ul>
 
   <div *ngIf="activeTab === 'locataire'">
-    <p>Mes demandes de reservation</p>
+    <p>Mes demandes de réservation</p>
 
     <div *ngIf="locataireResa$ | async as reservations;">
       <table class="table" >
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Date de Début</th>
-            <th scope="col">Heure de début</th>
-            <th scope="col">Date de fin</th>
-            <th scope="col">Heure de fin</th>
-            <th scope="col">Ville borne</th>
+            <th scope="col">Adresse</th>
+            <th scope="col">Début</th>
+            <th scope="col">Fin</th>
             <th scope="col">Prix</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
-            <th scope="col">Détail</th>
+            <th scope="col">PDF</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let resa of reservations">
             <th scope="row">{{ resa.id }}</th>
-            <td>{{ resa.dateDebut | date: 'yyyy-MM-dd'  }}</td>
-            <td>{{ resa.dateDebut | date: 'HH:mm'  }}</td>
-            <td>{{ resa.dateFin | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ resa.dateFin | date: 'HH:mm' }}</td>
             <ng-container *ngIf="resa.borne.lieux">
-              <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td>
+              <td>{{ resa.borne.lieux.adresse || 'Non défini' }}
+              <br> {{ resa.borne.lieux.ville || 'Non défini' }}_{{ resa.borne.lieux.codePostal || 'Non défini' }}</td>
             </ng-container>
+            <td>{{ resa.dateDebut | date: 'dd-MM-yyyy'  }}
+            {{ resa.dateDebut | date: 'HH:mm'  }}</td>
+            <td>{{ resa.dateFin | date: 'dd-MM-yyyy' }}
+            {{ resa.dateFin | date: 'HH:mm' }}</td>
+
+              <td>{{ calculerPrixTotal(resa) | currency:'EUR':'symbol':'1.2-2':'fr' }}</td>
+
             <td>
               <ng-container *ngIf="editStatusId !== resa.id">
                 {{ resa.status }}
               </ng-container>
             </td>
-            <ng-container *ngIf="currentBorneUser$ | async as borneMap">
-              <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
-            </ng-container>
-
-            <td> <button (click)="cancelReservation(resa)" class="btn btn-sm btn-warning">Annuler</button>| <a [routerLink]="['/borne']">Voir</a></td>
-            <td></td>
+            <td> <button (click)="cancelReservation(resa)" class="btn btn-sm btn-danger">x Annuler</button> |
+              <button (click)="viewDetails(toBorneDto(resa.borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye"></i>Voir</button>
+              </td>
+            <td><i class="bi bi-filetype-pdf fs-3"></i></td>
 
           </tr>
         </tbody>
@@ -72,39 +72,38 @@
     <div *ngIf="proprioResa$ | async as reservations;">
      <table class="table" >
         <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date de Début</th>
-            <th scope="col">Heure de début</th>
-            <th scope="col">Date de fin</th>
-            <th scope="col">Heure de fin</th>
-            <th scope="col">Ville borne</th>
-            <th scope="col">Prix</th>
-            <th scope="col">Statut</th>
-            <th scope="col">Actions</th>
-            <th scope="col">Détail</th>
-
-          </tr>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Adresse</th>
+          <th scope="col">Début</th>
+          <th scope="col">Fin</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+          <th scope="col">PDF</th>
+        </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let resa of reservations">
-            <tr >
+            <tr>
               <th scope="row">{{ resa.id }}</th>
-              <td>{{ resa.dateDebut | date: 'yyyy-MM-dd'}}</td>
-              <td>{{ resa.dateDebut | date: 'HH:mm' }}</td>
-              <td>{{ resa.dateFin | date: 'yyyy-MM-dd'}}</td>
-              <td>{{ resa.dateFin | date: 'HH:mm'  }}</td>
+
               <ng-container *ngIf="resa.borne.lieux">
-                <td>{{ resa.borne.lieux.ville || 'Non défini' }}</td>
+                <td>{{ resa.borne.lieux.adresse || 'Non défini' }}
+                <br>{{ resa.borne.lieux.ville || 'Non défini' }}_{{ resa.borne.lieux.codePostal || 'Non défini' }}
+                </td>
               </ng-container>
-              <ng-container *ngIf="currentBorneResa$ | async as borneMap">
-                <td>{{borneMap.get(resa.id)?.prix}} €/h</td>
-              </ng-container>
+              <td>{{ resa.dateDebut | date: 'dd-MM-yyyy'}}
+              {{ resa.dateDebut | date: 'HH:mm' }}</td>
+              <td>{{ resa.dateFin | date: 'dd-MM-yyyy'}}
+              {{ resa.dateFin | date: 'HH:mm'  }}</td>
+
+                <td>{{ calculerPrixTotal(resa) | currency:'EUR':'symbol':'1.2-2':'fr' }}</td>
 
               <td>
                 <ng-container *ngIf="editStatusId !== resa.id">
                   {{ resa.status }}
-                  <button (click)="editStatusId = resa.id"><i class="fa-solid fa-pen-to-square"></i></button>
+                  <button (click)="editStatusId = resa.id" class="btn btn-outline-dark"><i class="fa-solid fa-pen-to-square"></i></button>
                 </ng-container>
 
                 <ng-container *ngIf="editStatusId === resa.id">
@@ -118,9 +117,10 @@
                 </ng-container>
               </td>
 
-              <td> <i class="fa-solid fa-trash-can"></i> | <a [routerLink]="['/borne']">Voir</a></td>
-              <td></td>
-              <td ></td>
+              <td> <button  class="btn btn-outline-danger"><i class="fa-regular fa-trash-can"></i></button> |
+                <button (click)="viewDetails(toBorneDto(resa.borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye"></i>Voir</button>
+              </td>
+              <td><i class="bi bi-filetype-pdf fs-3"></i></td>
             </tr>
           </ng-container>
         </tbody>

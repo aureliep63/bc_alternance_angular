@@ -1,17 +1,10 @@
 export const environment = {
-
-  // https://api.escuelajs.co => host
-  // /api/v1 => version
-  // /auth => resource (type)
-  // /login => resource identifier
-  // /email=...&?password=...&?remember=... => query string
-
   API_URL: 'http://localhost:8080',
   API_RESOURCES:{
+    BORNES:'/bornes',
     AUTH:'/auth',
     USERS:'/utilisateurs',
     MEDIAS:'/medias',
-    BORNES:'/bornes',
     LIEUX:'/lieux',
     RESERVATIONS:'/reservations'
   },

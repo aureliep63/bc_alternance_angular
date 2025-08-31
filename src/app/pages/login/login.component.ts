@@ -95,8 +95,8 @@ export class LoginComponent implements OnInit{
     } else {
       // Ouvre une modale pour les versions desktop
       this.dialog.open(RegisterComponent, {
-        width: '1200px',
-        height:'650px',
+        width: '1100px',
+        height:'auto',
         panelClass: 'register-modal-panel'
       });
     }

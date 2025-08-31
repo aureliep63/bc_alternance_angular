@@ -1,7 +1,9 @@
 p{
-  font-size:small;
+  font-size:14px
 }
-
+h1,h2,h4{
+  font-family: 'Kaushan Script', cursive;
+}
 .success-message {
   color: green;
   margin-top: 10px;
@@ -27,15 +29,90 @@ p{
 
 }
 
+::ng-deep .mat-mdc-dialog-surface {
+  overflow: hidden !important;  // supprime les scrollbars
+  max-width: 90vw !important;   // limite la largeur
+  max-height: 90vh !important;  // limite la hauteur
+  border-radius: 12px;          // optionnel pour arrondir
+}
+
+.mat-horizontal-content-container {
+  overflow: hidden !important;
+  padding: 0 24px !important;
+}
+
 .registration-container{
-  .btn-close:hover{
-    color: white !important ;
-  }
-  .inscription{
-    gap: 300px;
-    margin-left: 400px;
-    h2{
-      font-size: 28px;
+
+  .row{
+    p{
+      font-size: 18px;
     }
+    h4{
+      font-size: 24px;
+      color: #365C36;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    .col-md-2{
+      padding: 25px 30px;
+      img{
+        width: 24vw;
+      }
+    }
+    .col-md-10{
+      .inscription{
+        gap: 300px;
+        margin-left: 30%;
+        text-align: center;
+        h2{
+          font-size: 38px;
+        }
+        .fa-google{
+          font-size: 18px;
+        }
+        .btn-close{
+          font-size: 22px;
+        }
+        .btn-close:hover{
+          color: white !important ;
+        }
+      }
+
+
+    }
+    .mat-mdc-form-field{
+     width: 100%;
+    }
+
+    .paiement{
+      .form-check{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 22px;
+        label{
+          font-size: 20px;
+        }
+
+        .cb{
+          font-size: 14px;
+          padding-right: 6px;
+        }
+
+      }
+
+      }
+
+    .code-digit {
+      width: 40px;
+      height: 50px;
+      text-align: center;
+      font-size: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+
   }
+
 }

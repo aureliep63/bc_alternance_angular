@@ -9,13 +9,13 @@ import {Lieux, LieuxHttp} from "../../entities/lieux.entity";
   providedIn: 'root'
 })
 export class LieuxService {
-
   private url:string;
-
   constructor(private http:HttpClient) {
     this.url = environment.API_URL + environment.API_RESOURCES.LIEUX
   }
-
+  create(lieu: LieuxHttp): Observable<LieuxHttp> {
+    return this.http.post<LieuxHttp>(this.url, lieu);
+  }
   list(): Observable<{
     id: number | undefined;
     adresse: string;
@@ -38,7 +38,5 @@ export class LieuxService {
       )
   }
 
-  create(lieu: LieuxHttp): Observable<LieuxHttp> {
-    return this.http.post<LieuxHttp>(this.url, lieu);
-  }
+
 }

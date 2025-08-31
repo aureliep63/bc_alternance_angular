@@ -1,0 +1,120 @@
+<div class="container">
+  <section class="text-center text-lg-start">
+    <div class="container" *ngIf="currentUser$ | async as currentUser">
+      <div class="row">
+        <div class="container py-1 mt-5 ms-1">
+          <div class="row g-0 align-items-center">
+            <div class="mb-5 mb-lg-0">
+              <div class="cascading-right ms-5 me-5"
+                   style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
+                <div class="card-body p-2 shadow-5 text-center shadow p-3 mb-5 bg-body-tertiary rounded">
+
+                  <!-- NOM / PRÉNOM + ICÔNE -->
+                  <div class="row mb-2">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center nomCmd">
+                      <div class="form-outline fs-3 text-start w-100">
+                        <ng-container *ngIf="!editMode; else editName">
+                          {{ currentUser.nom }} {{ currentUser.prenom }}
+                        </ng-container>
+                        <ng-template #editName >
+                          <div class="d-flex">
+                            <input class="form-control " [(ngModel)]="userEditable.nom" placeholder="Nom">
+                            <input class="form-control" [(ngModel)]="userEditable.prenom" placeholder="Prénom">
+                          </div>
+                        </ng-template>
+                      </div>
+
+                      <div class="form-outline fs-3 ms-3 ">
+                        <i class="fa-solid fa-pen-to-square text-dark"  style="cursor: pointer" *ngIf="!editMode" (click)="enableEdit(currentUser)"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- INFOS -->
+                  <div class="text-center mb-3 fs-4 info">Informations:</div>
+
+                  <div class="row mb-4">
+                    <!-- Téléphone -->
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Numéro de téléphone:</h6>
+                      <ng-container *ngIf="!editMode; else editTel">
+                        <p>{{ currentUser.telephone }}</p>
+                      </ng-container>
+                      <ng-template #editTel>
+                        <input class="form-control" [(ngModel)]="userEditable.telephone">
+                      </ng-template>
+                    </div>
+
+                    <!-- Date de naissance -->
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Date de naissance:</h6>
+                      <ng-container *ngIf="!editMode; else editNaiss">
+                        <p>{{ currentUser.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
+                      </ng-container>
+                      <ng-template #editNaiss>
+                        <input type="date" class="form-control" [(ngModel)]="dateDeNaissanceString">
+                      </ng-template>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Adresse Email:</h6>
+                      <ng-container *ngIf="!editMode; else editMail">
+                        <p>{{ currentUser.email }}</p>
+                      </ng-container>
+                      <ng-template #editMail>
+                        <input class="form-control" [(ngModel)]="userEditable.email">
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <!-- Adresse -->
+                  <div class="row mb-4">
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Adresse Postale:</h6>
+                      <ng-container *ngIf="!editMode; else editRue">
+                        <p>{{ currentUser.nomRue }}</p>
+                      </ng-container>
+                      <ng-template #editRue>
+                        <input class="form-control" [(ngModel)]="userEditable.nomRue">
+                      </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Code Postal:</h6>
+                      <ng-container *ngIf="!editMode; else editCP">
+                        <p>{{ currentUser.codePostal }}</p>
+                      </ng-container>
+                      <ng-template #editCP>
+                        <input class="form-control" [(ngModel)]="userEditable.codePostal">
+                      </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                      <h6 class="fst-italic">Ville:</h6>
+                      <ng-container *ngIf="!editMode; else editVille">
+                        <p>{{ currentUser.ville }}</p>
+                      </ng-container>
+                      <ng-template #editVille>
+                        <input class="form-control" [(ngModel)]="userEditable.ville">
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <!-- Bouton d'enregistrement -->
+                  <div *ngIf="editMode" class="text-center mt-3">
+                    <button class="btn btn-outline-success me-2" (click)="saveEdit()">Modifier</button>
+                    <button class="btn btn-outline-dark" (click)="cancelEdit()"> <i class="fa-solid fa-xmark " ></i></button>
+
+
+                  </div>
+
+                </div> <!-- card-body -->
+              </div> <!-- cascading -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

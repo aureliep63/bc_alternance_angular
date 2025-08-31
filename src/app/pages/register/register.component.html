@@ -3,144 +3,285 @@
 <div class="registration-container">
 
   <div class="row">
-    <div class="col-md-2 d-md-flex align-items-center h-100">
+    <div class="col-md-2 d-md-flex align-items-center">
       <img src="assets/Elec-login.webp" alt="Illustration" class="object-fit-cover">
     </div>
-    <div class="col-md-10 d-flex flex-column align-items-center px-md-0">
+    <div class="col-md-10 d-flex flex-column align-items-center justify-content-center px-md-0">
 
-      <div class="inscription d-flex align-items-center ">
-        <h2 class="fst-italic m-md-4">Inscription</h2>
-        <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow bg-body-tertiary rounded px-2 py-1">✖</button>
+      <div class="inscription d-flex align-items-center mt-md-4">
+        <div class="d-flex flex-column">
+          <h2 class="">Je m'inscris</h2>
+          <p class="mb-0">Ou s'inscrire avec Google <i class="fa-brands fa-google"></i></p>
+        </div>
+        <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow  rounded px-2 py-1">✖</button>
       </div>
-      <mat-stepper labelPosition="bottom"  #stepper>
+      <mat-stepper labelPosition="bottom"  #stepper [linear]="true">
 
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Informations <br> personnelles</ng-template>
-            <mat-form-field >
-              <mat-label>Nom</mat-label>
-              <input matInput formControlName="nom" required>
-              <mat-error *ngIf="firstFormGroup.get('nom')?.invalid && firstFormGroup.get('nom')?.touched">
-                Le nom est requis.
-              </mat-error>
-            </mat-form-field>
 
-            <mat-form-field >
-              <mat-label>Prénom</mat-label>
-              <input matInput formControlName="prenom" required>
-              <mat-error *ngIf="firstFormGroup.get('prenom')?.invalid && firstFormGroup.get('prenom')?.touched">
-                Le prénom est requis.
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field >
-              <mat-label>Date de Naissance</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="dateDeNaissance">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email">
-              <mat-error *ngIf="firstFormGroup.get('email')?.hasError('required')">
-                L'email est requis.
-              </mat-error>
-              <mat-error *ngIf="firstFormGroup.get('email')?.hasError('email') && !firstFormGroup.get('email')?.hasError('required')">
-                Veuillez saisir un email valide.
-              </mat-error>
-              <mat-error *ngIf="firstFormGroup.get('email')?.hasError('emailExists')">
-                Cet email est déjà utilisé.
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field >
-              <mat-label>Téléphone</mat-label>
-              <input matInput type="tel" formControlName="telephone" required>
-              <mat-error *ngIf="firstFormGroup.get('telephone')?.invalid && firstFormGroup.get('telephone')?.touched">
-                Le téléphone est requis.
-              </mat-error>
-            </mat-form-field>
-
-            <div>
-              <button mat-raised-button color="primary" matStepperNext [disabled]="firstFormGroup.invalid || requestOngoing">Suivant</button>
+            <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field >
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required>
+                    <mat-error *ngIf="firstFormGroup.get('nom')?.invalid && firstFormGroup.get('nom')?.touched">
+                      Le nom est requis.
+                    </mat-error>
+                  </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field >
+                  <mat-label>Prénom</mat-label>
+                  <input matInput formControlName="prenom" required>
+                  <mat-error *ngIf="firstFormGroup.get('prenom')?.invalid && firstFormGroup.get('prenom')?.touched">
+                    Le prénom est requis.
+                  </mat-error>
+                </mat-form-field>
+              </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field >
+                  <mat-label>Date de Naissance</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="dateDeNaissance">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-error *ngIf="firstFormGroup.get('email')?.hasError('required')">
+                      L'email est requis.
+                    </mat-error>
+                    <mat-error *ngIf="firstFormGroup.get('email')?.hasError('email') && !firstFormGroup.get('email')?.hasError('required')">
+                      Veuillez saisir un email valide.
+                    </mat-error>
+                    <mat-error *ngIf="firstFormGroup.get('email')?.hasError('emailExists')">
+                      Cet email est déjà utilisé.
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field >
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput type="tel" formControlName="telephone" required>
+                  <mat-error *ngIf="firstFormGroup.get('telephone')?.invalid && firstFormGroup.get('telephone')?.touched">
+                    Le téléphone est requis.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <div class=" text-center">
+                  <button mat-raised-button color="primary" matStepperNext [disabled]="firstFormGroup.invalid || requestOngoing" >Suivant</button>
+                  <p>Vous avez un compte? <button mat-button color="sucess" (click)="openLogin()"> Connectez-vous!</button>
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </form>
         </mat-step>
 
         <mat-step [stepControl]="secondFormGroup">
           <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Adresse</ng-template>
-            <mat-form-field appearance="outline">
-              <mat-label>Nom de rue</mat-label>
-              <input matInput formControlName="nomRue" required>
-              <mat-error *ngIf="secondFormGroup.get('nomRue')?.invalid && secondFormGroup.get('nomRue')?.touched">
-                Le nom de la rue est requis.
-              </mat-error>
-            </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Code Postal</mat-label>
-              <input matInput formControlName="codePostal" required>
-              <mat-error *ngIf="secondFormGroup.get('codePostal')?.invalid && secondFormGroup.get('codePostal')?.touched">
-                Le code postal doit contenir 5 chiffres.
-              </mat-error>
-            </mat-form-field>
+            <div class="row">
 
-            <mat-form-field appearance="outline">
-              <mat-label>Ville</mat-label>
-              <input matInput formControlName="ville" required>
-              <mat-error *ngIf="secondFormGroup.get('ville')?.invalid && secondFormGroup.get('ville')?.touched">
-                La ville est requise.
-              </mat-error>
-            </mat-form-field>
+              <div class="col-md-12">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nom de rue</mat-label>
+                  <input matInput formControlName="nomRue" required>
+                  <mat-error *ngIf="secondFormGroup.get('nomRue')?.invalid && secondFormGroup.get('nomRue')?.touched">
+                    Le nom de la rue est requis.
+                  </mat-error>
+                </mat-form-field>
+              </div>
 
-            <div>
-              <button mat-button matStepperPrevious>Précédent</button>
-              <button mat-raised-button color="primary" matStepperNext [disabled]="secondFormGroup.invalid || requestOngoing">Suivant</button>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Code Postal</mat-label>
+                  <input matInput formControlName="codePostal" required>
+                  <mat-error *ngIf="secondFormGroup.get('codePostal')?.invalid && secondFormGroup.get('codePostal')?.touched">
+                    Le code postal doit contenir 5 chiffres.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ville</mat-label>
+                    <input matInput formControlName="ville" required>
+                    <mat-error *ngIf="secondFormGroup.get('ville')?.invalid && secondFormGroup.get('ville')?.touched">
+                      La ville est requise.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              <div class="col-md-6">
+                <div class=" text-center">
+                  <button mat-button matStepperPrevious >Précédent</button>
+                  <button mat-raised-button color="primary" matStepperNext [disabled]="secondFormGroup.invalid || requestOngoing" >Suivant</button>
+                </div>
+              </div>
+
             </div>
           </form>
         </mat-step>
 
         <mat-step [stepControl]="thirdFormGroup">
           <ng-template matStepLabel>Moyen de paiement</ng-template>
-          <div>
-            <button mat-button matStepperPrevious>Précédent</button>
-            <button mat-raised-button color="primary" matStepperNext >Suivant</button>
-          </div>
+
+          <form [formGroup]="thirdFormGroup" class="paiement d-flex flex-column align-self-start mb-md-3">
+
+            <h3 class="fst-italic">Remplissez le ou les moyens de paiement qui seront enregistrés dans votre profil.</h3>
+
+            <!-- Paypal -->
+            <div class="form-check form-check-inline mb-3">
+              <label class="form-label">
+                <i class="bi bi-paypal me-1 text-success-emphasis"></i> Paypal:
+              </label>
+              <div class="d-flex flex-column w-50">
+                <input type="email"
+                       class="form-control"
+                       formControlName="paypal"
+                       [ngClass]="{'is-invalid': thirdFormGroup.get('paypal')?.invalid && thirdFormGroup.get('paypal')?.touched}"
+                       placeholder="Email Paypal">
+                <div class="invalid-feedback">
+                  Veuillez saisir un email Paypal valide.
+                </div>
+              </div>
+            </div>
+
+            <!-- Carte bancaire -->
+            <div class="form-check form-check-inline mb-1">
+              <label class="form-label"><i class="bi bi-credit-card me-1 text-success-emphasis"></i> Carte Bancaire</label>
+              <div class="d-flex flex-column w-50">
+                <input type="text"
+                       class="form-control"
+                       id="cbNumber"
+                       formControlName="cbNumber"
+                       [ngClass]="{'is-invalid': thirdFormGroup.get('cbNumber')?.invalid && thirdFormGroup.get('cbNumber')?.touched}"
+                       placeholder="XXXX XXXX XXXX XXXX">
+                <div class="invalid-feedback">
+                  Le numéro doit contenir exactement 16 chiffres.
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex mb-3 justify-content-end">
+              <div class="me-3 w-25 d-flex align-items-center">
+                <label class="form-label cb">Date d'exp.</label>
+                <input type="date"
+                       class="form-control"
+                       formControlName="cbDate"
+                       [min]="today"
+                       [ngClass]="{'is-invalid': thirdFormGroup.get('cbDate')?.invalid && thirdFormGroup.get('cbDate')?.touched}">
+                <div class="invalid-feedback">
+                  La date doit être aujourd'hui ou ultérieure.
+                </div>
+              </div>
+
+              <div class="w-25 d-flex align-items-center">
+                <label class="form-label cb">CVV</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="cbCvv"
+                       [placeholder]="thirdFormGroup.get('cbCvv')?.hasError('pattern') ? '⚠️ 3 chiffres requis' : 'XXX'"
+                       [ngClass]="{'is-invalid': thirdFormGroup.get('cbCvv')?.invalid && thirdFormGroup.get('cbCvv')?.touched}">
+                <div class="invalid-feedback">
+                  Le CVV doit contenir exactement 3 chiffres.
+                </div>
+              </div>
+            </div>
+
+            <!-- Google Pay -->
+            <div class="form-check form-check-inline mb-3">
+              <label class="form-label">
+                <i class="fa-brands fa-google-pay me-1 text-success-emphasis"></i> Google Pay
+              </label>
+              <div class="d-flex flex-column w-50">
+                <input type="email"
+                       class="form-control"
+                       formControlName="googlePay"
+                       [ngClass]="{'is-invalid': thirdFormGroup.get('googlePay')?.invalid && thirdFormGroup.get('googlePay')?.touched}"
+                       placeholder="Email Google Pay">
+                <div class="invalid-feedback">
+                  Veuillez saisir un email Google Pay valide.
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="d-flex align-items-center mt-3">
+              <button mat-button matStepperPrevious class="me-3">Précédent</button>
+              <button mat-raised-button color="primary" matStepperNext
+                      [disabled]="thirdFormGroup.invalid || requestOngoing">
+                Suivant
+              </button>
+              <div *ngIf="thirdFormGroup.hasError('noPayment') && thirdFormGroup.touched" class="text-danger ms-3">
+                Veuillez renseigner au moins un moyen de paiement.
+              </div>
+            </div>
+          </form>
         </mat-step>
+
+
 
         <mat-step [stepControl]="fourthFormGroup">
           <form [formGroup]="fourthFormGroup">
             <ng-template matStepLabel>Mot de passe <br> & Récapitulatif</ng-template>
+            <div class="recap d-flex flex-row mb-md-2">
+              <div class="d-flex flex-column justify-content-around col-md-6 ">
+                <h4>Récapitulatif </h4>
+                <div class="d-flex justify-content-evenly">
+                  <p> {{ firstFormGroup.value?.nom }} {{ firstFormGroup.value?.prenom }}</p>
+                  <p>{{ firstFormGroup.value?.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="d-flex justify-content-evenly">
+                  <p> {{ firstFormGroup.value?.email }}</p>
+                  <p>{{ firstFormGroup.value?.telephone}}</p>
+                </div>
+                <div class="d-flex flex-column ">
+                  <p class="align-self-center">{{ secondFormGroup.value?.nomRue }}</p>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Mot de passe</mat-label>
-              <input matInput type="password" formControlName="motDePasse" required>
-              <mat-error *ngIf="fourthFormGroup.get('motDePasse')?.invalid && fourthFormGroup.get('motDePasse')?.touched">
-                Le mot de passe doit contenir au moins 6 caractères.
-              </mat-error>
-            </mat-form-field>
+                  <div class="d-flex justify-content-evenly">
+                    <p>{{ secondFormGroup.value?.codePostal }}</p>
+                  <p> {{ secondFormGroup.value?.ville }}</p>
+                  </div>
+                </div>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Confirmer le mot de passe</mat-label>
-              <input matInput type="password" formControlName="confirmMotDePasse" required>
-              <mat-error *ngIf="fourthFormGroup.get('confirmMotDePasse')?.invalid && fourthFormGroup.get('confirmMotDePasse')?.touched">
-                La confirmation est requise.
-              </mat-error>
-            </mat-form-field>
-            <mat-error *ngIf="fourthFormGroup.hasError('mismatch') && fourthFormGroup.get('confirmMotDePasse')?.touched">
-              Les mots de passe ne correspondent pas.
-            </mat-error>
+              </div>
 
-            <mat-divider></mat-divider>
-            <br>
+              <div class="d-flex flex-column col-md-6">
+                <h4>Mot de Passe </h4>
+                <mat-form-field appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput type="password" formControlName="motDePasse" required>
+                  <mat-error *ngIf="fourthFormGroup.get('motDePasse')?.invalid && fourthFormGroup.get('motDePasse')?.touched">
+                    Le mot de passe doit contenir au moins 6 caractères.
+                  </mat-error>
+                </mat-form-field>
 
-            <h3>Récapitulatif de votre inscription</h3>
-            <p>Nom: {{ firstFormGroup.value?.nom }}</p>
-            <p>Prénom: {{ firstFormGroup.value?.prenom }}</p>
-            <p>Email: {{ firstFormGroup.value?.email }}</p>
-            <p>Adresse: {{ secondFormGroup.value?.nomRue }}, {{ secondFormGroup.value?.codePostal }} {{ secondFormGroup.value?.ville }}</p>
+                <mat-form-field appearance="outline">
+                  <mat-label>Confirmer le mot de passe</mat-label>
+                  <input matInput type="password" formControlName="confirmMotDePasse" required>
+                  <mat-error *ngIf="fourthFormGroup.get('confirmMotDePasse')?.invalid && fourthFormGroup.get('confirmMotDePasse')?.touched">
+                    La confirmation est requise.
+                  </mat-error>
+                </mat-form-field>
+                <mat-error *ngIf="fourthFormGroup.hasError('mismatch') && fourthFormGroup.get('confirmMotDePasse')?.touched">
+                  Les mots de passe ne correspondent pas.
+                </mat-error>
+
+              </div>
+            </div>
 
             <div>
               <button mat-button matStepperPrevious>Précédent</button>
@@ -151,39 +292,44 @@
 
         <mat-step [stepControl]="validationFormGroup">
           <ng-template matStepLabel>Code de validation</ng-template>
-          <p>Un code de validation a été envoyé à l'adresse **{{ firstFormGroup.value?.email }}**. Veuillez le saisir ci-dessous.</p>
+          <div class="text-center">
+            <p>Un code de validation a été envoyé à l'adresse <b>{{ firstFormGroup.value?.email }}</b>.</p>
+            <p>Veuillez le saisir ci-dessous.</p>
 
-          <form [formGroup]="validationFormGroup">
-            <mat-form-field appearance="outline">
-              <mat-label>Code de validation</mat-label>
-              <input matInput type="text" formControlName="code" required>
-              <mat-error *ngIf="validationFormGroup.get('code')?.invalid && validationFormGroup.get('code')?.touched">
-                Le code de validation est requis.
-              </mat-error>
-              <mat-error *ngIf="validationFormGroup.get('code')?.hasError('apiError')">
-                {{ validationFormGroup.get('code')?.errors?.['apiError'] }}
-              </mat-error>
-            </mat-form-field>
-          </form>
-          <div *ngIf="resendMessage" [ngClass]="{'success-message': !isResendError, 'error-message': isResendError}">
-            {{ resendMessage }}
+            <form [formGroup]="validationFormGroup" class="d-flex gap-2 justify-content-center">
+              <input *ngFor="let ctrl of codeControls; let i = index"
+                     type="text"
+                     maxlength="1"
+                     class="code-digit mat-input-element"
+                     [formControlName]="ctrl"
+                     (input)="moveFocus($event, i)"
+                     (keydown.backspace)="prevFocus($event, i)">
+            </form>
+
+            <div *ngIf="validationFormGroup.invalid && validationFormGroup.touched" class="text-danger mt-2">
+              Veuillez saisir le code complet.
+            </div>
           </div>
-          <p *ngIf="attemptsLeft > 0">Il vous reste **{{ attemptsLeft }} tentative(s)**.</p>
-          <p *ngIf="attemptsLeft === 0" class="error-message">Vous avez épuisé vos tentatives.
-            <button mat-button color="warn" (click)="resendCode()" [disabled]="validationFormGroup.invalid || requestOngoing">Renvoyer un nouveau code</button>
-          </p>
 
-          <div>
+          <div class="mt-3">
             <button mat-button matStepperPrevious>Précédent</button>
-            <button mat-raised-button color="primary" [disabled]="validationFormGroup.invalid || attemptsLeft <= 0 || requestOngoing" (click)="validateEmail()">Valider</button>
+            <button mat-raised-button color="primary" (click)="validateEmail()"
+                    [disabled]="validationFormGroup.invalid || attemptsLeft <= 0 || requestOngoing">
+              Valider
+            </button>
           </div>
         </mat-step>
 
 
+
         <mat-step>
           <ng-template matStepLabel>Terminé</ng-template>
-          <a mat-button [routerLink]="['/login']">Se connecter</a>
+          <div class="text-center">
+            <h4>Bienvenue  {{ firstFormGroup.value?.prenom }} !  </h4>
 
+            <p> Vous pouvez vous connecter et profiter de nos offres !  </p>
+            <a mat-button color="primary" (click)="openLogin()" >Se connecter</a>
+          </div>
         </mat-step>
 
       </mat-stepper>

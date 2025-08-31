@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {Borne} from "../../entities/borne.entity";
-import {AuthService} from "../../services/auth/auth.service";
-import {BorneService} from "../../services/borne/borne.service";
-import {UserService} from "../../services/user/user.service";
-import {Lieux, LieuxHttp} from '../../entities/lieux.entity';
-import {LieuxService} from "../../services/lieux/lieux.service";
+import {Borne} from "../../../../entities/borne.entity";
+import {AuthService} from "../../../../services/auth/auth.service";
+import {BorneService} from "../../../../services/borne/borne.service";
+import {UserService} from "../../../../services/user/user.service";
+import {Lieux, LieuxHttp} from '../../../../entities/lieux.entity';
+import {LieuxService} from "../../../../services/lieux/lieux.service";
 import {BehaviorSubject, filter, Observable, switchMap, take} from "rxjs";
-import {BorneDto} from "../../entities/borneDto.entity";
-import {environment} from "../../../environments/environment";
-import {User} from "../../entities/user.entity";
+import {BorneDto} from "../../../../entities/borneDto.entity";
+import {environment} from "../../../../../environments/environment";
+import {User} from "../../../../entities/user.entity";
 
 
 @Component({
@@ -62,13 +62,8 @@ export class ModalBorneComponent {
   @Output() onBorneAdded = new EventEmitter<BorneDto>();
 
   constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private borneService: BorneService,
-    private lieuxService: LieuxService,
-  ) {
+    private userService: UserService, private borneService: BorneService, private lieuxService: LieuxService,) {
     this.currentUser$ = this.userService.currentUser$;
-
   }
 
   // Nouveau lieu en cours de création
@@ -130,7 +125,6 @@ export class ModalBorneComponent {
       this.saveBorne();
       return;
     }
-
     // Sinon, si nouveau lieu valide
     if (this.newLieuIsValid()) {
       this.lieuxService.create(this.newLieu).subscribe({ // Passez l'objet newLieu ici

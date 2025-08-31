@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {BorneDto} from "../../entities/borneDto.entity";
-import {environment} from "../../../environments/environment";
+import {BorneDto} from "../../../../entities/borneDto.entity";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-modal-borne-detail',

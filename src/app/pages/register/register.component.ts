@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, inject, Optional} from '@angular/core';
-import {AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import {UserService} from "../../services/user/user.service";
 import {UserHttp} from "../../entities/user.entity";
@@ -10,14 +10,16 @@ import {map, Observable, of, switchMap, timer} from "rxjs";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LoginComponent} from "../login/login.component";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {formatDate} from "@angular/common";
 
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
-
+  value = 'Clear me';
   firstFormGroup!: FormGroup; // Informations personnelles
   secondFormGroup!: FormGroup; // Adresse
   thirdFormGroup!: FormGroup; // Paiement (simulé)
@@ -32,6 +34,9 @@ export class RegisterComponent implements OnInit {
   isMobile = false;
   isOpen = false;
   @ViewChild('stepper') stepper!: MatStepper;
+  today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  codeControls: string[] = ['digit0', 'digit1', 'digit2', 'digit3', 'digit4', 'digit5'];
+  emailValidated = false;
 
   constructor(
     private fb: FormBuilder,
@@ -65,21 +70,33 @@ export class RegisterComponent implements OnInit {
     });
 
     // Étape 3 : Paiement (simulé, pas de FormControls nécessaires)
-    this.thirdFormGroup = this.fb.group({});
+    this.thirdFormGroup = this.fb.group({
+      paypal: ['', Validators.email],
+      cbNumber: ['', Validators.pattern(/^\d{16}$/)], // 16 chiffres
+      cbDate: [''],
+      cbCvv: ['', Validators.pattern(/^\d{3}$/)], // 3 chiffres
+      googlePay: ['', Validators.email]
+    }, { validators: [paymentMethodValidator] });
     // Étape 4 : Mot de passe & Récapitulatif
     this.fourthFormGroup = this.fb.group({
       motDePasse: ['', [Validators.required, Validators.minLength(6)]],
       confirmMotDePasse: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
-    this.validationFormGroup = this.fb.group({
-      code: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
-    });
+
     this.breakpointObserver.observe([
       Breakpoints.Handset,
       Breakpoints.Tablet
     ]).subscribe(result => {
       this.isMobile = result.matches;
     });
+
+    this.codeControls = ['digit0', 'digit1', 'digit2', 'digit3', 'digit4', 'digit5'];
+    const group: any = {};
+    this.codeControls.forEach(ctrl => {
+      group[ctrl] = ['', [Validators.required, Validators.pattern('\\d')]];
+    });
+    this.validationFormGroup = this.fb.group(group);
+
   }
 
   emailExistsValidator(): AsyncValidatorFn {
@@ -130,7 +147,7 @@ export class RegisterComponent implements OnInit {
 
   // Méthode appelée lors du clic sur le bouton "Valider"
   validateEmail(): void {
-    const code = this.validationFormGroup.get('code')?.value;
+    const code = this.codeControls.map(c => this.validationFormGroup.get(c)?.value).join('');
     const email = this.firstFormGroup.get('email')?.value;
 
     if (this.validationFormGroup.invalid || this.attemptsLeft <= 0) {
@@ -141,6 +158,7 @@ export class RegisterComponent implements OnInit {
     this.authService.validateEmail(email, code).subscribe({
       next: (response) => {
         console.log('Validation réussie', response);
+        this.emailValidated = true;
         // Ici, tu peux passer à la dernière étape du stepper
         this.stepper.next();
       },
@@ -197,6 +215,59 @@ export class RegisterComponent implements OnInit {
   }
 
   close(): void {
+    const email = this.firstFormGroup.get('email')?.value;
+    if (!this.emailValidated) {
+      this.authService.deleteUnverifiedUser(email).subscribe({
+        next: () => console.log('Utilisateur non validé supprimé'),
+        error: (err) => console.error('Erreur suppression utilisateur', err)
+      });
+    }
     this.dialogRef.close();
   }
+
+
+
+
+  moveFocus(event: any, index: number) {
+    const input = event.target as HTMLInputElement;
+
+    // Supprime tout ce qui n'est pas chiffre
+    input.value = input.value.replace(/[^0-9]/g, '');
+
+    if (input.value.length >= 1 && index < this.codeControls.length - 1) {
+      const nextInput = input.parentElement?.parentElement?.querySelectorAll('input')[index + 1] as HTMLInputElement;
+      nextInput?.focus();
+    }
+  }
+
+  prevFocus(event: any, index: number) {
+    const input = event.target as HTMLInputElement;
+    if (!input.value && index > 0) {
+      const prevInput = input.parentElement?.parentElement?.querySelectorAll('input')[index - 1] as HTMLInputElement;
+      prevInput?.focus();
+    }
+  }
+
+  getCode(): string {
+    return this.codeControls.map(c => this.validationFormGroup.get(c)?.value).join('');
+  }
+
+}
+
+export function paymentMethodValidator(control: AbstractControl): ValidationErrors | null {
+  const paypalCtrl = control.get('paypal');
+  const googlePayCtrl = control.get('googlePay');
+  const cbNumberCtrl = control.get('cbNumber');
+  const cbDateCtrl = control.get('cbDate');
+  const cbCvvCtrl = control.get('cbCvv');
+
+  const hasValidPaypal = paypalCtrl?.value?.trim() && !paypalCtrl.errors;
+  const hasValidGooglePay = googlePayCtrl?.value?.trim() && !googlePayCtrl.errors;
+  const hasCard = cbNumberCtrl?.value?.trim() && cbDateCtrl?.value?.trim() && cbCvvCtrl?.value?.trim()
+    && !cbNumberCtrl?.errors && !cbDateCtrl?.errors && !cbCvvCtrl?.errors;
+
+  if (hasValidPaypal || hasValidGooglePay || hasCard) {
+    return null;
+  }
+  return { noPayment: true };
 }

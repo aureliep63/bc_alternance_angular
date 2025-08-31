@@ -4,8 +4,8 @@
     <form (ngSubmit)="onSubmit()" class="card">
       <div class="container">
         <div class="modal-header m-4">
-          <h5 class="modal-title">Nouvelle Borne</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
+          <h5 class="modal-title "><i class="bi bi-plus-circle-fill pe-2"></i><i>Ajouter une borne</i></h5>
+          <button type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
         </div>
         <div *ngIf="step === 1">
           <div class="modal-body">
@@ -124,7 +124,9 @@
           </div>
 
           <div>
-            <button type="button" (click)="previousStep()" class="btn btn-outline-secondary m-4"><i class="fa-regular fa-circle-left"></i></button>
+            <button type="button" (click)="previousStep()" class="btn btn-outline-secondary m-4">
+              <i class="fa-regular fa-circle-left"></i></button>
+
             <button type="submit" class="btn btn-outline-secondary mb-4 mt-4 ms-5">Ajouter</button>
           </div>
 

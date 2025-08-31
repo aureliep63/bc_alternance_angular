@@ -18,6 +18,13 @@
   max-width: 600px;
   width: 100%;
   position: relative;
+
+  modal-title{
+    h5{
+      font-size: 22px;
+      font-weight: 400;
+    }
+  }
 }
 
 .close-btn {
@@ -28,4 +35,6 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+
 }
+

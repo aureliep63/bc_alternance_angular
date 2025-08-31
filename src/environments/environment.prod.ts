@@ -1,10 +1,10 @@
 export const environment = {
-  API_URL: 'https://bc-alternance.onrender.com', // ton URL Render
+  API_URL: 'https://bc-alternance.onrender.com',
   API_RESOURCES: {
+    BORNES: '/bornes',
     AUTH: '/auth',
     USERS: '/utilisateurs',
     MEDIAS: '/medias',
-    BORNES: '/bornes',
     LIEUX: '/lieux',
     RESERVATIONS: '/reservations'
   },

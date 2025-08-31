@@ -14,6 +14,42 @@ $input-bg: #fff;                // fond
 $input-focus-border-color: black;
 $input-focus-box-shadow: 0 0 0 .25rem rgba(#4caf50, .25);
 
+/* Boutons Angular Material (primary → vert) */
+.mat-mdc-raised-button.mat-primary:not(.mat-mdc-button-disabled),
+.mat-mdc-outlined-button.mat-primary:not(.mat-mdc-button-disabled),
+.mat-mdc-stroked-button.mat-primary:not(.mat-mdc-button-disabled)
+{
+  background-color: #fff !important;
+  color: #365C36 !important;
+  border:1px solid #365C36 !important;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.mat-step-icon-state-done{
+  background-color: #52754c !important;
+}
+.mat-mdc-raised-button.mat-primary:hover {
+  background-color: rgba(76, 101, 78, 0.25) !important; /* vert encore plus foncé au hover */
+}
+
+/* Inputs (ligne et label quand focus → vert) */
+.mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: #2e7d32 !important;
+}
+
+.mdc-text-field--focused .mdc-floating-label {
+  color: #365C36 !important;
+}
+.mdc-line-ripple::before,
+.mdc-line-ripple::after {
+  border-bottom-color: #365C36 !important;
+}
+/* Curseur de texte (input caret) */
+.mdc-text-field__input {
+  caret-color: #365C36 !important;
+}
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

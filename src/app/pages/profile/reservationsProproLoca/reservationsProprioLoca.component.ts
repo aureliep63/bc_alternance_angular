@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {filter, forkJoin, map, mergeMap, Observable, reduce, switchMap, tap} from "rxjs";
-import {User} from "../../entities/user.entity";
-import {UserService} from "../../services/user/user.service";
-import {AuthService} from "../../services/auth/auth.service";
+import {User} from "../../../entities/user.entity";
+import {UserService} from "../../../services/user/user.service";
+import {AuthService} from "../../../services/auth/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BorneService} from "../../services/borne/borne.service";
-import {Borne} from "../../entities/borne.entity";
-import {ReservationService} from "../../services/reservation/reservation.service";
-import {Reservation, ReservationHttp} from "../../entities/reservation.entity";
-import {Lieux} from "../../entities/lieux.entity";
+import {BorneService} from "../../../services/borne/borne.service";
+import {Borne} from "../../../entities/borne.entity";
+import {ReservationService} from "../../../services/reservation/reservation.service";
+import {Reservation, ReservationHttp} from "../../../entities/reservation.entity";
+import {Lieux} from "../../../entities/lieux.entity";
+import {BorneDto} from "../../../entities/borneDto.entity";
+import {ModalBorneDetailComponent} from "../bornes/modal-borne-detail/modal-borne-detail.component";
+import * as bootstrap from "bootstrap";
 
 export interface ReservationWithBorne extends Reservation {
   borne: Borne & {
@@ -22,15 +25,39 @@ export interface ReservationWithBorne extends Reservation {
 })
 
 export class RoleUserComponent implements OnInit {
-
+  @ViewChild('modalDetails') modalDetails!: ModalBorneDetailComponent;
+  bornes: BorneDto[] = [];
   currentUser$: Observable<User | undefined>;
   currentBorneUser$: Observable<Map<number, Borne>>; // Pour voir les bornes par réservation
   currentBorneResa$: Observable<Map<number, Borne>>;
   locataireResa$: Observable<ReservationWithBorne[]>; // Pour voir toutes les réservations d'un locataire
   proprioResa$: Observable<ReservationWithBorne[]>; // Pour voir toutes les réservations d'un propriétaire
-
+  deleteId: number | null = null;
   activeTab: string = 'locataire'; // Onglet actif par défaut
-
+  toBorneDto(borne: Borne): BorneDto {
+    return {
+      id: borne.id,
+      nom: borne.nom,
+      photo: borne.photo,
+      puissance: borne.puissance,
+      estDisponible: borne.estDisponible,
+      instruction: borne.instruction,
+      surPied: borne.surPied,
+      prix: borne.prix,
+      utilisateurId: borne.utilisateurId,
+      lieuId: borne.lieuId,
+      mediasId: [],
+      reservationsId: [],
+      lieux: borne.lieux ? {
+        id: borne.lieux.id,
+        adresse: borne.lieux.adresse,
+        codePostal: borne.lieux.codePostal,
+        ville: borne.lieux.ville,
+        latitude: borne.lieux.latitude,
+        longitude: borne.lieux.longitude
+      } : null
+    };
+  }
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -57,7 +84,7 @@ export class RoleUserComponent implements OnInit {
               return {
                 ...resa,
                 borne: {
-                  ...resa.borne,
+                  ...borne,
                   lieux: lieux  // Ajouter les lieux de la borne à la réservation
                 }
               };
@@ -86,7 +113,7 @@ export class RoleUserComponent implements OnInit {
                 return {
                   ...resa,
                   borne: {
-                    ...resa.borne,
+                    ...borne,
                     lieux: lieux  // Assurez-vous que lieux est attaché de manière correcte
                   }
                 };
@@ -142,8 +169,20 @@ export class RoleUserComponent implements OnInit {
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
+  deleteBorne(id: number): void {
 
-
+  }
+  openDeleteModal(id: number): void {
+    this.deleteId = id;
+    const modalElement = document.getElementById('confirmDeleteModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+  viewDetails(borne: BorneDto) {
+    this.modalDetails.open(borne);
+  }
   statusOptions: Array<ReservationHttp['status']> = ['ACCEPTER', 'EN_ATTENTE', 'REFUSER', 'ANNULER'];
   editStatusId: number | null = null;
 
@@ -177,4 +216,20 @@ export class RoleUserComponent implements OnInit {
       }
     });
   }
+
+
+  calculerHeuresTotales(resa: ReservationWithBorne): number {
+    const debut = new Date(resa.dateDebut);
+    const fin = new Date(resa.dateFin);
+
+    const differenceEnMs = fin.getTime() - debut.getTime();
+    return differenceEnMs / (1000 * 60 * 60); // en heures décimales
+  }
+
+  calculerPrixTotal(resa: ReservationWithBorne): number {
+    const heures = this.calculerHeuresTotales(resa);
+    const prixHoraire = resa.borne?.prix || 0;
+    return heures * prixHoraire;
+  }
+
 }
