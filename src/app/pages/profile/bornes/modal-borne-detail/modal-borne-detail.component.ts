@@ -11,6 +11,11 @@ export class ModalBorneDetailComponent {
   @Input() borne?: BorneDto;
   imageUrl = environment.IMAGE_URL;
   isOpen = false;
+  activeTab: string = 'infos';
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
 
   open(borne: BorneDto) {
     this.borne = borne;

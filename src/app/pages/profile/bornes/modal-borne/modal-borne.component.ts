@@ -17,6 +17,24 @@ import {User} from "../../../../entities/user.entity";
   styleUrl: './modal-borne.component.scss'
 })
 export class ModalBorneComponent {
+  openForEdit(borne: BorneDto) {
+    this.isOpen = true;
+    this.isEditMode = true;
+    this.step = 1;
+    this.borne = JSON.parse(JSON.stringify(borne));
+    this.lieuxService.list().subscribe({
+      next: (lieux) => this.lieuxExistants = lieux,
+      error: (err) => console.error("Erreur chargement lieux en édition", err)
+    });
+    this.photoPreviewUrl = this.borne.photo ? this.imageUrl + this.borne.photo : null;
+    this.file = null;
+    this.newLieu = {
+      adresse: '',
+      codePostal: '',
+      ville: ''
+    };
+  }
+
   isOpen = false;
   isEditMode = false;
   imageUrl: string = environment.IMAGE_URL;
@@ -144,45 +162,30 @@ export class ModalBorneComponent {
   }
 
 
+
   saveBorne() {
     this.currentUser$.pipe(take(1)).subscribe(user => {
-      if (!user || !user.id) {
-        console.error('Utilisateur non connecté');
-        return;
-      }
-
+      if (!user || !user.id) {console.error('Utilisateur non connecté');return;}
       this.borne.utilisateurId = user.id;
-
       const formData = new FormData();
       formData.append('borneDto', JSON.stringify(this.borne));
-
       if (this.file) {
-        formData.append('file', this.file, this.file.name);
-      }
-
+        formData.append('file', this.file, this.file.name);}
       if (this.isEditMode && this.borne.id) {
-        this.borneService.updateBorneWithFile(this.borne.id, formData).subscribe({
+        this.borneService.updateBorne(this.borne.id, formData).subscribe({
           next: (borneModifiee) => {
             this.onBorneAdded.emit(borneModifiee);
-            this.close();
-          },
+            this.close();},
           error: (err) => {
-            console.error('Erreur lors de la modification de la borne :', err);
-          }
-        });
+            console.error('Erreur lors de la modification de la borne :', err);}});
       } else {
-        this.borneService.addBorneWithFile(formData).subscribe({
+        this.borneService.addBorne(formData).subscribe({
           next: (borneAjoutee) => {
             this.onBorneAdded.emit(borneAjoutee);
-            this.close();
-          },
+            this.close();},
           error: (err) => {
             console.error('Erreur lors de la création de la borne :', err);
-          }
-        });
-      }
-    });
-  }
+          }});}});}
 
 
   nextStep() {
@@ -239,28 +242,7 @@ export class ModalBorneComponent {
 
 
 
-  openForEdit(borne: BorneDto) {
-    this.isOpen = true;
-    this.isEditMode = true;
-    this.step = 1;
 
-    this.borne = JSON.parse(JSON.stringify(borne));
-
-    this.lieuxService.list().subscribe({
-      next: (lieux) => this.lieuxExistants = lieux,
-      error: (err) => console.error("Erreur chargement lieux en édition", err)
-    });
-
-    this.photoPreviewUrl = this.borne.photo ? this.imageUrl + this.borne.photo : null;
-    this.file = null;
-
-    // Reset newLieu si besoin
-    this.newLieu = {
-      adresse: '',
-      codePostal: '',
-      ville: ''
-    };
-  }
 
 
 

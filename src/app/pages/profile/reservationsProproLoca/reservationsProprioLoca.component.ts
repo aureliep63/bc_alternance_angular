@@ -13,11 +13,13 @@ import {BorneDto} from "../../../entities/borneDto.entity";
 import {ModalBorneDetailComponent} from "../bornes/modal-borne-detail/modal-borne-detail.component";
 import * as bootstrap from "bootstrap";
 
+
 export interface ReservationWithBorne extends Reservation {
   borne: Borne & {
     lieux?: Lieux;
   };
 }
+
 @Component({
   selector: 'app-reservationsProproLoca',
   templateUrl: './reservationsProprioLoca.component.html',
@@ -34,6 +36,8 @@ export class RoleUserComponent implements OnInit {
   proprioResa$: Observable<ReservationWithBorne[]>; // Pour voir toutes les réservations d'un propriétaire
   deleteId: number | null = null;
   activeTab: string = 'locataire'; // Onglet actif par défaut
+  private logoBase64: string = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...";
+
   toBorneDto(borne: Borne): BorneDto {
     return {
       id: borne.id,
@@ -74,18 +78,18 @@ export class RoleUserComponent implements OnInit {
     // Pour voir toutes les réservations d'un locataire
     this.locataireResa$ = this.currentUser$.pipe(
       filter(user => !!user && !!user.id),
-      switchMap(user => this.reservationService.getByUserId(user!.id)),
+      switchMap(user => this.reservationService.getByUserId(user!.id)), // récup les résa du user
       switchMap(reservations => {
         const reservationObservables = reservations.map(resa =>
-          this.borneService.getByReservationId(resa.id).pipe(
+          this.borneService.getByReservationId(resa.id).pipe( // on récup la borne associé à la résa pour avoir les infos
             map(bornes => {
-              const borne = bornes[0];  // Supposons qu'il y ait une seule borne associée à la réservation
-              const lieux = borne?.lieux || {};  // Si 'lieux' est undefined, on attribue un objet vide
+              const borne = bornes[0];
+              const lieux = borne?.lieux || {};
               return {
                 ...resa,
                 borne: {
                   ...borne,
-                  lieux: lieux  // Ajouter les lieux de la borne à la réservation
+                  lieux: lieux
                 }
               };
             })
@@ -103,18 +107,17 @@ export class RoleUserComponent implements OnInit {
     // Pour voir les réservations d'un propriétaire
     this.proprioResa$ = this.currentUser$.pipe(
       filter(user => !!user && !!user.id),
-      switchMap(user => this.borneService.getByUserId(user!.id).pipe(
+      switchMap(user => this.borneService.getByUserId(user!.id).pipe( //récup toutes les bornes du user
         switchMap(bornes => {
           const reservationObservables = bornes.map(borne =>
-            this.reservationService.getByBorneId(borne.id).pipe(
+            this.reservationService.getByBorneId(borne.id).pipe( // pour chaque borne, on récup les résa liées
               map(reservations => reservations.map(resa => {
-                // Assurez-vous que 'borne' et 'borne.lieux' sont définis avant d'y accéder
-                const lieux = borne.lieux || {};  // Fallback si 'lieux' est undefined
+                const lieux = borne.lieux || {};
                 return {
                   ...resa,
                   borne: {
                     ...borne,
-                    lieux: lieux  // Assurez-vous que lieux est attaché de manière correcte
+                    lieux: lieux
                   }
                 };
               }))
@@ -231,5 +234,7 @@ export class RoleUserComponent implements OnInit {
     const prixHoraire = resa.borne?.prix || 0;
     return heures * prixHoraire;
   }
+
+
 
 }

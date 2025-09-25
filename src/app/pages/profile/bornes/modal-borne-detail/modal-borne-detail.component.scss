@@ -1,40 +1,170 @@
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  bottom: -156px;
+  right: 0;
+  padding: 1rem;
   z-index: 999;
-}
+  .modal-content {
+    padding: 1rem;
+    width: 17vw;
+    box-shadow: 0 4px 6px 10px rgba(0, 0, 0, 0.1);
+    height: 55vh;
 
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  position: relative;
+    .close-btn {
+      top: 1rem;
+      right: 1rem;
+      font-size: 18px;
+    }
+    button {
+      a{
+        font-size: 18px;
+      }
+    }
+    .nav-tabs{
+      margin-bottom: 20px;
 
-  modal-title{
-    h5{
-      font-size: 22px;
-      font-weight: 400;
+    }
+    section{
+      li{
+        list-style: none;
+      }
+      .detailBorne{
+        font-size: 18px;
+        p{
+          margin: 10px 0;
+        }
+        strong{
+          font-weight: 500;
+        }
+        img{
+          width: 12vw;
+          height: 18vh;
+          border: 1px rgba(126, 163, 141, 0.64) solid;
+        }
+
+      }
+
+      .lesAvis{
+        h2{
+          font-size:22px;
+        }
+        .fa-solid{
+          margin: 0 4px;
+        }
+        .etoileXs::before {
+          content: "";
+          display: block;
+          width: 80%;
+          height: 1px;
+          background:rgba(126, 163, 141, 0.64);
+          margin: 10px auto ;
+        }
+        .etoileXs{
+          li{
+            margin: 12px 0;
+            .fa-solid{
+              margin: 0 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .login-modal-panel {
+    border: 1px solid black;
+    border-radius: 15px; /* Pour des coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.19);
+    margin-top: 20px;
+    h1{
+      font-size: 32px;
+    }
+  }
+  @media (max-width: 768px){
+    top: 42px;
+    right: 0;
+    .modal-content {
+      width: 90vw;
+      height: 100%;
+      .close-btn {
+        font-size: 12px;
+      }
+      .nav-tabs{
+        margin-bottom: 10px;
+        .nav-link{
+          font-size: 12px;
+        }
+      }
+      button {
+        a{
+          font-size: 12px;
+        }
+      }
+      section{
+
+        .detailBorne{
+          p, li{
+            margin: 0;
+            font-size: 12px;
+          }
+          strong{
+            font-weight: normal;
+            font-size: 14px;
+          }
+
+          .infoPhoto{
+            margin: 5px 0;
+            ul{
+              justify-content: center;
+            }
+            img{
+              width: 33vw;
+              height: 12vh;
+            }
+          }
+          .pdetail{
+            margin: 5px 0;
+          }
+        }
+
+        .lesAvis{
+          flex-direction: column;
+          h2{
+            font-size: 16px;
+            margin-bottom: 0;
+            .fa-star{
+              font-size: 18px;
+            }
+          }
+          .etoileXl{
+            display: none;
+          }
+          strong {
+            font-weight: 500;
+          }
+          .avisBtn{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row-reverse;
+            ul{
+              margin-bottom: 0;
+              padding-left: 1rem;
+              li{
+                margin: 5px 0;
+              }
+            }
+            img{
+              width: 20vw;
+            }
+          }
+          button{
+            margin-top: 6px;
+            a{
+              font-size: 12px;
+            }
+          }
+        }
+      }
     }
   }
 }
-
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-
-}
-

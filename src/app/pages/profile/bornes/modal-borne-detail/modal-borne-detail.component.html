@@ -1,19 +1,78 @@
 
-<div *ngIf="isOpen" class="modal-overlay">
-  <div class="modal-content">
-    <h3>Détails de la borne</h3>
-    <button (click)="close()" class="close-btn">✖</button>
 
-    <div *ngIf="borne">
-      <p><strong>Nom :</strong> {{ borne.nom }}</p>
-      <p><strong>Puissance :</strong> {{ borne.puissance }} kW</p>
-      <p><strong>Prix :</strong> {{ borne.prix }} €/h</p>
-      <p><strong>Instruction :</strong> {{ borne.instruction }}</p>
-      <p><strong>Sur pied :</strong> {{ borne.surPied ? 'Oui' : 'Non' }}</p>
-      <p *ngIf="borne.lieux">
-        <strong>Lieu :</strong> {{ borne.lieux.adresse }}, {{ borne.lieux.codePostal }} {{ borne.lieux.ville }}
-      </p>
-      <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" style="width: 100%; max-width: 300px; margin-top: 10px;">
-    </div>
+<div *ngIf="isOpen"  class="modal-overlay d-flex justify-content-start align-content-start position-absolute w-auto h-auto"  >
+  <div *ngIf="isOpen" class="modal-content bg-white position-relative pointer-event rounded-2">
+    <button (click)="close()" class="close-btn position-absolute btn btn-outline-success shadow bg-body-tertiary rounded px-2 py-1">✖</button>
+
+    <section>
+
+      <ul class="nav nav-tabs justify-content-center fs-6">
+
+        <li class="nav-item">
+          <a class="nav-link"
+             [class.active]="activeTab === 'infos'"
+             (click)="setActiveTab('infos')">
+            Détails
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             [class.active]="activeTab === 'avis'"
+             (click)="setActiveTab('avis')">
+            Avis
+          </a>
+        </li>
+
+      </ul>
+
+      <div *ngIf="activeTab === 'infos'">
+
+        <div *ngIf="borne" class="detailBorne text-center">
+          <p ><small>Lieu : </small> <strong> <i>{{ borne.nom }}</i> </strong></p>
+          <p *ngIf="borne.lieux"><small>Lieu : </small> <strong> <i>{{ borne.lieux.adresse }}, <br>{{ borne.lieux.ville }}  {{ borne.lieux.codePostal }}</i> </strong></p>
+          <div class="infoPhoto d-flex justify-content-evenly flex-column">
+            <ul class="d-flex justify-content-md-evenly  ps-0 mb-1">
+              <li><small>Puissance : </small><br><strong> <i>{{ borne.puissance }} kW </i> </strong></li>
+              <li><small>Prix :</small><br><strong> <i> {{ borne.prix }} €/h </i> </strong></li>
+              <li><small>Sur pied :</small><br><strong> <i> {{ borne.surPied ? 'Oui' : 'Non' }} </i> </strong></li>
+            </ul>
+
+            <div>
+              <img *ngIf="borne.photo" src="{{imageUrl}}{{borne.photo}}" alt="Photo borne" class="object-fit-cover m-1" >
+            </div>
+
+          </div>
+          <p class="pdetail text-start my-md-3"><small>Détail : </small><strong> <i>{{ borne.instruction }} </i> </strong></p>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="activeTab === 'avis'">
+
+        <div class="lesAvis d-flex flex-md-column align-items-center mb-2 gap-1 px-2 ">
+          <h2 class=" d-flex align-items-center gap-1 ">
+            32 avis
+            <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-regular fa-star" style="color: #FFD43B;"></i></h2>
+
+          <div class="avisBtn" *ngIf="borne">
+            <ul class="etoileXs d-sm-flex text-center flex-column fs-5 ps-0">
+              <li>Facilité d'accès : <strong> <i>4/5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></i> </strong></li>
+              <li>Instruction valide  <strong> <i>5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li> Sécurité du lieu :<strong> <i> 5/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li>Fiabilité du matériel :<strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li>Rapport qualité/prix :<strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+              <li>Communication :<strong> <i> 4/5  <i class="fa-solid fa-star" style="color: #FFD43B;"></i> </i> </strong></li>
+            </ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </section>
   </div>
 </div>
+
+
+

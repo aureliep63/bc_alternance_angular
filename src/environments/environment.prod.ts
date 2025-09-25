@@ -1,4 +1,5 @@
 export const environment = {
+  production: true,
   API_URL: 'https://bc-alternance.onrender.com',
   API_RESOURCES: {
     BORNES: '/bornes',

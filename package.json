@@ -34,6 +34,7 @@
     "leaflet-geosearch": "^4.2.0",
     "luxon": "^3.7.1",
     "ngx-material-timepicker": "^13.1.1",
+    "pdfmake": "^0.2.20",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -47,6 +48,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/leaflet": "^1.9.17",
     "@types/luxon": "^3.6.2",
+    "@types/pdfmake": "^0.2.11",
     "chai": "^4.3.10",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

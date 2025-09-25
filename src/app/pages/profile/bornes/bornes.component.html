@@ -3,7 +3,7 @@
 
 
   <button (click)="openModal()" class="btn btn-outline-dark">
-    <i class="bi bi-plus-circle-fill"></i><i>Ajouter une borne</i></button>
+    <i class="bi bi-plus-circle-fill pe-2"></i><i>Ajouter une borne</i></button>
 
   <app-modal-borne (onBorneAdded)="onBorneAdded($event)"></app-modal-borne>
 
@@ -51,7 +51,7 @@
             </button>
         </td>
         <td>
-          <button (click)="viewDetails(toBorneDto(borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye"></i>Voir</button>
+          <button (click)="viewDetails(toBorneDto(borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye pe-2"></i>Voir</button>
         </td>
       </tr>
       </tbody>

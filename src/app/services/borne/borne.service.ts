@@ -38,14 +38,14 @@ export class BorneService {
     return this.http.post<Borne>(this.url, borne);
   }
 
-  addBorneWithFile(formData: FormData): Observable<BorneDto> {
+  addBorne(formData: FormData): Observable<BorneDto> {
     return this.http.post<BorneDto>(this.url+"/user/bornes", formData);
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
-  updateBorneWithFile(id: number, formData: FormData): Observable<BorneDto> {
+  updateBorne(id: number, formData: FormData): Observable<BorneDto> {
     return this.http.put<BorneDto>(`${this.url}/user/bornes/${id}`, formData);
   }
 
