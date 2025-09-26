@@ -21,9 +21,16 @@ export class BornesComponent implements OnInit{
 
   currentUser$:Observable< User | undefined>
   currentBorneUser$: Observable<Borne[]>;
-  imageUrl: string = environment.IMAGE_URL;
+
   bornes: BorneDto[] = [];
   deleteId: number | null = null;
+  getPhotoUrl(photo: string): string {
+    if (photo.startsWith('http')) {
+      return photo; // cas Cloudinary (prod)
+    }
+    return environment.IMAGE_URL + photo; // cas local
+  }
+
 
   // Référence à la modale
   @ViewChild(ModalBorneComponent) modalBorne: ModalBorneComponent; // pour pouvoir appeler open()
