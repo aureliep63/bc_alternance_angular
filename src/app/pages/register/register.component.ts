@@ -211,6 +211,7 @@ export class RegisterComponent implements OnInit {
         height:'650px',
         panelClass: 'login-modal-panel'
       });
+      this.dialogRef.close();
     }
   }
 

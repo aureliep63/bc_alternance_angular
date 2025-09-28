@@ -1,19 +1,18 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BorneService} from "../../../services/borne/borne.service";
 import 'leaflet-control-geocoder';
-import {environment} from "../../../../environments/environment";
 
 import * as L from 'leaflet';
+import 'leaflet.markercluster'; // Assurez-vous que l'importation est correcte
 import {ReservationService} from "../../../services/reservation/reservation.service";
-import {setHours, setMinutes, toDate} from "date-fns";
 import {LieuxService} from "../../../services/lieux/lieux.service";
 import {BorneDto} from "../../../entities/borneDto.entity";
-import {ModalBorneDetailComponent} from "../../profile/bornes/modal-borne-detail/modal-borne-detail.component";
 import {BorneDetailComponent} from "./borne-detail/borne-detail.component";
 import {Borne} from "../../../entities/borne.entity";
-import {ModalBorneComponent} from "../../profile/bornes/modal-borne/modal-borne.component";
 import {formatDate} from "@angular/common";
 import {GeocodingService} from "../../../services/geocoding/geocoding.service";
+
+
 
 // Fix des icônes Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -77,7 +76,8 @@ export class Section1MapComponent implements  AfterViewInit {
     range: 100
   };
 
-  private markers: L.Marker[] = [];
+  //private markers: L.Marker[] = [];
+  private markerClusterGroup: L.MarkerClusterGroup | null = null;
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   constructor(private geocodingService: GeocodingService ,private borneService: BorneService, private reservationService: ReservationService, private lieuxService: LieuxService) {}
@@ -105,32 +105,43 @@ export class Section1MapComponent implements  AfterViewInit {
       maxZoom: 18,
       minZoom: 3});
     tiles.addTo(this.map);
+
+    this.markerClusterGroup = (L as any).markerClusterGroup();
+    this.map.addLayer(this.markerClusterGroup!);
   }
 
   private updateMap(bornes: any[]): void {
-    // Supprimer anciens markers
-    this.markers.forEach(marker => this.map.removeLayer(marker));
-    this.markers = [];
+    //  Supprimer les anciens marqueurs
+    if (this.markerClusterGroup) {
+      this.markerClusterGroup.clearLayers();
+    }
 
-    bornes.forEach(borne => {
-      const lat = borne.lieux?.latitude;
-      const lon = borne.lieux?.longitude;
+    // Si on a des bornes à afficher
+    if (this.markerClusterGroup) {
+      bornes.forEach(borne => {
+        const lat = borne.lieux?.latitude;
+        const lon = borne.lieux?.longitude;
 
-      if (lat && lon) {
-        // Ajouter le marqueur à la carte
-        const marker = L.marker([lat, lon]).addTo(this.map);
+        if (lat && lon) {
+          // Créer le marqueur comme avant
+          const marker = L.marker([lat, lon]);
 
-        // Écouter l'événement de clic directement sur le marqueur Leaflet
-        marker.on('click', () => {
-          // Appeler la méthode du composant pour ouvrir la modale
-          this.viewDetails(this.toBorneDto(borne), this.filters);
-        });
+          // Lier l'événement de clic *à la même borne spécifique*
+          marker.on('click', () => {
+            this.viewDetails(this.toBorneDto(borne), this.filters);
+          });
 
-        this.markers.push(marker);
-      } else {
-        console.warn(`Borne ${borne.nom} n'a pas de coordonnées valides.`);
+          // ⚠️ Ajouter le marqueur au groupe de clusters, pas directement à la carte
+          this.markerClusterGroup!.addLayer(marker);
+        } else {
+          console.warn(`Borne ${borne.nom} n'a pas de coordonnées valides.`);
+        }
+      });
+      // ⚠️ Ajuster la vue pour voir tous les clusters/marqueurs
+      if (this.markerClusterGroup.getLayers().length > 0) {
+        this.map.fitBounds(this.markerClusterGroup.getBounds());
       }
-    });
+    }
   }
 
 
@@ -192,6 +203,8 @@ export class Section1MapComponent implements  AfterViewInit {
         },
         (err: any) => {
           console.error('Error retrieving coordinates from backend proxy', err);
+          this.bornes = [];
+          this.updateMap([]);
         }
       );
     } else {
@@ -260,8 +273,9 @@ export class Section1MapComponent implements  AfterViewInit {
     }
 
     // Effacer les marqueurs de la carte
-    this.markers.forEach(marker => this.map.removeLayer(marker));
-    this.markers = [];
+    if (this.markerClusterGroup) {
+      this.markerClusterGroup.clearLayers();
+    }
     this.bornes = [];
 
     // Ramener la carte à sa vue par défaut (centrage et zoom initial)

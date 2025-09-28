@@ -36,7 +36,7 @@ export interface BorneDto{
   reservationsId: number[]
   utilisateurId: number
   lieuId: number;
-  lieux?: Lieux | null; // ✅ ajout pour afficher ville dans le HTML
+  lieux?: Lieux | null;
 }
 
 export namespace BorneDto {
@@ -54,7 +54,7 @@ export namespace BorneDto {
       reservationsId:http.reservationsId ,
       utilisateurId: http.utilisateurId,
       lieuId: http.lieuId,
-      lieux: http.lieux ? {                     // ✅ ajout
+      lieux: http.lieux ? {
         id: http.lieux.id!,
         adresse: http.lieux.adresse,
         codePostal: http.lieux.codePostal,

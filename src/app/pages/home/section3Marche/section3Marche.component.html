@@ -5,7 +5,7 @@
       <h4 class="card-title">1. Créez un compte</h4>
       <div class="xs">
       <p class="card-text">Inscrivez-vous en un éclair et découvrez nos offres ! ⚡</p>
-      <button><a [routerLink]="['/register']">S'inscrire </a></button>
+      <button><a (click)="openRegister()">S'inscrire </a></button>
     </div>
     </div>
   </div>
@@ -15,7 +15,7 @@
       <h4 class="card-title">2. Recherchez une borne </h4>
       <div class="xs">
       <p class="card-text">Repérez la borne idéale, où que vous soyez ! 📍</p>
-      <button><a [routerLink]="['']">Voir la Map</a> </button>
+      <button><a [routerLink]="['']" fragment="map-section" >Voir la Map</a> </button>
       </div>
       </div>
   </div>
@@ -24,8 +24,11 @@
     <div class="card-body">
       <h4 class="card-title ">3. Commencez à louer </h4>
      <div class="xs">
-      <p class="card-text">Réservez, branchez, chargez <br>et roulez serein ! 🚗</p>
-      <button><a [routerLink]="['/profile']">Réservation </a></button>
+       <p class="card-text">Réservez, branchez, chargez <br>et roulez serein ! 🚗</p>
+
+       <button *ngIf="(isConnected | async)"><a [routerLink]="['/profile']" fragment="resaLocataire" >Réservation </a></button>
+       <button *ngIf="!(isConnected | async)"><a (click)="openLogin()" >Réservation </a></button>
+
      </div>
     </div>
   </div>

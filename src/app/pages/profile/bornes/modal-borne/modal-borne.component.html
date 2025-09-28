@@ -1,138 +1,186 @@
 <div class="modal-backdrop " *ngIf="isOpen">
   <div class="modal-content ">
 
-    <form (ngSubmit)="onSubmit()" class="card">
-      <div class="container">
+    <form #mainForm="ngForm" (ngSubmit)="onSubmit(mainForm)" class="card">
+
+    <div class="container">
         <div class="modal-header m-4">
-          <h5 class="modal-title "><i class="bi bi-plus-circle-fill pe-2"></i><i>Ajouter une borne</i></h5>
+          <h4 class="modal-title "><i class="bi bi-plus-circle-fill pe-2"></i><i>Ajouter une borne</i></h4>
           <button type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
         </div>
-        <div *ngIf="step === 1">
-          <div class="modal-body">
 
-            <div class="row">
-              <div class="col-5">
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" [(ngModel)]="borne.nom" name="nom" required />
-              </div>
-              <div class="col-5 flex-row align-items-center justify-content-evenly ">
-                <label for="surPied">Sur pied</label>
-                <input id="surPied" type="checkbox" [(ngModel)]="borne.surPied" name="surPied" />
-              </div>
+      <div *ngIf="clientErrorMessage" class="alert alert-danger mx-4" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        {{ clientErrorMessage }}
+      </div>
+
+      <div *ngIf="step === 1" #formStep1="ngModelGroup" ngModelGroup="step1Group" class="pb-2 bg-white">
+
+            <div class="modal-header justify-content-center">
+              <h5 class="modal-title "><i class="bi bi-info-circle me-2"></i>Informations </h5>
             </div>
+            <div class="modal-body">
 
-            <div class="row">
-              <div class="col-5">
-                <label for="puissance">Puissance en Kwa</label>
-                <input id="puissance" type="number" [(ngModel)]="borne.puissance" name="puissance" required min="0"
-                       step="0.5" />
-              </div>
-              <div class="col-5">
-                <label for="prix">Prix en €/h</label>
-                <input type="number" id="prix" type="number" [(ngModel)]="borne.prix" name="prix" required min="0"
-                       step="0.5"/>
-              </div>
-            </div>
-
-
-            <div class="row">
-              <div class="col-10">
-                <label for="photo">Photo</label>
-                <div class="file-input">
-                  <label for="photo">Fichier (image)</label>
-                  <input type="file" id="photo" (change)="onFileChange($event)" accept="image/*">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="nom" class="form-label">Nom *</label>
+                  <input id="nom" type="text" class="form-control" [(ngModel)]="borne.nom" name="nom" #nom="ngModel" required />
+                  <div class="text-danger mt-1" *ngIf="nom.invalid && nom.touched">Le nom est obligatoire</div>
                 </div>
-                <div class="row mt-2">
-                  <div class="col-10 text-center">
-                    <img
-                      *ngIf="photoPreviewUrl; else existingPhoto"
-                      [src]="photoPreviewUrl"
-                      alt="Aperçu de la photo"
-                      class="img-thumbnail"
-                      style="max-height: 200px;"
-                    />
-                    <ng-template #existingPhoto>
-                      <img
-                        *ngIf="borne.photo"
-                        [src]="imageUrl + borne.photo"
-                        alt="Photo existante"
-                        class="img-thumbnail"
-                        style="max-height: 200px;"
-                      />
-                    </ng-template>
+
+                <div class="col-md-6 d-flex align-items-center">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" id="surPied" [(ngModel)]="borne.surPied" name="surPied">
+                    <label class="form-check-label" for="surPied">Sur pied</label>
                   </div>
                 </div>
-
-
               </div>
 
-            </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="puissance" class="form-label">Puissance *</label>
+                  <select id="puissance" class="form-select" [(ngModel)]="borne.puissance" name="puissance" #puissance="ngModel" required>
+                    <option [value]="null" disabled selected>Choisir la puissance</option>
+                    <option [ngValue]="2.3">2,3 kW – Très lente (prise classique)</option>
+                    <option [ngValue]="3.7">3,7 kW – Lente</option>
+                    <option [ngValue]="7.4">7,4 kW – Normale (recommandée)</option>
+                    <option [ngValue]="11">11 kW – Accélérée (triphasé)</option>
+                    <option [ngValue]="22">22 kW – Très rapide (installation spécifique)</option>
+                  </select>
+                  <div class="text-danger mt-1" *ngIf="puissance.invalid && (puissance.touched || attemptedNextStep)">La puissance est obligatoire</div>
+                </div>
 
-            <div class="row">
-              <div class="col-10">
-                <label for="instruction">Instruction</label>
-                <textarea  id="instruction" [(ngModel)]="borne.instruction" name="instruction" required></textarea>
+                <div class="col-md-6">
+                  <label for="prix" class="form-label">Prix *</label>
+                  <div class="input-group">
+                    <input type="number"
+                           id="prix"
+                           class="form-control"
+                           placeholder="Ex: 2.5"
+                           [(ngModel)]="borne.prix"
+                           name="prix"
+                           #prix="ngModel"
+                           required
+                           min="0.5"
+                           step="0.5" />
+                    <span class="input-group-text">€/h</span>
+                  </div>
+                  <div class="text-danger mt-1" *ngIf="prix.invalid && (prix.touched || mainForm.submitted)">Le prix est obligatoire</div>
+                </div>
               </div>
+
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="instruction" class="form-label">Instruction </label>
+                  <textarea id="instruction" class="form-control" [(ngModel)]="borne.instruction" name="instruction"></textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label class="form-label">Photo *</label>
+                  <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*">
+
+                  <div class="mt-2 text-center">
+                    <img *ngIf="photoPreviewUrl; else existingPhoto" [src]="photoPreviewUrl" alt="Aperçu" class="img-thumbnail" style="max-height:150px;">
+                    <ng-template #existingPhoto>
+                      <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo existante" class="img-thumbnail" style="max-height:150px;">
+                    </ng-template>
+                  </div>
+
+                  <!-- Message d'erreur -->
+                  <div class="text-danger mt-1" *ngIf="isPhotoMissing()  && attemptedNextStep">
+                    La photo est obligatoire
+                  </div>
+                </div>
+              </div>
+
+
             </div>
 
             <div class="text-center">
-              <button type="button" (click)="nextStep()" class="btn btn-outline-secondary  m-4"> <i class="fa-regular fa-circle-right"></i> Ajouter le lieux</button>
+              <button type="button" class="btn btn-outline-secondary mt-3"
+                      (click)="validateAndNextStep()">
+                Ajouter le lieu <i class="fa-regular fa-circle-right ms-1"></i>
+              </button>
             </div>
-          </div>
-        </div>
-
-        <div *ngIf="step === 2">
-
-          <div>
-            <div class="row">
-              <div class="col-10">
-                <label for="lieuId">Lieu existant</label>
-                <select id="lieuId" [(ngModel)]="borne.lieuId" name="lieuId" required>
-                  <option *ngFor="let lieu of lieuxExistants" [value]="lieu.id">
-                    {{ lieu.ville }} ({{ lieu.codePostal }}),  {{ lieu.adresse }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <p class="text-center mt-2">Ou</p>
-
-          <div>
-            <div class="row">
-              <div class="col-10">
-                <label for="adresse">Adresse</label>
-                <div *ngIf="borne.lieux">
-                  <input id="adresse" type="text" [(ngModel)]="newLieu.adresse" name="adresse" required />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5">
-                <label for="ville">Ville</label>
-                <div *ngIf="borne.lieux">
-                  <input id="ville" type="text" [(ngModel)]="newLieu.ville" name="ville" required />
-                </div>
-              </div>
-              <div class="col-5">
-                <label for="codePostal">Code Postal</label>
-                <div *ngIf="borne.lieux">
-                <input id="codePostal" type="text" [(ngModel)]="newLieu.codePostal" name="codePostal" required />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <button type="button" (click)="previousStep()" class="btn btn-outline-secondary m-4">
-              <i class="fa-regular fa-circle-left"></i></button>
-
-            <button type="submit" class="btn btn-outline-secondary mb-4 mt-4 ms-5">Ajouter</button>
-          </div>
 
         </div>
 
+        <div *ngIf="step === 2" #formStep2="ngModelGroup" ngModelGroup="step2Group" class="pb-2 bg-white">
 
+         <div class="modal-header justify-content-center">
+              <h5 class="modal-title "><i class="bi bi-geo-alt-fill me-2"></i>Choisir le lieu</h5>
+            </div>
+
+            <div class="modal-body">
+
+              <!-- Lieu existant -->
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="lieuId" class="form-label" style="font-size: 16px">Lieu existant</label>
+                  <select id="lieuId" class="form-select"
+                          [(ngModel)]="borne.lieuId"
+                          name="lieuId"
+                          #lieuId="ngModel"
+                          (ngModelChange)="onLieuIdChange()" >
+                    <option [value]="0">-- Sélectionner un lieu --</option>
+                    <option *ngFor="let lieu of lieuxExistants" [value]="lieu.id">
+                      {{ lieu.ville }} ({{ lieu.codePostal }}),  {{ lieu.adresse }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <p class="text-center my-3">Ou</p>
+
+              <label for="adresse" class="form-label" style="font-size: 16px">Nouveau Lieu </label>
+
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="adresse" class="form-label">Adresse </label>
+                  <input id="adresse" type="text" class="form-control"
+                         [(ngModel)]="newLieu.adresse"
+                         name="adresse"
+                         #adresse="ngModel"
+                         [required]="borne.lieuId === 0 || borne.lieuId == null"
+                         [disabled]="borne.lieuId > 0" />
+                  <div class="text-danger mt-1" *ngIf="adresse.invalid && adresse.touched">L’adresse est obligatoire</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="ville" class="form-label">Ville </label>
+                  <input id="ville" type="text" class="form-control"
+                         [(ngModel)]="newLieu.ville"
+                         name="ville"
+                         #ville="ngModel"
+                         [required]="borne.lieuId === 0 || borne.lieuId == null"
+                         [disabled]="borne.lieuId > 0" />
+                  <div class="text-danger mt-1" *ngIf="ville.invalid && ville.touched">La ville est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="codePostal" class="form-label">Code Postal </label>
+                  <input id="codePostal" type="text" class="form-control" [(ngModel)]="newLieu.codePostal" name="codePostal" #codePostal="ngModel"
+                         [required]="borne.lieuId === 0 || borne.lieuId == null"
+                         [disabled]="borne.lieuId > 0" />
+                  <div class="text-danger mt-1" *ngIf="codePostal.invalid && codePostal.touched">Le code postal est obligatoire</div>
+                </div>
+              </div>
+
+              <!-- Boutons -->
+              <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-outline-secondary" (click)="previousStep()">
+                  <i class="fa-regular fa-circle-left me-1"></i> Précédent
+                </button>
+                <button type="submit" class="btn btn-outline-secondary">Ajouter</button>
+              </div>
+
+            </div>
+        </div>
       </div>
     </form>
 

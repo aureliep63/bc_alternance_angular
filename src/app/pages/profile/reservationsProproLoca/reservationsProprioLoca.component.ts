@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {filter, forkJoin, map, mergeMap, Observable, reduce, switchMap, tap} from "rxjs";
+import {filter, forkJoin, map, mergeMap, Observable, reduce, switchMap, take, tap} from "rxjs";
 import {User} from "../../../entities/user.entity";
 import {UserService} from "../../../services/user/user.service";
 import {AuthService} from "../../../services/auth/auth.service";
@@ -12,6 +12,10 @@ import {Lieux} from "../../../entities/lieux.entity";
 import {BorneDto} from "../../../entities/borneDto.entity";
 import {ModalBorneDetailComponent} from "../bornes/modal-borne-detail/modal-borne-detail.component";
 import * as bootstrap from "bootstrap";
+import { jsPDF } from 'jspdf';
+import autoTable from "jspdf-autotable";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 
 export interface ReservationWithBorne extends Reservation {
@@ -35,7 +39,7 @@ export class RoleUserComponent implements OnInit {
   locataireResa$: Observable<ReservationWithBorne[]>; // Pour voir toutes les réservations d'un locataire
   proprioResa$: Observable<ReservationWithBorne[]>; // Pour voir toutes les réservations d'un propriétaire
   deleteId: number | null = null;
-  activeTab: string = 'locataire'; // Onglet actif par défaut
+  activeTab: string = 'locataire';
   private logoBase64: string = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...";
 
   toBorneDto(borne: Borne): BorneDto {
@@ -62,6 +66,7 @@ export class RoleUserComponent implements OnInit {
       } : null
     };
   }
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -134,8 +139,6 @@ export class RoleUserComponent implements OnInit {
 
 
 
-
-
     // Pour voir les bornes par réservation
     this.currentBorneUser$ = this.locataireResa$.pipe(
       switchMap(reservations => {
@@ -167,6 +170,19 @@ export class RoleUserComponent implements OnInit {
         );
       })
     );
+
+    // 1. S'abonner au fragment d'URL lors de l'initialisation du composant
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        if (fragment === 'resaLocataire') {
+          // Si le fragment est 'resaLocataire', active cet onglet
+          this.setActiveTab('locataire');
+        } else if (fragment === 'resaProprietaire') {
+          // (Optionnel) Pour une future ancre propriétaire
+          this.setActiveTab('proprietaire');
+        }
+      }
+    });
   }
 
   setActiveTab(tab: string) {
@@ -186,7 +202,7 @@ export class RoleUserComponent implements OnInit {
   viewDetails(borne: BorneDto) {
     this.modalDetails.open(borne);
   }
-  statusOptions: Array<ReservationHttp['status']> = ['ACCEPTER', 'EN_ATTENTE', 'REFUSER', 'ANNULER'];
+  statusOptions: Array<ReservationHttp['status']> = ['ACCEPTER', 'REFUSER'];
   editStatusId: number | null = null;
 
   saveStatus(resa: ReservationWithBorne) {
@@ -201,8 +217,10 @@ export class RoleUserComponent implements OnInit {
     });
   }
 
+  annulationEnCours: Set<number> = new Set();
+
   cancelReservation(resa: ReservationWithBorne) {
-    console.log('Tentative d\'annulation de la réservation ID:', resa.id);
+    this.annulationEnCours.add(resa.id);
 
     this.reservationService.updateStatus(resa.id, 'ANNULER').subscribe({
       next: (response) => {
@@ -215,7 +233,7 @@ export class RoleUserComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur lors de l\'annulation de la réservation:', err);
-        // Gérer l'erreur, par exemple afficher un message à l'utilisateur
+        this.annulationEnCours.delete(resa.id);
       }
     });
   }
@@ -236,5 +254,176 @@ export class RoleUserComponent implements OnInit {
   }
 
 
+  selectedResa: any; // réservation sélectionnée
 
+  openConfirmModal(resa: any) {
+    this.selectedResa = resa;
+    // Ouvrir la modal via Bootstrap
+    const modal = new bootstrap.Modal(document.getElementById('confirmCancelModal')!);
+    modal.show();
+  }
+
+  confirmCancel() {
+    if (this.selectedResa) {
+      this.cancelReservation(this.selectedResa);
+      this.selectedResa = null;
+    }
+    const modalEl = document.getElementById('confirmCancelModal')!;
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal?.hide();
+  }
+
+  formatHeuresMinutes(totalHeures: number): string {
+    const heures = Math.floor(totalHeures);
+    const minutes = Math.round((totalHeures - heures) * 60);
+    return `${heures}h ${minutes}min`;
+  }
+
+  downloadPdf(resa: any) {
+    this.currentUser$.pipe(take(1)).subscribe(user => {
+      const doc = new jsPDF();
+
+      const img = new Image();
+      img.src = 'assets/logoo.png';
+      img.onload = () => {
+        doc.addImage(img, 'PNG', 15, 10, 30, 30);
+
+        doc.setFontSize(22);
+        doc.setTextColor(177, 188, 158);
+        doc.text('ELECTRICITY ', 105, 20, { align: 'right' });
+        doc.text(' BUSINESS', 105, 30, { align: 'right' });
+
+        doc.setFontSize(18);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Récapitulatif', 105, 50, { align: 'center' });
+
+        doc.setDrawColor(177, 188, 158);
+        doc.setLineWidth(0.8);
+        doc.line(20, 55, 190, 55);
+
+        //  Infos currentUser
+        let yPos = 65;
+        doc.setFontSize(12);
+        doc.text(`${user?.nom ?? ''} ${user?.prenom ?? ''}`, 20, yPos);
+        doc.text(`${user?.email ?? ''}`, 20, yPos + 12);
+        doc.text(`${user?.telephone ?? ''}`, 20, yPos + 19);
+        doc.text(`${user?.nomRue ?? ''}, ${user?.ville ?? ''}  ${user?.codePostal ?? ''}`, 20, yPos + 26);
+
+         // --- Infos Borne ---
+        let borneY = yPos + 30;
+        const xRight = 130;
+        doc.text(`Borne ID : ${resa.borne?.id ?? ''}`, xRight, borneY);
+        doc.text(`${resa.borne?.lieux?.adresse ?? ''}`, xRight, borneY + 7);
+        doc.text(`${resa.borne?.lieux?.ville ?? ''} ${resa.borne?.lieux?.codePostal ?? ''}  `, xRight, borneY + 14);
+
+
+        // --- Formattage date ---
+        const formatDate = (d: string) =>
+          new Date(d).toLocaleString('fr-FR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+
+        // --- Calculs ---
+        const prixHoraire = resa.borne?.prix || 0;
+        const heures = this.calculerHeuresTotales(resa);
+        const prixTotal = this.calculerPrixTotal(resa);
+
+        // --- Tableau réservation ---
+        const info = [
+          ['ID Réservation', resa.id],
+          ['Status', resa.status === 'EN_ATTENTE' ? 'EN ATTENTE' : resa.status],
+          ['Début', formatDate(resa.dateDebut)],
+          ['Fin', formatDate(resa.dateFin)],
+          ['Prix / heure', prixHoraire.toFixed(2) + ' €/h'],
+          ['Durée totale', this.formatHeuresMinutes(heures)],
+          ['Prix total', prixTotal.toFixed(2) + ' €'],
+        ];
+
+        autoTable(doc, {
+          startY: yPos + 60,
+          head: [[{ content: 'Détails de la Réservation', colSpan: 2,  styles: {
+              halign: 'center',
+              fillColor: [177, 188, 158],
+              textColor: 255,
+              fontStyle: 'bold',
+              fontSize: 16
+            } }]],
+          body: info,
+          theme: 'plain', // retire toutes les bordures par défaut
+          styles: { fontSize: 12, cellPadding: 4 },
+          didDrawCell: (data) => {
+            if (data.section === 'body' || data.section === 'head') {
+              const doc = data.doc;
+              const { x, y, width, height } = data.cell;
+
+              //  la ligne du bas
+              doc.setDrawColor(200); // gris clair
+              doc.setLineWidth(0.2);
+              doc.line(x, y + height, x + width, y + height);
+
+
+            }
+          }
+        });
+
+        // --- Footer ---
+        const pageHeight = doc.internal.pageSize.height;
+        doc.setFontSize(10);
+        doc.setTextColor(177, 188, 158);
+        doc.text(
+          'Electricity Business - Pour toute question, contactez-nous au 01 23 45 67 89',
+          105,
+          pageHeight - 10,
+          { align: 'center' }
+        );
+
+        doc.save(`reservation_${resa.id}.pdf`);
+      };
+    });
+  }
+
+  exportReservationsExcel() {
+    this.currentUser$.pipe(take(1)).subscribe(user => {
+      if (!user) return;
+
+      // Récupérer les réservations du locataire (ou proprio)
+      this.locataireResa$.pipe(take(1)).subscribe(reservations => {
+        if (!reservations || reservations.length === 0) return;
+
+        const data = reservations.map(resa => ({
+        'ID Réservation': resa.id,
+        'Nom Utilisateur': user?.nom ?? '',
+        'Prénom Utilisateur': user?.prenom ?? '',
+        'Email': user?.email ?? '',
+        'Borne ID': resa.borne?.id ?? '',
+        'Adresse Borne': resa.borne?.lieux?.adresse ?? '',
+        'Ville Borne': resa.borne?.lieux?.ville ?? '',
+        'Code Postal Borne': resa.borne?.lieux?.codePostal ?? '',
+        'Status': resa.status === 'EN_ATTENTE' ? 'EN ATTENTE' : resa.status,
+        'Début': new Date(resa.dateDebut).toLocaleString(),
+        'Fin': new Date(resa.dateFin).toLocaleString(),
+        'Prix / heure': (resa.borne?.prix ?? 0).toFixed(2),
+        'Durée totale (h)': this.calculerHeuresTotales(resa).toFixed(2),
+        'Prix total (€)': this.calculerPrixTotal(resa).toFixed(2),
+      }));
+
+      // Créer un workbook et une feuille
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Réservations');
+
+      // Générer le fichier Excel
+      const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        saveAs(blob, `reservations_${user.nom}_${user.prenom}.xlsx`);
+    });
+    });
+
+  }
 }
+
+

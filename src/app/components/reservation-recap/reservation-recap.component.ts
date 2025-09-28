@@ -127,6 +127,9 @@ export class ReservationRecapComponent {
   }
 
   goToProfile() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(
+      ['/profile'],
+      { fragment: 'resaLocataire' }
+    );
   }
 }

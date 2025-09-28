@@ -1,4 +1,4 @@
-<section class="container mt-md-5">
+<section class="container mt-md-5" id="resaProfil">
   <ul class="nav nav-tabs text-center">
     <li class="nav-item">
       <a class="nav-link"
@@ -18,7 +18,10 @@
 
   <div *ngIf="activeTab === 'locataire'">
     <p>Mes demandes de réservation
-    <button><i class="bi bi-file-earmark-spreadsheet"></i></button></p>
+      <button (click)="exportReservationsExcel()" class="btn btn-outline-dark ms-2">
+        <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+      </button>
+    </p>
 
     <div *ngIf="locataireResa$ | async as reservations;">
       <table class="table" >
@@ -49,14 +52,40 @@
               <td>{{ calculerPrixTotal(resa) | currency:'EUR':'symbol':'1.2-2':'fr' }}</td>
 
             <td>
-              <ng-container *ngIf="editStatusId !== resa.id">
-                {{ resa.status }}
+              {{ resa.status === 'EN_ATTENTE' ? 'EN ATTENTE' : resa.status }}
+              <!-- Bouton Edit : seulement si status EN_ATTENTE et pas en mode édition -->
+              <button
+                *ngIf="resa.status === 'EN_ATTENTE' && editStatusId !== resa.id"
+                (click)="editStatusId = resa.id"
+                class="btn btn-outline-dark">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+
+
+              <ng-container *ngIf="editStatusId === resa.id">
+                <select [(ngModel)]="resa.status">
+                  <option *ngFor="let status of statusOptions" [value]="status">
+                    {{ status }}
+                  </option>
+                </select>
+                <button (click)="saveStatus(resa)"><i class="fa-solid fa-check"></i></button>
+                <button (click)="editStatusId = null"><i class="fa-solid fa-xmark"></i></button>
               </ng-container>
             </td>
-            <td> <button (click)="cancelReservation(resa)" class="btn btn-sm btn-danger">x Annuler</button> |
+            <td>
+              <ng-container *ngIf="resa.status !== 'ANNULER'">
+                <button
+                  class="btn btn-sm"
+                  [ngClass]="{'btn-danger': !annulationEnCours.has(resa.id),'d-none': annulationEnCours.has(resa.id)}"
+                  [disabled]="annulationEnCours.has(resa.id)" (click)="openConfirmModal(resa)">
+                  x Annuler
+                </button> |
+              </ng-container>
               <button (click)="viewDetails(toBorneDto(resa.borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye"></i>Voir</button>
               </td>
-            <td><i class="bi bi-filetype-pdf fs-3"></i></td>
+            <button (click)="downloadPdf(resa)" class="btn btn-outline-dark">
+              <i class="bi bi-filetype-pdf"></i>
+            </button>
 
           </tr>
         </tbody>
@@ -69,7 +98,9 @@
   </div>
 
   <div *ngIf="activeTab === 'proprietaire'">
-    <p>Mes demandes de location  <button><i class="bi bi-file-earmark-spreadsheet"></i> </button></p>
+    <p>Mes demandes de location  <button (click)="exportReservationsExcel()" class="btn btn-outline-dark ms-2">
+      <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+    </button></p>
     <div *ngIf="proprioResa$ | async as reservations;">
      <table class="table" >
         <thead>
@@ -102,10 +133,15 @@
                 <td>{{ calculerPrixTotal(resa) | currency:'EUR':'symbol':'1.2-2':'fr' }}</td>
 
               <td>
-                <ng-container *ngIf="editStatusId !== resa.id">
-                  {{ resa.status }}
-                  <button (click)="editStatusId = resa.id" class="btn btn-outline-dark"><i class="fa-solid fa-pen-to-square"></i></button>
-                </ng-container>
+                {{ resa.status === 'EN_ATTENTE' ? 'EN ATTENTE' : resa.status }}
+                <!-- Bouton Edit : seulement si status EN_ATTENTE et pas en mode édition -->
+                <button
+                  *ngIf="resa.status === 'EN_ATTENTE' && editStatusId !== resa.id"
+                  (click)="editStatusId = resa.id"
+                  class="btn btn-outline-dark">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+
 
                 <ng-container *ngIf="editStatusId === resa.id">
                   <select [(ngModel)]="resa.status">
@@ -118,10 +154,22 @@
                 </ng-container>
               </td>
 
-              <td> <button  class="btn btn-outline-danger"><i class="fa-regular fa-trash-can"></i></button> |
+              <td>
+                <ng-container *ngIf="resa.status !== 'ANNULER'">
+                <button
+                class="btn btn-sm"
+                [ngClass]="{'btn-danger': !annulationEnCours.has(resa.id),'d-none': annulationEnCours.has(resa.id)}"
+                [disabled]="annulationEnCours.has(resa.id)" (click)="openConfirmModal(resa)">
+                x Annuler
+              </button> |
+                </ng-container>
                 <button (click)="viewDetails(toBorneDto(resa.borne))" style="cursor: pointer;" class="btn btn-outline-dark"> <i class="bi bi-eye pe-2"></i>Voir</button>
               </td>
-              <td><button><i class="bi bi-filetype-pdf fs-3"></i></button></td>
+              <td>
+                <button (click)="downloadPdf(resa)" class="btn btn-outline-dark">
+                  <i class="bi bi-filetype-pdf"></i>
+                </button>
+              </td>
             </tr>
           </ng-container>
         </tbody>
@@ -134,3 +182,24 @@
 
 
 </section>
+
+
+
+<!-- Modal de confirmation -->
+<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir annuler cette réservation ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-danger" (click)="confirmCancel()">Oui, annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

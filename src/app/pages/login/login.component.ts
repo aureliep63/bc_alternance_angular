@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit{
         this.dialogRef.close();
       }
       // Et naviguez vers la page de profil
-      this.router.navigateByUrl('/profile');
+      this.router.navigateByUrl('/');
     }catch (e:any){
       // if else en one Line
       if(e.status === 401) this.errorMsg = 'Email ou mot de passe incorrect'
@@ -98,8 +98,12 @@ export class LoginComponent implements OnInit{
         width: '1100px',
         height:'auto',
         panelClass: 'register-modal-panel'
-      });
+
+      }
+      );
+      this.dialogRef.close();
     }
+
   }
 
   close(): void {
