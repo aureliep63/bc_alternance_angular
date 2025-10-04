@@ -12,9 +12,10 @@
 
     <li >SERVICES
       <ul>
-        <li>Mon compte</li>
-        <li>Trouvez une borne</li>
-        <li>Réserver une borne</li>
+        <li *ngIf="(isConnected | async)"><a [routerLink]="['/profile']" fragment="resaLocataire" class="text-reset text-decoration-none">Mon profil</a></li>
+        <li  *ngIf="!(isConnected | async)"><a (click)="openLogin()" class="text-reset text-decoration-none"> >Mon profil</a></li>
+        <li><a [routerLink]="['']" fragment="map-section" class="text-reset text-decoration-none">Trouvez une borne</a></li>
+        <li><a [routerLink]="['']" fragment="map-section" class="text-reset text-decoration-none">Réserver une borne</a></li>
       </ul>
     </li>
   </ul>

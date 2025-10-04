@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Borne, BorneHttp} from "../../entities/borne.entity";
-import {lastValueFrom, map, Observable} from "rxjs";
+import {catchError, lastValueFrom, map, Observable, throwError} from "rxjs";
 import {BorneDto} from "../../entities/borneDto.entity";
 
 @Injectable({
@@ -43,8 +43,16 @@ export class BorneService {
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`);
+    return this.http.delete<void>(`${this.url}/${id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 403) {
+          return throwError(() => new Error("Impossible de supprimer : la borne est réservée."));
+        }
+        return throwError(() => error);
+      })
+    );
   }
+
   updateBorne(id: number, formData: FormData): Observable<BorneDto> {
     return this.http.put<BorneDto>(`${this.url}/user/bornes/${id}`, formData);
   }

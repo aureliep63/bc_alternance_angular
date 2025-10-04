@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // 3. Si aucun jeton n'est présent (et que la route n'est pas d'AUTH),
   // la requête continuera SANS jeton.
-  // 🚨 Le backend doit alors renvoyer 401/403 si la route est privée.
+  //  Le backend doit alors renvoyer 401/403 si la route est privée.
 
   // 4. Blocage explicite pour la déconnexion après échec du jeton (Ancienne logique)
   // On ne doit faire cela que si c'est une requête XHR qui échoue car elle est PRIVÉE.

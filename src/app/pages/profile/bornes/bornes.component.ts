@@ -127,8 +127,18 @@ export class BornesComponent implements OnInit{
 // Quand l'utilisateur confirme la suppression
   onConfirmDelete(): void {
     if (this.deleteId !== null) {
-      this.deleteBorne(this.deleteId); // Appelle la méthode delete standard
-      this.deleteId = null;
+      // Suppression d’une borne
+      this.borneService.delete(this.deleteId).subscribe({
+        next: () => {
+          // Mettre à jour la liste
+          this.bornesSubject.next(
+            this.bornesSubject.value.filter(b => b.id !== this.deleteId)
+          );
+        },
+        error: (err) => {
+          alert(err.message);
+        }
+      });
 
       const modalElement = document.getElementById('confirmDeleteModal');
       if (modalElement) {
@@ -137,8 +147,6 @@ export class BornesComponent implements OnInit{
       }
     }
   }
-
-
 
   viewDetails(borne: BorneDto) {
     this.modalDetails.open(borne);
