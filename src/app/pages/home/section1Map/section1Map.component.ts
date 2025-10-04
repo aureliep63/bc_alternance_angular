@@ -3,7 +3,7 @@ import {BorneService} from "../../../services/borne/borne.service";
 import 'leaflet-control-geocoder';
 
 import * as L from 'leaflet';
-import 'leaflet.markercluster'; // Assurez-vous que l'importation est correcte
+import 'leaflet.markercluster';
 import {ReservationService} from "../../../services/reservation/reservation.service";
 import {LieuxService} from "../../../services/lieux/lieux.service";
 import {BorneDto} from "../../../entities/borneDto.entity";
@@ -106,7 +106,7 @@ export class Section1MapComponent implements  AfterViewInit {
       minZoom: 3});
     tiles.addTo(this.map);
 
-    this.markerClusterGroup = (L as any).markerClusterGroup();
+    this.markerClusterGroup = L.markerClusterGroup();
     this.map.addLayer(this.markerClusterGroup!);
   }
 
