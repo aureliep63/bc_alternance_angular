@@ -106,7 +106,8 @@ export class Section1MapComponent implements  AfterViewInit {
       minZoom: 3});
     tiles.addTo(this.map);
 
-    this.markerClusterGroup = L.markerClusterGroup();
+    const L_any = L as any;
+    this.markerClusterGroup = L_any.markerClusterGroup();
     this.map.addLayer(this.markerClusterGroup!);
   }
 
