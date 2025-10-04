@@ -106,9 +106,15 @@ export class Section1MapComponent implements  AfterViewInit {
       minZoom: 3});
     tiles.addTo(this.map);
 
-    const L_any = L as any;
-    this.markerClusterGroup = L_any.markerClusterGroup();
-    this.map.addLayer(this.markerClusterGroup!);
+    const markerClusterFn = (L as any).markerClusterGroup;
+
+    if (typeof markerClusterFn === 'function') {
+      this.markerClusterGroup = markerClusterFn();
+      this.map.addLayer(this.markerClusterGroup!);
+    } else {
+      console.error("Leaflet MarkerCluster plugin non trouvé. Les bornes ne seront pas groupées.");
+      this.markerClusterGroup = null;
+    }
   }
 
   private updateMap(bornes: any[]): void {
