@@ -77,7 +77,9 @@ export class Section1MapComponent implements  AfterViewInit {
   };
 
   //private markers: L.Marker[] = [];
-  private markerClusterGroup: L.MarkerClusterGroup | null = null;
+ // private markerClusterGroup: L.MarkerClusterGroup | null = null;
+  private markerClusterGroup!: L.MarkerClusterGroup;
+
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   constructor(private geocodingService: GeocodingService ,private borneService: BorneService, private reservationService: ReservationService, private lieuxService: LieuxService) {}
@@ -110,11 +112,13 @@ export class Section1MapComponent implements  AfterViewInit {
 
     if (typeof markerClusterFn === 'function') {
       this.markerClusterGroup = markerClusterFn();
-      this.map.addLayer(this.markerClusterGroup!);
+      this.map.addLayer(this.markerClusterGroup);
     } else {
-      console.error("Leaflet MarkerCluster plugin non trouvé. Les bornes ne seront pas groupées.");
-      this.markerClusterGroup = null;
+      console.warn("Plugin MarkerCluster introuvable, fallback sans clustering.");
+      this.markerClusterGroup = null as any; // ou créer un tableau de markers à la place
     }
+
+
   }
 
   private updateMap(bornes: any[]): void {
