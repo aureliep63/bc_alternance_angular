@@ -1,10 +1,10 @@
+import * as L from 'leaflet';
+(window as any).L = L;
+import 'leaflet.markercluster';
+
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BorneService} from "../../../services/borne/borne.service";
 import 'leaflet-control-geocoder';
-
-import * as L from 'leaflet';
-import 'leaflet.markercluster';
-
 import {ReservationService} from "../../../services/reservation/reservation.service";
 import {LieuxService} from "../../../services/lieux/lieux.service";
 import {BorneDto} from "../../../entities/borneDto.entity";
@@ -12,8 +12,6 @@ import {BorneDetailComponent} from "./borne-detail/borne-detail.component";
 import {Borne} from "../../../entities/borne.entity";
 import {formatDate} from "@angular/common";
 import {GeocodingService} from "../../../services/geocoding/geocoding.service";
-
-
 
 // Fix des icônes Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -77,10 +75,8 @@ export class Section1MapComponent implements  AfterViewInit {
     range: 100
   };
 
-  //private markers: L.Marker[] = [];
- // private markerClusterGroup: L.MarkerClusterGroup | null = null;
+
  private markerClusterGroup!: L.MarkerClusterGroup;
-  //const markerClusterFn = (L as any).markerClusterGroup;
 
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
@@ -110,10 +106,16 @@ export class Section1MapComponent implements  AfterViewInit {
       minZoom: 3});
     tiles.addTo(this.map);
 
-    this.markerClusterGroup = (L as any).markerClusterGroup();
-    this.map.addLayer(this.markerClusterGroup);
-
-
+    if ((L as any).markerClusterGroup) {
+      // typage OK, @types fournit L.MarkerClusterGroup
+      this.markerClusterGroup = (L as any).markerClusterGroup();
+      this.map.addLayer(this.markerClusterGroup);
+    } else {
+      // fallback propre si le plugin n'est pas chargé (ex: prod mal configuré)
+      this.markerClusterGroup = L.layerGroup() as unknown as L.MarkerClusterGroup;
+      this.map.addLayer(this.markerClusterGroup as unknown as L.LayerGroup);
+      console.warn('Marker cluster plugin absent — fallback sur LayerGroup');
+    }
   }
 
   private updateMap(bornes: any[]): void {
