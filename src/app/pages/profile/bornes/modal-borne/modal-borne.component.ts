@@ -253,7 +253,8 @@ export class ModalBorneComponent {
 
   saveBorne() {
     this.currentUser$.pipe(take(1)).subscribe(user => {
-      if (!user || !user.id) {console.error('Utilisateur non connecté');return;}
+      if (!user || !user.id) {
+        console.error('Utilisateur non connecté');return;}
       this.borne.utilisateurId = user.id;
       const formData = new FormData();
       formData.append('borneDto', JSON.stringify(this.borne));

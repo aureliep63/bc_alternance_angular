@@ -4,6 +4,7 @@ import 'leaflet-control-geocoder';
 
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+
 import {ReservationService} from "../../../services/reservation/reservation.service";
 import {LieuxService} from "../../../services/lieux/lieux.service";
 import {BorneDto} from "../../../entities/borneDto.entity";
@@ -78,7 +79,8 @@ export class Section1MapComponent implements  AfterViewInit {
 
   //private markers: L.Marker[] = [];
  // private markerClusterGroup: L.MarkerClusterGroup | null = null;
-  private markerClusterGroup!: L.MarkerClusterGroup;
+ private markerClusterGroup!: L.MarkerClusterGroup;
+  //const markerClusterFn = (L as any).markerClusterGroup;
 
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
@@ -108,15 +110,8 @@ export class Section1MapComponent implements  AfterViewInit {
       minZoom: 3});
     tiles.addTo(this.map);
 
-    const markerClusterFn = (L as any).markerClusterGroup;
-
-    if (typeof markerClusterFn === 'function') {
-      this.markerClusterGroup = markerClusterFn();
-      this.map.addLayer(this.markerClusterGroup);
-    } else {
-      console.warn("Plugin MarkerCluster introuvable, fallback sans clustering.");
-      this.markerClusterGroup = null as any; // ou créer un tableau de markers à la place
-    }
+    this.markerClusterGroup = (L as any).markerClusterGroup();
+    this.map.addLayer(this.markerClusterGroup);
 
 
   }
