@@ -53,24 +53,6 @@
 
             <td>
               {{ resa.status === 'EN_ATTENTE' ? 'EN ATTENTE' : resa.status }}
-              <!-- Bouton Edit : seulement si status EN_ATTENTE et pas en mode édition -->
-              <button
-                *ngIf="resa.status === 'EN_ATTENTE' && editStatusId !== resa.id"
-                (click)="editStatusId = resa.id"
-                class="btn btn-outline-dark">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-
-
-              <ng-container *ngIf="editStatusId === resa.id">
-                <select [(ngModel)]="resa.status">
-                  <option *ngFor="let status of statusOptions" [value]="status">
-                    {{ status }}
-                  </option>
-                </select>
-                <button (click)="saveStatus(resa)"><i class="fa-solid fa-check"></i></button>
-                <button (click)="editStatusId = null"><i class="fa-solid fa-xmark"></i></button>
-              </ng-container>
             </td>
             <td>
               <ng-container *ngIf="resa.status !== 'ANNULER'">

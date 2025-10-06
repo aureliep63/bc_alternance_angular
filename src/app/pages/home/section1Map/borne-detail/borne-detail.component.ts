@@ -113,11 +113,20 @@ export class BorneDetailComponent {
       }
     } else {
       // Si l'utilisateur n'est pas connecté, ouvrez la modale de login
-      this.dialog.open(LoginComponent, {
+      const dialogRef = this.dialog.open(LoginComponent, {
         width: '1200px',
         height:'650px',
         panelClass: 'login-modal-panel'
       });
+
+
+    // après la fermeture du login
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.authService.isAuthenticated()) {
+        // reconnecté → relancer la réservation avec les filtres déjà remplis
+        this.proceedToReservation();
+      }
+    });
       // On ferme la modale actuelle
       this.close();
     }
