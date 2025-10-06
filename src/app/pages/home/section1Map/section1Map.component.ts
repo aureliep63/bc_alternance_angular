@@ -1,6 +1,6 @@
-import * as L from 'leaflet';
-(window as any).L = L;
-import 'leaflet.markercluster';
+import L from '../../../../leaflet-plugins';
+
+
 
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BorneService} from "../../../services/borne/borne.service";
