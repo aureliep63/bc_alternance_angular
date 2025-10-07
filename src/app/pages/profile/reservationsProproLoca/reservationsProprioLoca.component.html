@@ -23,7 +23,7 @@
       </button>
     </p>
 
-    <div *ngIf="locataireResa$ | async as reservations;">
+    <div *ngIf="locataireResa$ | async as reservations;"  class="table-responsive">
       <table class="table" >
         <thead>
           <tr>
@@ -83,7 +83,7 @@
     <p>Mes demandes de location  <button (click)="exportReservationsExcel()" class="btn btn-outline-dark ms-2">
       <i class="bi bi-file-earmark-spreadsheet-fill"></i>
     </button></p>
-    <div *ngIf="proprioResa$ | async as reservations;">
+    <div *ngIf="proprioResa$ | async as reservations;"  class="table-responsive">
      <table class="table" >
         <thead>
         <tr>

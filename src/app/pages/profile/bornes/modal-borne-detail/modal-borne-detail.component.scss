@@ -1,167 +1,218 @@
 .modal-overlay {
-  bottom: -156px;
-  right: 0;
+  position: fixed;
+  top: 55%;
+  left: 30%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
   padding: 1rem;
-  z-index: 999;
+
   .modal-content {
-    padding: 1rem;
-    width: 17vw;
-    box-shadow: 0 4px 6px 10px rgba(0, 0, 0, 0.1);
-    height: 55vh;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 28vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
 
-    .close-btn {
-      top: 1rem;
-      right: 1rem;
-      font-size: 18px;
-    }
-    button {
-      a{
-        font-size: 18px;
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 18px;
+    z-index: 10;
+  }
+
+  .nav-tabs {
+    margin-bottom: 1.2rem;
+
+    .nav-link {
+      font-size: 1rem;
+      color: #365c36;
+      cursor: pointer;
+
+      &.active {
+        font-weight: 600;
+        border-bottom: 2px solid #365c36;
       }
     }
-    .nav-tabs{
-      margin-bottom: 20px;
+  }
 
+  section {
+    li {
+      list-style: none;
     }
-    section{
-      li{
-        list-style: none;
-      }
-      .detailBorne{
-        font-size: 18px;
-        p{
-          margin: 10px 0;
-        }
-        strong{
-          font-weight: 500;
-        }
-        img{
-          width: 12vw;
-          height: 18vh;
-          border: 1px rgba(126, 163, 141, 0.64) solid;
-        }
 
+    .detailBorne {
+      font-size: 1.2rem;
+      text-align: center;
+
+      p {
+        margin: 0.5rem 0;
       }
 
-      .lesAvis{
-        h2{
-          font-size:22px;
+      strong {
+        font-weight: 500;
+      }
+
+      img {
+        width: 12vw;
+        height: auto;
+        border: 1px solid rgba(126, 163, 141, 0.64);
+        border-radius: 8px;
+        margin-top: 0.5rem;
+      }
+
+      .infoPhoto {
+        margin: 0.5rem 0;
+
+        ul {
+          display: flex;
+          justify-content: space-evenly;
+          flex-wrap: wrap;
+          padding: 0;
+          margin: 0.5rem 0;
         }
-        .fa-solid{
-          margin: 0 4px;
+      }
+
+      .pdetail {
+        margin: 0.8rem 0;
+        text-align: left;
+      }
+    }
+
+
+    .lesAvis {
+      text-align: center;
+      padding: 0.5rem;
+
+      .avis-header {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+
+        h2 {
+          font-size: 1.4rem;
+          font-weight: 600;
+          margin: 0;
+          color: #2e2e2e;
         }
-        .etoileXs::before {
-          content: "";
-          display: block;
-          width: 80%;
-          height: 1px;
-          background:rgba(126, 163, 141, 0.64);
-          margin: 10px auto ;
+
+        .stars {
+          display: flex;
+          gap: 0.2rem;
+
+          .fa-star {
+            color: #ffd43b;
+            font-size: 1.2rem;
+          }
         }
-        .etoileXs{
-          li{
-            margin: 12px 0;
-            .fa-solid{
-              margin: 0 5px;
+      }
+
+      .avisBtn {
+        .etoileXs {
+          border-top: 1px solid rgba(126, 163, 141, 0.64);
+          padding-top: 0.8rem;
+          margin: 0 auto;
+          max-width: 90%;
+          list-style: none;
+
+          li {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            text-align: center;
+
+            i.fa-star {
+              color: #ffd43b;
+              margin-left: 3px;
             }
           }
         }
       }
     }
   }
-  .login-modal-panel {
-    border: 1px solid black;
-    border-radius: 15px; /* Pour des coins arrondis */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
-    0 6px 20px rgba(0, 0, 0, 0.19);
-    margin-top: 20px;
-    h1{
-      font-size: 32px;
-    }
-  }
-  @media (max-width: 768px){
-    top: 42px;
-    right: 0;
+
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    align-items: flex-start;
+    top: 74%;
+    left: 0;
+
     .modal-content {
       width: 90vw;
-      height: 100%;
+      height: auto;
+      max-height: 90vh;
+      padding: 1rem;
+
       .close-btn {
-        font-size: 12px;
+        font-size: 14px;
       }
-      .nav-tabs{
-        margin-bottom: 10px;
-        .nav-link{
-          font-size: 12px;
+
+      .nav-tabs {
+        margin-bottom: 0.8rem;
+
+        .nav-link {
+          font-size: 0.85rem;
+          padding: 0.4rem 0.6rem;
         }
       }
-      button {
-        a{
-          font-size: 12px;
+
+      .detailBorne {
+        font-size: 0.8rem;
+
+        p {
+          margin: 0.3rem 0;
+        }
+
+        strong {
+          font-weight: 500;
+          font-size: 0.95rem;
+        }
+
+        img {
+          width: 60vw;
+          height: auto;
+        }
+
+        .infoPhoto ul {
+          justify-content: center;
+        }
+
+        .pdetail {
+          margin: 0.5rem 0;
         }
       }
-      section{
 
-        .detailBorne{
-          p, li{
-            margin: 0;
-            font-size: 12px;
-          }
-          strong{
-            font-weight: normal;
-            font-size: 14px;
-          }
-
-          .infoPhoto{
-            margin: 5px 0;
-            ul{
-              justify-content: center;
-            }
-            img{
-              width: 33vw;
-              height: 12vh;
-            }
-          }
-          .pdetail{
-            margin: 5px 0;
-          }
-        }
-
-        .lesAvis{
+      .lesAvis {
+        .avis-header {
           flex-direction: column;
-          h2{
-            font-size: 16px;
-            margin-bottom: 0;
-            .fa-star{
-              font-size: 18px;
-            }
+          gap: 0.3rem;
+
+          h2 {
+            font-size: 1.1rem;
           }
-          .etoileXl{
-            display: none;
+
+          .stars .fa-star {
+            font-size: 1rem;
           }
-          strong {
-            font-weight: 500;
-          }
-          .avisBtn{
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            flex-direction: row-reverse;
-            ul{
-              margin-bottom: 0;
-              padding-left: 1rem;
-              li{
-                margin: 5px 0;
-              }
-            }
-            img{
-              width: 20vw;
-            }
-          }
-          button{
-            margin-top: 6px;
-            a{
-              font-size: 12px;
-            }
+        }
+
+        .avisBtn .etoileXs {
+          font-size: 0.9rem;
+
+          li {
+            text-align: center;
           }
         }
       }

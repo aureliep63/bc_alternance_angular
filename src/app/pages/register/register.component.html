@@ -15,6 +15,7 @@
         </div>
         <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow  rounded px-2 py-1">✖</button>
       </div>
+
       <mat-stepper labelPosition="bottom"  #stepper [linear]="true">
 
         <mat-step [stepControl]="firstFormGroup">
@@ -305,6 +306,15 @@
                      (input)="moveFocus($event, i)"
                      (keydown.backspace)="prevFocus($event, i)">
             </form>
+            <div *ngIf="resendMessage" class="mt-3 text-center">
+              <p [ngClass]="{
+                  'text-danger': attemptsLeft <= 1,
+                  'text-warning': attemptsLeft === 2,
+                  'text-success': attemptsLeft === 3
+                }">
+                {{ resendMessage }}
+              </p>
+            </div>
 
             <div *ngIf="validationFormGroup.invalid && validationFormGroup.touched" class="text-danger mt-2">
               Veuillez saisir le code complet.

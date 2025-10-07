@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   register(user: UserHttp): Observable<any> {
-    return this.http.post(`${this.url}/register`, user); // Assurez-vous que votre endpoint est /register
+    return this.http.post(`${this.url}/register`, user);
   }
   /**
    * Valide l'adresse e-mail de l'utilisateur en envoyant le code de validation au back-end.

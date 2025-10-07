@@ -80,6 +80,9 @@ label{
   font-weight: 200;
 }
 @media (max-width: 768px) {
+  h3{
+    font-size: 18px;
+  }
   .photoInfo{
     img{
       display: none;
@@ -87,14 +90,18 @@ label{
     mat-stepper{
       width: 100%;
     }
-    matSepLabel, p{
+    matSepLabel, p, label{
       font-size: 12px;
     }
     mat-step-header{
       flex-direction: column;
     }
-    h3{
-      font-size: 18px;
+    .modal-content .val p {
+      font-size: 10px;
     }
+
+
+
+
   }
 }

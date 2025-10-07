@@ -155,24 +155,38 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    this.requestOngoing = true;
+
     this.authService.validateEmail(email, code).subscribe({
-      next: (response) => {
-        console.log('Validation réussie', response);
+      next: () => {
         this.emailValidated = true;
-        // Ici, tu peux passer à la dernière étape du stepper
         this.stepper.next();
+        this.resendMessage = null;
+        this.requestOngoing = false;
       },
       error: (error) => {
-        console.error('Erreur de validation', error);
-        this.attemptsLeft--;
+        const message = error.error?.message || 'Erreur inconnue';
 
-        if (this.attemptsLeft > 0) {
-          // Afficher l'erreur sous l'input
-          this.validationFormGroup.get('code')?.setErrors({ 'apiError': 'Le code est invalide. Veuillez réessayer.' });
+        // Si le backend a renvoyé un nouveau code
+        if (message.includes('Un nouveau code a été envoyé')) {
+          this.resendMessage = message;
+          this.attemptsLeft = 3;
+          this.validationFormGroup.reset();
+          this.validationFormGroup.enable();
         } else {
-          // Gérer le cas où toutes les tentatives ont été utilisées
-          this.validationFormGroup.get('code')?.disable();
+          this.attemptsLeft--;
+
+          this.resendMessage = ` Il vous reste ${this.attemptsLeft} tentative${this.attemptsLeft === 1 ? '' : 's'} avant qu’un nouveau code soit envoyé.`;
+
+          this.validationFormGroup.reset();
+
+          if (this.attemptsLeft <= 0) {
+            this.resendMessage = ` Tentatives épuisées. Un nouveau code va être envoyé automatiquement.`;
+            this.validationFormGroup.disable();
+          }
         }
+
+        this.requestOngoing = false;
       }
     });
   }

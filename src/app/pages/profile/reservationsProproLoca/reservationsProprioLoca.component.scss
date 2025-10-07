@@ -1,10 +1,11 @@
+
 a{
   cursor: pointer;
 }
 
 p{
   font-size: 18px;
-  margin: 36px 0 ;
+  margin: 36px 0;
   font-style: italic;
   text-align: center;
 }
@@ -18,17 +19,40 @@ p{
 }
 
 .table{
+  width: 100%;
+  border-collapse: collapse;
+}
 
-  th{
-    font-size: 20px;
-    font-weight: 500;
-    padding: 16px 0;
-  }
+.table th{
+  font-size: 20px;
+  font-weight: 500;
+  padding: 16px 8px;
+}
 
-  td{
-    font-size: 18px;
-
-  }
+.table td{
+  font-size: 18px;
+  padding: 12px 8px;
 }
 
 
+
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table th, .table td{
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  p{
+    font-size: 12px;
+    margin: 18px 0;
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 14px;
+  }
+}

@@ -6,14 +6,25 @@
 .titre h1 {
   text-align: center;
   font-style: italic;
-  font-size: 220%;
+  font-size: 2.2rem;
+  margin: 0 10px;
 }
 
-
+@media (max-width: 768px) {
+  .titre {
+    padding: 15px 0;
+    margin-bottom: 5px;
+  }
+  .titre h1 {
+    font-size: 1.4rem;
+  }
+}
 
 .custom-tabs {
   border-bottom: none;
   position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .custom-tabs::after {
@@ -25,9 +36,31 @@
   height: 2px;
   background-color: #365C36;
 }
+
+.nav-tabs .nav-link {
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
 .nav-tabs .nav-link.active {
   border: none;
-  border-bottom: 1px solid #365C36;
+  border-bottom: 2px solid #365C36;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .custom-tabs::after {
+    display: none;
+  }
+
+  .custom-tabs {
+    padding-bottom: 10px
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+  }
 }
 

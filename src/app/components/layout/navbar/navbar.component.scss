@@ -28,3 +28,14 @@
     font-size: 32px;
   }
 }
+
+@media (max-width: 768px){
+a{
+  font-size: 1rem !important;
+  padding: 0 !important;
+}
+  li{
+    padding: 6px !important;
+  }
+
+}
