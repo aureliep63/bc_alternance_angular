@@ -3,7 +3,7 @@
     <div class="container" *ngIf="currentUser$ | async as currentUser">
       <div class="row">
         <div class="container py-1 mt-5 ms-1">
-          <div class="row g-0 align-items-center">
+          <div class="row g-0 align-items-center" style="max-width: 98%;">
             <div>
               <div class="cascading-right ms-5 me-5"
                    style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
@@ -35,8 +35,8 @@
                       <h6>Informations <br> personnelles</h6>
                     </div>
 
-                      <div class="d-flex flex-column w-md-100 borderLeft">
-                        <div class=" mb-4 d-flex justify-content-around">
+                      <div class="d-flex flex-column w-md-100 borderLeft" >
+                        <div class=" mb-4 d-flex justify-content-around" style="gap:100px;">
                           <!-- Téléphone -->
                           <div class="d-flex flex-column">
                             <h5 class="fst-italic">Téléphone:</h5>
@@ -72,8 +72,8 @@
                         </div>
 
                         <!-- Adresse -->
-                        <div class="mb-4 d-flex justify-content-around">
-                          <div class="d-flex flex-column test">
+                        <div class="mb-4 d-flex justify-content-around" style="gap:100px;">
+                          <div class="d-flex flex-column test" >
                             <h5 class="fst-italic">Adresse Postale:</h5>
                             <ng-container *ngIf="!editMode; else editRue">
                               <p>{{ currentUser.nomRue }}</p>
@@ -112,7 +112,7 @@
                       <h6>Informations <br> paiements</h6>
                     </div>
 
-                    <div class="borderLeft ">
+                    <div class="borderLeft" style="gap:80px;">
 
                       <div class="d-flex flex-sm-column">
                         <h5 class="fst-italic">Paypal :</h5>
