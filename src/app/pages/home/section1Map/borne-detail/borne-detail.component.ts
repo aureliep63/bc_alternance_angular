@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {BorneDto} from "../../../../entities/borneDto.entity";
 import {environment} from "../../../../../environments/environment";
 import {setHours, setMinutes, toDate} from "date-fns";
@@ -8,13 +8,16 @@ import {formatDate} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {LoginComponent} from "../../../login/login.component";
 import {AuthService} from "../../../../services/auth/auth.service";
+import {BehaviorSubject, map, Observable, of} from "rxjs";
+import {User} from "../../../../entities/user.entity";
+import {UserService} from "../../../../services/user/user.service";
 
 @Component({
   selector: 'app-borne-detail',
   templateUrl: './borne-detail.component.html',
   styleUrl: './borne-detail.component.scss'
 })
-export class BorneDetailComponent {
+export class BorneDetailComponent implements OnInit{
   @Input() borne?: BorneDto;
   @ViewChild('recapModal') recapModal!: ReservationRecapComponent;
 
@@ -34,15 +37,39 @@ export class BorneDetailComponent {
   isReservationPossible: boolean = false;
   showDateError: boolean = false;
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  currentUser: User | null = null;
+
+
 
   constructor(
-    private reservationService: ReservationService, private dialog: MatDialog, private authService: AuthService
+    private reservationService: ReservationService, private dialog: MatDialog, private authService: AuthService, private userService: UserService, private cdr: ChangeDetectorRef
   ) {
   }
 
+
+  ngOnInit() {
+    this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user ?? null;
+      // 🔹 Forcer Angular à détecter le changement pour le getter
+      this.cdr.detectChanges();
+    });
+  }
+
+  get isOwnBorne(): boolean {
+    const result = !!this.currentUser && !!this.borne && this.currentUser.id === this.borne.utilisateurId;
+    console.log('isOwnBorne =', result);
+    return result;
+  }
+
+
+
   open(borne: BorneDto, filters: any) {
     this.borne = borne;
-    // Affectez les valeurs des filtres à l'objet local 'filters'
+    console.log('Ouverture de la borne', this.borne);
+    console.log('Utilisateur courant :', this.currentUser);
+    console.log('Propriétaire de la borne :', this.borne?.utilisateurId);
+
+    // Affecte filters
     this.filters.dateDebut = filters.dateDebut;
     this.filters.heureDebut = filters.heureDebut;
     this.filters.dateFin = filters.dateFin;

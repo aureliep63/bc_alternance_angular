@@ -120,6 +120,16 @@ export class ReservationRecapComponent {
           (error) => {
             console.error('Erreur lors de la création de la réservation', error);
             // Gérer l'erreur
+            if (error.status === 403) {
+              // Message venant du backend
+              const message = error.error?.message || 'Vous ne pouvez pas réserver votre propre borne.';
+              alert(message); // ou snackbar si tu utilises Angular Material
+            } else if (error.status === 400) {
+              alert('Les données de réservation sont invalides.');
+            } else {
+              alert('Une erreur est survenue, veuillez réessayer.');
+            }
+
           }
         );
       }

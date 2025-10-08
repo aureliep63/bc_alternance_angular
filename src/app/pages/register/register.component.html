@@ -16,7 +16,11 @@
         <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow  rounded px-2 py-1">✖</button>
       </div>
 
-      <mat-stepper labelPosition="bottom"  #stepper [linear]="true">
+      <mat-stepper
+        [orientation]="(window.innerWidth < 768 ? 'vertical' : 'horizontal')"
+        labelPosition="bottom"
+        #stepper
+        [linear]="true">
 
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup">
@@ -176,9 +180,9 @@
               </div>
             </div>
 
-            <div class="d-flex mb-3 justify-content-end">
-              <div class="me-3 w-25 d-flex align-items-center">
-                <label class="form-label cb">Date d'exp.</label>
+            <div class="d-flex mb-3 justify-content-md-end justify-content-sm-center">
+              <div class="me-3 w-25 d-flex align-items-center justify-content-sm-end">
+                <label class="form-label cb" style="margin-right: 6px">Date d'exp.</label>
                 <input type="date"
                        class="form-control"
                        formControlName="cbDate"
@@ -190,7 +194,7 @@
               </div>
 
               <div class="w-25 d-flex align-items-center">
-                <label class="form-label cb">CVV</label>
+                <label class="form-label cb" style="margin-right: 6px">CVV</label>
                 <input type="text"
                        class="form-control"
                        formControlName="cbCvv"

@@ -1,106 +1,64 @@
-p{
-  font-size:14px
-}
-h1,h2,h4{
-  font-family: 'Kaushan Script', cursive;
-}
-.success-message {
-  color: green;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.login-modal-panel {
-  border: 1px solid black;
-  border-radius: 15px; /* Pour des coins arrondis */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
-  0 6px 20px rgba(0, 0, 0, 0.19);
-  margin-top: 20px;
-  h1{
-    font-size: 32px;
-  }
-
-
-}
-
-::ng-deep .mat-mdc-dialog-surface {
-  overflow: hidden !important;  // supprime les scrollbars
-  max-width: 90vw !important;   // limite la largeur
-  max-height: 90vh !important;  // limite la hauteur
-  border-radius: 12px;          // optionnel pour arrondir
-}
-
-.mat-horizontal-content-container {
-  overflow: hidden !important;
-  padding: 0 24px !important;
-}
-
-.registration-container{
-
-  .row{
-    p{
+.registration-container {
+  .row {
+    p {
       font-size: 18px;
     }
-    h4{
+
+    h4 {
       font-size: 24px;
       color: #365C36;
       margin-bottom: 25px;
       text-align: center;
     }
-    .col-md-2{
+
+    .col-md-2 {
       padding: 25px 30px;
-      img{
+      img {
         width: 24vw;
+        border-radius: 8px;
       }
     }
-    .col-md-10{
-      .inscription{
+
+    .col-md-10 {
+      .inscription {
         gap: 300px;
         margin-left: 30%;
         text-align: center;
-        h2{
+        h2 {
           font-size: 38px;
         }
-        .fa-google{
+        .fa-google {
           font-size: 18px;
         }
-        .btn-close{
+        .close-btn {
           font-size: 22px;
         }
-        .btn-close:hover{
-          color: white !important ;
+        .close-btn:hover {
+          color: white !important;
         }
       }
-
-
     }
-    .mat-mdc-form-field{
+
+    .mat-mdc-form-field {
       width: 100%;
     }
 
-    .paiement{
-      .form-check{
+    .paiement {
+      .form-check {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         margin-bottom: 22px;
-        label{
+
+        label {
           font-size: 20px;
         }
 
-        .cb{
+        .cb {
           font-size: 14px;
           padding-right: 6px;
         }
-
       }
-
     }
 
     .code-digit {
@@ -111,8 +69,123 @@ h1,h2,h4{
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-
-
   }
 
+  /* 🌙 RESPONSIVE DESIGN 🌙 */
+  @media (max-width: 991px) {
+    .row {
+      flex-direction: column;
+      align-items: center;
+
+      .col-md-2 {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        img {
+          width: 60vw;
+          max-width: 300px;
+        }
+      }
+
+      .col-md-10 {
+        width: 100%;
+        padding: 0 1rem;
+
+        .inscription {
+          flex-direction: column;
+          gap: 1rem;
+          margin-left: 0;
+          align-items: center;
+          text-align: center;
+
+          h2 {
+            font-size: 28px;
+          }
+
+          p {
+            font-size: 15px;
+          }
+
+          .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 20px;
+            padding: 4px 10px;
+          }
+        }
+      }
+
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+
+      .paiement {
+        .form-check {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+
+          label {
+            font-size: 18px;
+          }
+
+          .form-control {
+            width: 100% !important;
+          }
+        }
+      }
+
+      .recap {
+        flex-direction: column !important;
+        align-items: center;
+        text-align: center;
+
+        h4 {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+      }
+
+      button[mat-raised-button],
+      button[mat-button] {
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+    }
+
+    ::ng-deep .mat-horizontal-stepper-header-container {
+      flex-direction: column !important;
+      align-items: center !important;
+      .mat-step-icon {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .row {
+      p {
+        font-size: 15px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .col-md-2 img {
+        width: 80vw;
+      }
+
+      .code-digit {
+        width: 36px;
+        height: 44px;
+        font-size: 1.2rem;
+      }
+    }
+
+    ::ng-deep .mat-horizontal-stepper-header-container {
+      display: none !important; /* cache les labels du stepper trop longs sur très petit écran */
+    }
+  }
 }

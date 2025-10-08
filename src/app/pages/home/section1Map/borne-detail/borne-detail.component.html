@@ -99,8 +99,17 @@
             <img *ngIf="borne.photo" [src]="imageUrl + borne.photo" alt="Photo borne" class="object-fit-cover d-md-none" >
 
           </div>
-           <button class="btn btn-outline-success shadow bg-body-tertiary rounded" [disabled]="!isAvailable"  (click)="proceedToReservation()"
-                   ><a [routerLink]="['']" class=" link-success link-offset-2 link-underline link-underline-opacity-0 p-0" >Réserver</a></button>
+          <button class="btn btn-outline-success shadow bg-body-tertiary rounded"
+                  [disabled]="!isAvailable || isOwnBorne"
+                  (click)="proceedToReservation()">
+            Réserver
+          </button>
+
+
+          <div *ngIf="isOwnBorne" class="alert alert-warning mt-2">
+            Vous ne pouvez pas réserver votre propre borne.
+          </div>
+
         </div>
         <div *ngIf="showDateError" class="alert alert-warning ">
           Veuillez renseigner toutes les dates et heures pour la réservation.

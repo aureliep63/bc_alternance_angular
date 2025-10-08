@@ -267,6 +267,7 @@ export class RegisterComponent implements OnInit {
     return this.codeControls.map(c => this.validationFormGroup.get(c)?.value).join('');
   }
 
+  protected readonly window = window;
 }
 
 export function paymentMethodValidator(control: AbstractControl): ValidationErrors | null {
