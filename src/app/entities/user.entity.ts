@@ -26,7 +26,7 @@ export interface User{
   id: number
   nom: string
   prenom: string
-  email: string
+  email: string | null
   motDePasse: string
   role: string[]
   telephone: string
@@ -35,7 +35,7 @@ export interface User{
   codePostal: string
   ville: string
   bornes: Borne[]
-  reservations: Reservation[] // apres entity Reservation
+  reservations: Reservation[]
 }
 
 export namespace User{

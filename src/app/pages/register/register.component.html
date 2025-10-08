@@ -11,7 +11,7 @@
       <div class="inscription d-flex align-items-center mt-md-4">
         <div class="d-flex flex-column">
           <h2 class="">Je m'inscris</h2>
-          <p class="mb-0">Ou s'inscrire avec Google <i class="fa-brands fa-google"></i></p>
+          <p class="mb-0 d-none">Ou s'inscrire avec Google <i class="fa-brands fa-google"></i></p>
         </div>
         <button (click)="close()" *ngIf="isModal" class="close-btn btn btn-outline-success shadow  rounded px-2 py-1">✖</button>
       </div>
@@ -73,9 +73,9 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field >
+            <div class="row ">
+              <div class="col-12 col-md-6 order-md-1 order-2">
+              <mat-form-field >
                   <mat-label>Téléphone</mat-label>
                   <input matInput type="tel" formControlName="telephone" required>
                   <mat-error *ngIf="firstFormGroup.get('telephone')?.invalid && firstFormGroup.get('telephone')?.touched">
@@ -83,7 +83,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="col-md-6">
+              <div class="col-12 col-md-6 order-md-2 order-1">
                 <div class=" text-center">
                   <button mat-raised-button color="primary" matStepperNext [disabled]="firstFormGroup.invalid || requestOngoing" >Suivant</button>
                   <p>Vous avez un compte? <button mat-button color="sucess" (click)="openLogin()"> Connectez-vous!</button>
@@ -242,50 +242,76 @@
         <mat-step [stepControl]="fourthFormGroup">
           <form [formGroup]="fourthFormGroup">
             <ng-template matStepLabel>Mot de passe <br> & Récapitulatif</ng-template>
+
             <div class="recap d-flex flex-row mb-md-2">
-              <div class="d-flex flex-column justify-content-around col-md-6 ">
-                <h4>Récapitulatif </h4>
-                <div class="d-flex justify-content-evenly">
-                  <p> {{ firstFormGroup.value?.nom }} {{ firstFormGroup.value?.prenom }}</p>
-                  <p>{{ firstFormGroup.value?.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
-                </div>
-                <div class="d-flex justify-content-evenly">
-                  <p> {{ firstFormGroup.value?.email }}</p>
-                  <p>{{ firstFormGroup.value?.telephone}}</p>
-                </div>
-                <div class="d-flex flex-column ">
-                  <p class="align-self-center">{{ secondFormGroup.value?.nomRue }}</p>
 
-                  <div class="d-flex justify-content-evenly">
-                    <p>{{ secondFormGroup.value?.codePostal }}</p>
+            <div class="d-flex flex-column justify-content-around col-md-6 ">
+              <h4>Récapitulatif </h4>
+              <div class="d-flex justify-content-evenly">
+                <p> {{ firstFormGroup.value?.nom }} {{ firstFormGroup.value?.prenom }}</p>
+                <p>{{ firstFormGroup.value?.dateDeNaissance | date:'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="d-flex justify-content-evenly">
+                <p> {{ firstFormGroup.value?.email }}</p>
+                <p>{{ firstFormGroup.value?.telephone}}</p>
+              </div>
+              <div class="d-flex flex-column ">
+                <p class="align-self-center">{{ secondFormGroup.value?.nomRue }}</p>
+
+                <div class="d-flex justify-content-evenly">
+                  <p>{{ secondFormGroup.value?.codePostal }}</p>
                   <p> {{ secondFormGroup.value?.ville }}</p>
-                  </div>
                 </div>
-
               </div>
 
-              <div class="d-flex flex-column col-md-6">
-                <h4>Mot de Passe </h4>
-                <mat-form-field appearance="outline">
-                  <mat-label>Mot de passe</mat-label>
-                  <input matInput type="password" formControlName="motDePasse" required>
-                  <mat-error *ngIf="fourthFormGroup.get('motDePasse')?.invalid && fourthFormGroup.get('motDePasse')?.touched">
-                    Le mot de passe doit contenir au moins 6 caractères.
-                  </mat-error>
-                </mat-form-field>
+            </div>
 
-                <mat-form-field appearance="outline">
-                  <mat-label>Confirmer le mot de passe</mat-label>
-                  <input matInput type="password" formControlName="confirmMotDePasse" required>
-                  <mat-error *ngIf="fourthFormGroup.get('confirmMotDePasse')?.invalid && fourthFormGroup.get('confirmMotDePasse')?.touched">
-                    La confirmation est requise.
-                  </mat-error>
-                </mat-form-field>
-                <mat-error *ngIf="fourthFormGroup.hasError('mismatch') && fourthFormGroup.get('confirmMotDePasse')?.touched">
-                  Les mots de passe ne correspondent pas.
+
+
+
+            <div class="d-flex flex-column col-md-6">
+              <h4>Mot de Passe</h4>
+              <!-- Champ mot de passe -->
+              <mat-form-field appearance="outline">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput
+                       [type]="showPassword ? 'text' : 'password'"
+                       formControlName="motDePasse"
+                       required>
+                <button mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="togglePasswordVisibility()">
+                  <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="fourthFormGroup.get('motDePasse')?.hasError('pattern') && fourthFormGroup.get('motDePasse')?.touched">
+                  Le mot de passe doit contenir au minimum 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial.
                 </mat-error>
+              </mat-form-field>
 
-              </div>
+              <!-- Champ confirmation -->
+              <mat-form-field appearance="outline">
+                <mat-label>Confirmer le mot de passe</mat-label>
+                <input matInput
+                       [type]="showConfirmPassword ? 'text' : 'password'"
+                       formControlName="confirmMotDePasse"
+                       required>
+                <button mat-icon-button
+                        matSuffix
+                        type="button"
+                        (click)="toggleConfirmPasswordVisibility()">
+                  <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="fourthFormGroup.get('confirmMotDePasse')?.invalid && fourthFormGroup.get('confirmMotDePasse')?.touched">
+                  La confirmation est requise.
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Erreur globale -->
+              <mat-error *ngIf="fourthFormGroup.hasError('mismatch') && fourthFormGroup.get('confirmMotDePasse')?.touched">
+                Les mots de passe ne correspondent pas.
+              </mat-error>
+            </div>
             </div>
 
             <div>

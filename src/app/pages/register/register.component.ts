@@ -37,6 +37,8 @@ export class RegisterComponent implements OnInit {
   today = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
   codeControls: string[] = ['digit0', 'digit1', 'digit2', 'digit3', 'digit4', 'digit5'];
   emailValidated = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -79,7 +81,10 @@ export class RegisterComponent implements OnInit {
     }, { validators: [paymentMethodValidator] });
     // Étape 4 : Mot de passe & Récapitulatif
     this.fourthFormGroup = this.fb.group({
-      motDePasse: ['', [Validators.required, Validators.minLength(6)]],
+      motDePasse: ['', [Validators.required,
+      //  Validators.minLength(6),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      ]],
       confirmMotDePasse: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
 
@@ -97,6 +102,14 @@ export class RegisterComponent implements OnInit {
     });
     this.validationFormGroup = this.fb.group(group);
 
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   emailExistsValidator(): AsyncValidatorFn {

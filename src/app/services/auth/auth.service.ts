@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {from, lastValueFrom, map, Observable, switchMap, tap} from "rxjs";
+import {BehaviorSubject, from, lastValueFrom, map, Observable, switchMap, tap} from "rxjs";
 import {LocalStorageService} from "../local-storage/local-storage.service";
 import {User, UserHttp} from "../../entities/user.entity";
 import {UserService} from "../user/user.service";
@@ -20,6 +20,7 @@ export class AuthService {
 
   private url:string
   token?: string;
+  public currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   constructor(private router:Router,private auth: Auth, private http: HttpClient, private localStorage: LocalStorageService, private userService:UserService) {
     this.url=environment.API_URL+environment.API_RESOURCES.USERS
@@ -74,12 +75,34 @@ export class AuthService {
       .then(async (result) => {
         const idToken = await result.user.getIdToken();
 
-        // Envoi du token au backend
+        // Supprime l'ancien token et stocke le nouveau
+        localStorage.removeItem('token');
+
         this.http.post<{ token: string }>(`${this.url}/firebase-login`, { idToken })
           .subscribe({
             next: (response) => {
+              console.log("User reçu du backend:", response);
               localStorage.setItem('token', response.token);
-              this.router.navigate(['/profile']); // ou vers la page que tu veux
+
+              // Met à jour l'utilisateur courant côté frontend
+              this.currentUser.next({
+                id: 0,
+                nom: 'Google',
+                prenom: 'User',
+                email: result.user.email!,
+                motDePasse: '',
+                role: ['PROPRIO_LOCATAIRE'],
+                telephone: '0000000000',
+                dateDeNaissance: new Date(),
+                nomRue: 'Rue inconnue',
+                codePostal: '00000',
+                ville: 'Inconnue',
+                bornes: [],
+                reservations: []
+              });
+
+              // Redirection
+              this.router.navigate(['/profile']);
             },
             error: (err) => {
               console.error('Erreur côté backend :', err);
@@ -91,7 +114,8 @@ export class AuthService {
       });
   }
 
- async checkLocalStorageToken(): Promise<void> {
+
+  async checkLocalStorageToken(): Promise<void> {
     const tokenLocalStorage = this.localStorage.getItem(environment.LOCAL_STORAGE.ACCESS_TOKEN);
     if (tokenLocalStorage) {
       this.token = tokenLocalStorage;

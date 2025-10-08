@@ -49,7 +49,6 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
 
     this.router.navigate(['']).then(() => {
-      //  Solution de dernier recours pour forcer le rafraîchissement complet
       window.location.reload();
     });
   }

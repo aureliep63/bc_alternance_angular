@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit{
   isModal: boolean = false;
   isMobile = false;
   isOpen = false;
+  showPassword: boolean = false;
 
   // injection de dépendance, soit le singleton existe donc on récup l'instance, soit existe pas donc on génère une instance (donc une factory)
   constructor(
@@ -59,12 +60,10 @@ export class LoginComponent implements OnInit{
     try{
       console.log('on rentre ds le try')
       await this.authService.login(email, password, remember)
-      // Si c'est une modale, fermez-la après la connexion réussie
       if (this.dialogRef) {
         this.dialogRef.close();
       }
-      // Et naviguez vers la page de profil
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/profile');
     }catch (e:any){
       // if else en one Line
       if(e.status === 401) this.errorMsg = 'Email ou mot de passe incorrect'
@@ -82,6 +81,13 @@ export class LoginComponent implements OnInit{
       remember:new FormControl(false)
     })
   }
+
+
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
 
   loginWithGoogle() {
     this.authService.loginWithGoogle();
